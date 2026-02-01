@@ -1,0 +1,61 @@
+﻿namespace misery.Eng;
+
+public class Moore : INeighborhood
+{
+
+        public int Count(Grid grid, State state, Coordinate coordinate, int radius = 1)
+        {
+                int count = 0;
+
+                for (int row = coordinate.Row - radius; row <= coordinate.Row + radius; row++)
+                for (int column = coordinate.Column - radius; column <= coordinate.Column + radius; column++)
+                {
+                        if (
+                                !grid.IsInside(new Coordinate(row, column))
+                                || (row == coordinate.Row && column == coordinate.Column)) continue;
+                        if (grid.ReadState(row, column).Equals(state)) count++;
+                }
+
+                return count;
+        }
+
+        public int GreatestCount(int radius)
+        {
+                return (2 * radius + 1) * (2 * radius + 1) - 1;
+        }
+}
+
+public class Elementary : INeighborhood
+{
+        public int Count(Grid grid, State state, Coordinate coordinate, int radius)
+        {
+                State left = grid.ReadState(coordinate.Row, coordinate.Column - 1);
+                State middle = grid.ReadState(coordinate);
+                State right = grid.ReadState(coordinate.Row, coordinate.Column + 1);
+
+                return (left.Value << 2) | (middle.Value << 1) | right.Value;
+        }
+
+        public int GreatestCount(int radius)
+        {
+                return 0;
+        }
+}
+
+public class VonNeumann : INeighborhood
+{
+        public int Count(Grid grid, State state, Coordinate coordinate, int radius)
+        {
+                int count = 0;
+
+
+
+
+                return count;
+        }
+
+        public int GreatestCount(int radius)
+        {
+                return 0;
+        }
+}

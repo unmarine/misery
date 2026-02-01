@@ -5,13 +5,12 @@ namespace misery.Components;
 public class VisualGrid: Panel
 {
         Grid grid;
-
+        
+        
         public VisualGrid(Grid initial)
         {
                 grid = initial;
                 DoubleBuffered = true;
-
-
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -27,10 +26,8 @@ public class VisualGrid: Panel
                                 State state = grid.ReadState(row, column);
                                 Color color = Settings.GetColorByState(state);
 
-                                using (Brush brush = new SolidBrush(color))
-                                {
-                                        graphics.FillRectangle(brush, column * cellSize, row * cellSize, cellSize, cellSize);
-                                }
+                                using Brush brush = new SolidBrush(color);
+                                graphics.FillRectangle(brush, column * cellSize, row * cellSize, cellSize, cellSize);
                         }
                 }
         }
@@ -38,6 +35,6 @@ public class VisualGrid: Panel
         public void ReplaceGrid(Grid update)
         {
                 grid = update;
-                this.Invalidate();
+                Invalidate();
         }
 }

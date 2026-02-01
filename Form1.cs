@@ -15,15 +15,19 @@ namespace misery
             InitializeComponent2(); // Make sure to call this first in the constructor.
 
             Settings.SetDefaultColorStatePairs(); // Presumed existing method
-            Settings.SetColorForState(2, Color.DarkRed); // Set color for state
-            Settings.SetColorForState(1, Color.OrangeRed); // Set color for state
+            Settings.SetColorForState(2, Color.DarkGreen); // Set color for state
+            Settings.SetColorForState(1, Color.LawnGreen); // Set color for state
 
-            Neighborhood neighborhood = new Moore(); // Assuming Moore is defined elsewhere
-            automaton = new Automaton(neighborhood, 200, 200); // Initialize automaton
+            INeighborhood neighborhood = new Moore(); // Assuming Moore is defined elsewhere
+            automaton = new Automaton(neighborhood, 1000, 1000); // Initialize automaton
 
-            Condition first = new Condition(0, 1, 1, 2);
-            Condition second = new Condition(1, -1, 2, -1);
-            Condition third = new Condition(2, -1, 0, -1);
+            State dead = new State(0);
+            State live = new State(1);
+            State dying = new State(2);
+            State none =  new State(-1);
+            Condition first = new Condition(dead, live, live, 2, 2);
+            Condition second = new Condition(live, none, dying, -1, -1, true);
+            Condition third = new Condition(dying, none, dead, -1, -1, true);
 
             Settings.AddCondition(first);
             Settings.AddCondition(second);
@@ -67,7 +71,6 @@ namespace misery
                 Dock = DockStyle.Top,
                 AutoSize = true
             };
-            Condition first = new Condition(0, 1, 1, 2);
 
             NumericUpDown starting = new NumericUpDown();
             NumericUpDown counted = new NumericUpDown();
@@ -90,7 +93,7 @@ namespace misery
                 {
                     case "exactly":
                         {
-                            Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, (int)amountLower.Value);
+                            Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, (int)amountLower.Value, (int)amountLower.Value);
                             Settings.AddCondition(condition);
                             break;
                         }
@@ -101,7 +104,7 @@ namespace misery
                         }
                     case "exactly unconditionally":
                         {
-                            Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, -1);
+                            Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, -1, -1, true);
                             break;
                         }
                     case "between unconditionally":
@@ -120,7 +123,7 @@ namespace misery
             flowLayoutPanel.Controls.Add(amountUpper);
             flowLayoutPanel.Controls.Add(submitButton);
 
-            this.Controls.Add(flowLayoutPanel);
+            Controls.Add(flowLayoutPanel);
         }
 
         public void SetupConditionDisplay()
