@@ -1,4 +1,5 @@
 using misery.Components;
+using misery.eng;
 using misery.Eng;
 
 namespace misery
@@ -19,19 +20,21 @@ namespace misery
             Settings.SetColorForState(1, Color.LawnGreen); // Set color for state
 
             INeighborhood neighborhood = new Moore(); // Assuming Moore is defined elsewhere
-            automaton = new Automaton(neighborhood, 1000, 1000); // Initialize automaton
 
             State dead = new State(0);
             State live = new State(1);
             State dying = new State(2);
             State none =  new State(-1);
+
             Condition first = new Condition(dead, live, live, 2, 2);
             Condition second = new Condition(live, none, dying, -1, -1, true);
             Condition third = new Condition(dying, none, dead, -1, -1, true);
 
-            Settings.AddCondition(first);
-            Settings.AddCondition(second);
-            Settings.AddCondition(third);
+            RuleSet BriansBrain = new RuleSet();
+            BriansBrain.AddCondition(first);
+            BriansBrain.AddCondition(second);
+            BriansBrain.AddCondition(third);
+            automaton = new Automaton(neighborhood, 300, 300, BriansBrain); // Initialize automaton
 
             automaton.Randomize(0, 1); // Presumed method to randomize grid
             visualGrid = new VisualGrid(automaton.TheGrid); // Presumed class visualization
@@ -91,27 +94,27 @@ namespace misery
             {
                 switch (quantifier.SelectedItem)
                 {
-                    case "exactly":
-                        {
-                            Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, (int)amountLower.Value, (int)amountLower.Value);
-                            Settings.AddCondition(condition);
-                            break;
-                        }
-                    case "between":
-                        {
-                            Settings.AddConditionRangedInclusive((int)starting.Value, (int)counted.Value, (int)resulting.Value, (int)amountLower.Value, (int)amountUpper.Value);
-                            break;
-                        }
-                    case "exactly unconditionally":
-                        {
-                            Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, -1, -1, true);
-                            break;
-                        }
-                    case "between unconditionally":
-                        {
-                            Settings.AddConditionRangedInclusive((int)starting.Value, (int)counted.Value, (int)resulting.Value, -1, -1);
-                            break;
-                        }
+                    //case "exactly":
+                    //    {
+                    //        Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, (int)amountLower.Value, (int)amountLower.Value);
+                    //        Settings.AddCondition(condition);
+                    //        break;
+                    //    }
+                    //case "between":
+                    //    {
+                    //        Settings.AddConditionRangedInclusive((int)starting.Value, (int)counted.Value, (int)resulting.Value, (int)amountLower.Value, (int)amountUpper.Value);
+                    //        break;
+                    //    }
+                    //case "exactly unconditionally":
+                    //    {
+                    //        Condition condition = new Condition((int)starting.Value, (int)counted.Value, (int)resulting.Value, -1, -1, true);
+                    //        break;
+                    //    }
+                    //case "between unconditionally":
+                    //    {
+                    //        Settings.AddConditionRangedInclusive((int)starting.Value, (int)counted.Value, (int)resulting.Value, -1, -1);
+                    //        break;
+                    //    }
                 }
             };
 

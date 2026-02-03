@@ -32,7 +32,14 @@ public class VisualGrid: Panel
                 }
         }
 
-        public void ReplaceGrid(Grid update)
+    protected override void OnMouseDown(MouseEventArgs e)
+    {
+        (float x, float y) = (e.X, e.Y);
+
+
+    }
+
+    public void ReplaceGrid(Grid update)
         {
                 grid = update;
                 Invalidate();

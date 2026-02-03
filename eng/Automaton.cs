@@ -1,19 +1,20 @@
 ﻿using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
+using misery.eng;
 
 namespace misery.Eng;
 
 public class Automaton
 {
+        private RuleSet _ruleSet;
         private INeighborhood _neighborhood;
         public Grid TheGrid { get; private set; }
-        public Bitmap TheBitmap { get; private set; }
         
-        public Automaton(INeighborhood neighborhood, int height, int width)
+        public Automaton(INeighborhood neighborhood, int height, int width, RuleSet ruleSet)
         {
-                this._neighborhood = neighborhood;
+                _neighborhood = neighborhood;
+                _ruleSet = ruleSet;
                 TheGrid = new Grid(height, width);
-                TheBitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
         }
 
         public void ChangeNeighborhood(INeighborhood neighborhood)
@@ -31,7 +32,7 @@ public class Automaton
                         {
                                 State current = TheGrid.ReadState(row, column);
 
-                                var conditions = Settings.GetConditionsForState(current);
+                                var conditions = _ruleSet.GetConditionsForState(current);
 
                                 foreach (Condition condition in conditions)
                                 {
