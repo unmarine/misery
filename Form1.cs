@@ -16,8 +16,8 @@ namespace misery
             InitializeComponent2(); // Make sure to call this first in the constructor.
 
             Settings.SetDefaultColorStatePairs(); // Presumed existing method
-            Settings.SetColorForState(2, Color.DarkGreen); // Set color for state
-            Settings.SetColorForState(1, Color.LawnGreen); // Set color for state
+            Settings.SetColorForState(2, Color.MediumVioletRed); // Set color for state
+            Settings.SetColorForState(1, Color.Moccasin); // Set color for state
 
             INeighborhood neighborhood = new Moore(); // Assuming Moore is defined elsewhere
 
@@ -36,7 +36,7 @@ namespace misery
             BriansBrain.AddCondition(third);
             automaton = new Automaton(neighborhood, 300, 300, BriansBrain); // Initialize automaton
 
-            automaton.Randomize(0, 1); // Presumed method to randomize grid
+            automaton.Randomize(0, 2); // Presumed method to randomize grid
             visualGrid = new VisualGrid(automaton.TheGrid); // Presumed class visualization
             visualGrid.Height = 2000;
             visualGrid.Width = 2000;

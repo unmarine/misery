@@ -6,11 +6,11 @@ public class VisualGrid: Panel
 {
         Grid grid;
         
-        
         public VisualGrid(Grid initial)
         {
                 grid = initial;
                 DoubleBuffered = true;
+                this.MouseMove += OnMouseDown;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -32,16 +32,28 @@ public class VisualGrid: Panel
                 }
         }
 
-    protected override void OnMouseDown(MouseEventArgs e)
+
+    private void OnMouseDown(object sender, MouseEventArgs e)
     {
-        (float x, float y) = (e.X, e.Y);
+        float cellSize = Math.Min(this.Width / grid.Columns, this.Height / grid.Rows);
+        int column = (int)(e.X / cellSize);
+        int row = (int)(e.Y / cellSize);
 
+        if (e.Button == MouseButtons.Left && grid.IsInside(row, column))
+        {
+            State currentState = grid.ReadState(row, column);
 
+            grid.SetState(row, column, new State(1)); 
+            Invalidate();
+        }
     }
 
     public void ReplaceGrid(Grid update)
         {
+            if (update != null)
+            {
                 grid = update;
                 Invalidate();
+            }
         }
 }

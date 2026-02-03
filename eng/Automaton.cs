@@ -8,7 +8,7 @@ public class Automaton
 {
         private RuleSet _ruleSet;
         private INeighborhood _neighborhood;
-        public Grid TheGrid { get; private set; }
+        public Grid TheGrid { get; set; }
         
         public Automaton(INeighborhood neighborhood, int height, int width, RuleSet ruleSet)
         {
