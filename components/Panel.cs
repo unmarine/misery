@@ -10,7 +10,8 @@ public class VisualGrid: Panel
         {
                 grid = initial;
                 DoubleBuffered = true;
-                this.MouseMove += OnMouseDown;
+                this.MouseMove += OnMouse;
+                this.MouseClick += OnMouse;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -33,7 +34,7 @@ public class VisualGrid: Panel
         }
 
 
-    private void OnMouseDown(object sender, MouseEventArgs e)
+    private void OnMouse(object sender, MouseEventArgs e)
     {
         float cellSize = Math.Min(this.Width / grid.Columns, this.Height / grid.Rows);
         int column = (int)(e.X / cellSize);

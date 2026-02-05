@@ -4,6 +4,9 @@
     <Compile Update="components\Panel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="components\RunPauseButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
