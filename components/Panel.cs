@@ -6,8 +6,10 @@ public class VisualGrid: Panel
 {
         Grid grid;
         
-        public VisualGrid(Grid initial)
+        public VisualGrid(Grid initial, int height, int width)
         {
+                Height = height;
+                Width = width;
                 grid = initial;
                 DoubleBuffered = true;
                 this.MouseMove += OnMouse;
@@ -20,6 +22,10 @@ public class VisualGrid: Panel
                 Graphics graphics = e.Graphics;
                 float cellSize = Math.Min(this.Width / grid.Columns, this.Height / grid.Rows);
 
+                float cellWidth = this.Width / grid.Columns;
+                float cellHeight = this.Height / grid.Rows;
+                
+                
                 for (int row = 0; row < grid.Rows; row++)
                 {
                         for (int column = 0; column < grid.Columns; column++)
@@ -28,7 +34,7 @@ public class VisualGrid: Panel
                                 Color color = Settings.GetColorByState(state);
 
                                 using Brush brush = new SolidBrush(color);
-                                graphics.FillRectangle(brush, column * cellSize, row * cellSize, cellSize, cellSize);
+                                graphics.FillRectangle(brush, column * cellWidth, row * cellHeight, cellWidth, cellHeight);
                         }
                 }
         }
@@ -36,9 +42,13 @@ public class VisualGrid: Panel
 
     private void OnMouse(object sender, MouseEventArgs e)
     {
-        float cellSize = Math.Min(this.Width / grid.Columns, this.Height / grid.Rows);
-        int column = (int)(e.X / cellSize);
-        int row = (int)(e.Y / cellSize);
+        float cellWidth = this.Width / grid.Columns;
+        float cellHeight = this.Height / grid.Rows;
+
+        int column = (int)(e.X / cellWidth);
+        int row = (int)(e.Y / cellHeight);
+        
+        
 
         if (e.Button == MouseButtons.Left && grid.IsInside(row, column))
         {

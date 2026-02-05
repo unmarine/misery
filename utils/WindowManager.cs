@@ -18,14 +18,50 @@ namespace misery.utils
             _space = new Space(form.Height, form.Width, divisionsVertical, divisionsHorizontal);
         }
 
-        public void Debug()
+        public void PlaceControl(Control control, int firstRow, int firstColumn, int secondRow, int secondColumn)
         {
-            Graphics g = _form.CreateGraphics();
-            foreach (var tile in _space.Tiles)
+            _form.Controls.Add(control);
+            Tile a = _space.Tiles[firstRow, firstColumn];
+            Tile b = _space.Tiles[secondRow, secondColumn];
+
+            control.Left = _space.GetLowestLeft(a, b);
+            control.Top = _space.GetLowestTop(a, b);
+            control.Width = _space.GetWidthBetween(a, b);
+            control.Height = _space.GetHeightBetween(a, b);
+        }
+
+        public void Debug(Graphics g)
+        {
+            for (int row = 0; row < _space.Tiles.GetLength(0); row++)
             {
-                using Brush brush = new SolidBrush(Color.Red);
-                g.FillRectangle(brush, tile.Left, tile.Top, tile.Width, tile.Height);
+                for (int column = 0; column < _space.Tiles.GetLength(1); column++)
+                {
+                    Tile tile = _space.Tiles[row, column];
+                    int sum = row + column;
+                    Color c;
+                    if (sum % 2 == 0) c = Color.Black;
+                    else c = Color.White;
+                    using Brush brush = new SolidBrush(c);
+
+                    g.FillRectangle(brush, tile.Left, tile.Top, tile.Width, tile.Height);
+
+                }
             }
+        }
+
+        public void DebugColorPart(Graphics g, int firstRow, int firstColumn, int secondRow, int secondColumn)
+        {
+            Tile a = _space.Tiles[firstRow, firstColumn];
+            Tile b = _space.Tiles[secondRow, secondColumn];
+
+            int left = _space.GetLowestLeft(a, b);
+            int top = _space.GetLowestTop(a, b);
+
+            int width = _space.GetWidthBetween(a, b);
+            int height = _space.GetHeightBetween(a, b);
+            
+            using Brush brush = new SolidBrush(Color.Red);
+            g.FillRectangle(brush, left, top, width, height);
         }
     }
 
@@ -58,7 +94,7 @@ namespace misery.utils
                     int top = row * _divisionHeight;
                     int left = column * _divisionWidth;
 
-                    Tile tile = new Tile(top, left, _divisionHeight, _divisionsVertical);
+                    Tile tile = new Tile(top, left, _divisionHeight, _divisionWidth);
 
                     Tiles[row, column] = tile;
                 }
@@ -66,9 +102,12 @@ namespace misery.utils
 
         }
 
-        public int GetHightBetween(Tile a, Tile b) => Math.Abs(a.Top - b.Top);
+        public int GetHeightBetween(Tile a, Tile b) => Math.Abs(a.Top - b.Top);
         public int GetWidthBetween(Tile a, Tile b) => Math.Abs(a.Left - b.Left);
-        public (int, int) GetHeightWidthBetween(Tile a, Tile b) => (GetHightBetween(a, b), GetWidthBetween(a, b));
+        
+        public int GetLowestTop(Tile a, Tile b) => Math.Min(a.Top, b.Top);
+        public int GetLowestLeft(Tile a, Tile b) => Math.Min(a.Left, b.Left);
+        public (int, int) GetHeightWidthBetween(Tile a, Tile b) => (GetHeightBetween(a, b), GetWidthBetween(a, b));
     }
 
     class Tile
