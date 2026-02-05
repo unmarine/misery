@@ -62,13 +62,13 @@ public partial class Form1 : Form
                 // this.Controls.Add(visualGrid);
 
                 DoubleBuffered = true;
-                visualGrid = new VisualGrid(automaton.TheGrid);
+                visualGrid = new VisualGrid(automaton);
 
                 Button randomization = new Button();
                 NumericUpDown lower = new NumericUpDown();
                 NumericUpDown greater = new NumericUpDown();
 
-                RandomizeControls rdc = new RandomizeControls(automaton.TheGrid, randomization, lower, greater, visualGrid);
+                RandomizeControls rdc = new RandomizeControls(automaton, randomization, lower, greater, visualGrid);
                 
                 
                 wm = new WindowManager(this, 100, 50);

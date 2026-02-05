@@ -4,11 +4,11 @@ namespace misery.Components;
 
 public sealed class VisualGrid : Panel
 {
-        private Grid _grid;
+        private Automaton _automaton;
 
-        public VisualGrid(Grid initial)
+        public VisualGrid(Automaton initial)
         {
-                _grid = initial;
+                _automaton = initial;
                 DoubleBuffered = true;
                 MouseMove += OnMouse;
                 MouseClick += OnMouse;
@@ -19,14 +19,14 @@ public sealed class VisualGrid : Panel
                 base.OnPaint(e);
                 var graphics = e.Graphics;
 
-                var cellWidth = (float)Width / _grid.Columns;
-                var cellHeight = (float)Height / _grid.Rows;
+                var cellWidth = (float)Width / _automaton.TheGrid.Columns;
+                var cellHeight = (float)Height / _automaton.TheGrid.Rows;
 
 
-                for (var row = 0; row < _grid.Rows; row++)
-                for (var column = 0; column < _grid.Columns; column++)
+                for (var row = 0; row < _automaton.TheGrid.Rows; row++)
+                for (var column = 0; column < _automaton.TheGrid.Columns; column++)
                 {
-                        var state = _grid.ReadState(row, column);
+                        var state = _automaton.TheGrid.ReadState(row, column);
                         var color = Settings.GetColorByState(state);
 
                         using Brush brush = new SolidBrush(color);
@@ -38,22 +38,22 @@ public sealed class VisualGrid : Panel
         private void OnMouse(object? sender, MouseEventArgs e)
         {
                 if (sender == null) return;
-                var cellWidth = (float)Width / _grid.Columns;
-                var cellHeight = (float)Height / _grid.Rows;
+                var cellWidth = (float)Width / _automaton.TheGrid.Columns;
+                var cellHeight = (float)Height / _automaton.TheGrid.Rows;
 
                 var column = (int)(e.X / cellWidth);
                 var row = (int)(e.Y / cellHeight);
 
-                if (e.Button == MouseButtons.Left && _grid.IsInside(row, column))
+                if (e.Button == MouseButtons.Left && _automaton.TheGrid.IsInside(row, column))
                 {
-                        _grid.SetState(row, column, new State(1));
+                        _automaton.TheGrid.SetState(row, column, new State(1));
                         Invalidate();
                 }
         }
 
         public void ReplaceGrid(Grid update)
         {
-                _grid = update;
+                _automaton.TheGrid = update;
                 Invalidate();
         }
 }
