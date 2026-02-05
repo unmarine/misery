@@ -14,19 +14,20 @@ public class RunPauseButton: Button
     public RunPauseButton(System.Windows.Forms.Timer timer)
     {
         _timer = timer;
-        this.Text = "Run";
+        Text = "Run";
     }
 
     protected override void OnClick(EventArgs e)
     {
+        _isOnPause = !_isOnPause;
         if (_isOnPause)
         {
-            _isOnPause = false;
-            _timer.Start();
+            Text = "Run";
+            _timer.Stop();
         } else
         {
-            _isOnPause = true;
-            _timer.Stop();
+            Text = "Pause";
+            _timer.Start();
         }
     }
 }
