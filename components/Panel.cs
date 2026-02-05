@@ -18,10 +18,9 @@ public class VisualGrid: Panel
         {
                 base.OnPaint(e);
                 Graphics graphics = e.Graphics;
-                float cellSize = Math.Min(this.Width / grid.Columns, this.Height / grid.Rows);
 
-                float cellWidth = this.Width / grid.Columns;
-                float cellHeight = this.Height / grid.Rows;
+                float cellWidth = (float)Width / grid.Columns;
+                float cellHeight = (float)Height / grid.Rows;
                 
                 
                 for (int row = 0; row < grid.Rows; row++)
@@ -40,8 +39,8 @@ public class VisualGrid: Panel
 
     private void OnMouse(object sender, MouseEventArgs e)
     {
-        float cellWidth = this.Width / grid.Columns;
-        float cellHeight = this.Height / grid.Rows;
+        float cellWidth = (float)Width / grid.Columns;
+        float cellHeight = (float)Height / grid.Rows;
 
         int column = (int)(e.X / cellWidth);
         int row = (int)(e.Y / cellHeight);

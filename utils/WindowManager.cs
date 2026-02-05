@@ -42,9 +42,14 @@ namespace misery.utils
                     if (sum % 2 == 0) c = Color.Black;
                     else c = Color.White;
                     using Brush brush = new SolidBrush(c);
-
+                    using Font font = new Font("Mono", 5);
+                    StringFormat format = new StringFormat();
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Center;
+                    using Brush textBrush = new SolidBrush(Color.Red);
+                    RectangleF rect = new RectangleF(tile.Left, tile.Top, tile.Width, tile.Height);
                     g.FillRectangle(brush, tile.Left, tile.Top, tile.Width, tile.Height);
-
+                    g.DrawString(row + ", " + column, font , textBrush, rect, format);
                 }
             }
         }
@@ -102,7 +107,7 @@ namespace misery.utils
 
         }
 
-        public int GetHeightBetween(Tile a, Tile b) => Math.Abs(a.Top - b.Top);
+        public int GetHeightBetween(Tile a, Tile b) => Math.Abs( (a.Top + a.Height) - (b.Top + b.Height));
         public int GetWidthBetween(Tile a, Tile b) => Math.Abs(a.Left - b.Left);
         
         public int GetLowestTop(Tile a, Tile b) => Math.Min(a.Top, b.Top);

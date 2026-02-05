@@ -65,17 +65,16 @@ namespace misery
             this.DoubleBuffered = true;
             visualGrid = new VisualGrid(automaton.TheGrid);
 
-            wm = new WindowManager(this, 10, 5);
-            wm.PlaceControl(b, 0, 0, 1, 1);
-            wm.PlaceControl(visualGrid, 0, 1,  6, 4);
+            wm = new WindowManager(this, 100, 50);
+            wm.PlaceControl(visualGrid, 0, 0,  55, 35);
+            wm.PlaceControl(b, 0, 35, 2, 37);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             
-            wm.Debug(e.Graphics);
-            // wm.DebugColorPart(e.Graphics,0, 0, 2, 4);
+          wm.Debug(e.Graphics);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
