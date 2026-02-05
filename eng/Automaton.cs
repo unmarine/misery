@@ -6,13 +6,41 @@ public class Automaton
 {
         private RuleSet _ruleSet;
         private INeighborhood _neighborhood;
-        public Grid TheGrid { get; set; }
+
+        public int Columns, Rows;
+        
+        private bool _isExploitingBufferA = true;
+        private Grid _bufferA;
+        private Grid _bufferB;
+
+
+        public Grid GetReadyGrid()
+        {
+                return _isExploitingBufferA ? _bufferA : _bufferB;
+        }
+        public Grid GetExploitedGrid()
+        {
+                return _isExploitingBufferA ? _bufferA : _bufferB;
+        }
+
+        public void ForceState(int row, int column, State state)
+        {
+                _bufferA.SetState(row, column, state);
+                _bufferB.SetState(row, column, state);
+        }
+        public Grid GetUnexploitedGrid()
+        {
+                return _isExploitingBufferA ? _bufferB : _bufferA;
+        }
 
         public Automaton(INeighborhood neighborhood, int height, int width, RuleSet ruleSet)
         {
                 _neighborhood = neighborhood;
                 _ruleSet = ruleSet;
-                TheGrid = new Grid(height, width);
+                Columns = width;
+                Rows = height;
+                _bufferA = new Grid(Rows, Columns);
+                _bufferB = new Grid(Rows, Columns);
         }
 
         public void ChangeNeighborhood(INeighborhood neighborhood)
@@ -22,39 +50,47 @@ public class Automaton
 
         public void Advance()
         {
-                var update = new Grid(TheGrid.Rows, TheGrid.Columns);
-
-                for (var row = 0; row < TheGrid.Rows; row++)
-                for (var column = 0; column < TheGrid.Columns; column++)
+                var readFrom = _isExploitingBufferA ? _bufferB : _bufferA;
+                var writeTo = _isExploitingBufferA ? _bufferA : _bufferB;
+                
+                for (int row = 0; row < Rows; row++)
+                for (int column = 0; column < Columns; column++)
                 {
-                        var current = TheGrid.ReadState(row, column);
+                        writeTo.SetState(row, column, new State(0));
+                }
+                
+                for (var row = 0; row < Rows; row++)
+                for (var column = 0; column < Columns; column++)
+                {
+                        var current = readFrom.ReadState(row, column);
 
                         var conditions = _ruleSet.GetConditionsForState(current);
 
                         foreach (var condition in conditions)
                         {
-                                var neighbors = _neighborhood.Count(TheGrid, condition.Counted,
+                                var neighbors = _neighborhood.Count(readFrom, condition.Counted,
                                         new Coordinate(row, column), 1);
 
                                 if (condition.IsUnconditional)
-                                        update.SetState(row, column, condition.Resulting);
+                                        writeTo.SetState(row, column, condition.Resulting);
                                 else if (condition.IsWithin(neighbors))
-                                        update.SetState(row, column, condition.Resulting);
+                                        writeTo.SetState(row, column, condition.Resulting);
                         }
                 }
-
-                TheGrid = update;
+                
+                _isExploitingBufferA = !_isExploitingBufferA;
+                
         }
 
         public void Randomize(int lowest, int greatest)
         {
                 var random = new Random();
-                for (var row = 0; row < TheGrid.Rows; row++)
-                for (var column = 0; column < TheGrid.Columns; column++)
+                for (var row = 0; row < Rows; row++)
+                for (var column = 0; column < Columns; column++)
                 {
                         var value = random.Next(lowest, greatest + 1);
-
-                        TheGrid.SetState(row, column, new State(value));
+                        ForceState(row, column, new State(value));
                 }
+                
         }
 }

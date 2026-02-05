@@ -19,14 +19,14 @@ public sealed class VisualGrid : Panel
                 base.OnPaint(e);
                 var graphics = e.Graphics;
 
-                var cellWidth = (float)Width / _automaton.TheGrid.Columns;
-                var cellHeight = (float)Height / _automaton.TheGrid.Rows;
+                var cellWidth = (float)Width / _automaton.Columns;
+                var cellHeight = (float)Height / _automaton.Rows;
 
 
-                for (var row = 0; row < _automaton.TheGrid.Rows; row++)
-                for (var column = 0; column < _automaton.TheGrid.Columns; column++)
+                for (var row = 0; row < _automaton.Rows; row++)
+                for (var column = 0; column < _automaton.Columns; column++)
                 {
-                        var state = _automaton.TheGrid.ReadState(row, column);
+                        var state = _automaton.GetReadyGrid().ReadState(row, column);
                         var color = Settings.GetColorByState(state);
 
                         using Brush brush = new SolidBrush(color);
@@ -38,22 +38,23 @@ public sealed class VisualGrid : Panel
         private void OnMouse(object? sender, MouseEventArgs e)
         {
                 if (sender == null) return;
-                var cellWidth = (float)Width / _automaton.TheGrid.Columns;
-                var cellHeight = (float)Height / _automaton.TheGrid.Rows;
+                var cellWidth = (float)Width / _automaton.Columns;
+                var cellHeight = (float)Height / _automaton.Rows;
 
                 var column = (int)(e.X / cellWidth);
                 var row = (int)(e.Y / cellHeight);
 
-                if (e.Button == MouseButtons.Left && _automaton.TheGrid.IsInside(row, column))
+                if (e.Button == MouseButtons.Left && _automaton.GetExploitedGrid().IsInside(row, column))
                 {
-                        _automaton.TheGrid.SetState(row, column, new State(1));
+                        // not sure
+                        _automaton.ForceState(row, column, new State(1));
                         Invalidate();
                 }
         }
 
         public void ReplaceGrid(Grid update)
         {
-                _automaton.TheGrid = update;
+                // _automaton.TheGrid = update;
                 Invalidate();
         }
 }

@@ -48,7 +48,7 @@ public partial class Form1 : Form
                 // GameOfLife.AddCondition(third);
                 // GameOfLife.AddCondition(fourth);
                 //
-                automaton = new Automaton(neighborhood, 200, 200, BriansBrain);
+                automaton = new Automaton(neighborhood, 200, 200 , BriansBrain);
                 //
                 // automaton.Randomize(0, 1); // Presumed method to randomize grid
                 //
@@ -89,6 +89,7 @@ public partial class Form1 : Form
         private void Timer_Tick(object sender, EventArgs e)
         {
                 automaton.Advance();
-                visualGrid.ReplaceGrid(automaton.TheGrid);
+                visualGrid.Invalidate();
+                // visualGrid.ReplaceGrid(automaton.TheGrid);
         }
 }
