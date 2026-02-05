@@ -5,7 +5,7 @@ public struct Condition : IEquatable<Condition>
         public State Starting { get; init; }
         public State Counted { get; init; }
         public State Resulting { get; init; }
-        
+
         public int Min { get; set; }
         public int Max { get; set; }
 
@@ -15,7 +15,7 @@ public struct Condition : IEquatable<Condition>
         {
                 return n >= Min && n <= Max;
         }
-        
+
         public Condition(State starting, State counted, State resulting, int min, int max, bool isUnconditional = false)
         {
                 Starting = starting;
@@ -38,7 +38,9 @@ public struct Condition : IEquatable<Condition>
 
         public bool Equals(Condition other)
         {
-                return Starting.Equals(other.Starting) && Counted.Equals(other.Counted) && Resulting.Equals(other.Resulting) && Min == other.Min && Max == other.Max && IsUnconditional == other.IsUnconditional;
+                return Starting.Equals(other.Starting) && Counted.Equals(other.Counted) &&
+                       Resulting.Equals(other.Resulting) && Min == other.Min && Max == other.Max &&
+                       IsUnconditional == other.IsUnconditional;
         }
 
         public override bool Equals(object? obj)

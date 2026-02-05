@@ -3,8 +3,16 @@
 public struct State : IEquatable<State>
 {
         public int Value { get; set; }
-        public State(int value) => Value = value;
-        public State() => Value = 0;
+
+        public State(int value)
+        {
+                Value = value;
+        }
+
+        public State()
+        {
+                Value = 0;
+        }
 
         public bool Equals(State other)
         {

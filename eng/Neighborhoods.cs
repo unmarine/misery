@@ -2,13 +2,12 @@
 
 public class Moore : INeighborhood
 {
-
         public int Count(Grid grid, State state, Coordinate coordinate, int radius = 1)
         {
-                int count = 0;
+                var count = 0;
 
-                for (int row = coordinate.Row - radius; row <= coordinate.Row + radius; row++)
-                for (int column = coordinate.Column - radius; column <= coordinate.Column + radius; column++)
+                for (var row = coordinate.Row - radius; row <= coordinate.Row + radius; row++)
+                for (var column = coordinate.Column - radius; column <= coordinate.Column + radius; column++)
                 {
                         if (
                                 !grid.IsInside(new Coordinate(row, column))
@@ -29,9 +28,9 @@ public class Elementary : INeighborhood
 {
         public int Count(Grid grid, State state, Coordinate coordinate, int radius)
         {
-                State left = grid.ReadState(coordinate.Row, coordinate.Column - 1);
-                State middle = grid.ReadState(coordinate);
-                State right = grid.ReadState(coordinate.Row, coordinate.Column + 1);
+                var left = grid.ReadState(coordinate.Row, coordinate.Column - 1);
+                var middle = grid.ReadState(coordinate);
+                var right = grid.ReadState(coordinate.Row, coordinate.Column + 1);
 
                 return (left.Value << 2) | (middle.Value << 1) | right.Value;
         }
@@ -46,9 +45,7 @@ public class VonNeumann : INeighborhood
 {
         public int Count(Grid grid, State state, Coordinate coordinate, int radius)
         {
-                int count = 0;
-
-
+                var count = 0;
 
 
                 return count;

@@ -2,66 +2,58 @@
 
 namespace misery.Components;
 
-public class VisualGrid: Panel
+public sealed class VisualGrid : Panel
 {
-        Grid grid;
-        
+        private Grid _grid;
+
         public VisualGrid(Grid initial)
         {
-                grid = initial;
+                _grid = initial;
                 DoubleBuffered = true;
-                this.MouseMove += OnMouse;
-                this.MouseClick += OnMouse;
+                MouseMove += OnMouse;
+                MouseClick += OnMouse;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
                 base.OnPaint(e);
-                Graphics graphics = e.Graphics;
+                var graphics = e.Graphics;
 
-                float cellWidth = (float)Width / grid.Columns;
-                float cellHeight = (float)Height / grid.Rows;
-                
-                
-                for (int row = 0; row < grid.Rows; row++)
+                var cellWidth = (float)Width / _grid.Columns;
+                var cellHeight = (float)Height / _grid.Rows;
+
+
+                for (var row = 0; row < _grid.Rows; row++)
+                for (var column = 0; column < _grid.Columns; column++)
                 {
-                        for (int column = 0; column < grid.Columns; column++)
-                        {
-                                State state = grid.ReadState(row, column);
-                                Color color = Settings.GetColorByState(state);
+                        var state = _grid.ReadState(row, column);
+                        var color = Settings.GetColorByState(state);
 
-                                using Brush brush = new SolidBrush(color);
-                                graphics.FillRectangle(brush, column * cellWidth, row * cellHeight, cellWidth, cellHeight);
-                        }
+                        using Brush brush = new SolidBrush(color);
+                        graphics.FillRectangle(brush, column * cellWidth, row * cellHeight, cellWidth, cellHeight);
                 }
         }
 
 
-    private void OnMouse(object sender, MouseEventArgs e)
-    {
-        float cellWidth = (float)Width / grid.Columns;
-        float cellHeight = (float)Height / grid.Rows;
-
-        int column = (int)(e.X / cellWidth);
-        int row = (int)(e.Y / cellHeight);
-        
-        
-
-        if (e.Button == MouseButtons.Left && grid.IsInside(row, column))
+        private void OnMouse(object? sender, MouseEventArgs e)
         {
-            State currentState = grid.ReadState(row, column);
+                if (sender == null) return;
+                var cellWidth = (float)Width / _grid.Columns;
+                var cellHeight = (float)Height / _grid.Rows;
 
-            grid.SetState(row, column, new State(1)); 
-            Invalidate();
+                var column = (int)(e.X / cellWidth);
+                var row = (int)(e.Y / cellHeight);
+
+                if (e.Button == MouseButtons.Left && _grid.IsInside(row, column))
+                {
+                        _grid.SetState(row, column, new State(1));
+                        Invalidate();
+                }
         }
-    }
 
-    public void ReplaceGrid(Grid update)
+        public void ReplaceGrid(Grid update)
         {
-            if (update != null)
-            {
-                grid = update;
+                _grid = update;
                 Invalidate();
-            }
         }
 }
