@@ -9,6 +9,7 @@ namespace misery.utils
     public class WindowManager
     {
         private Form _form;
+        
         public WindowManager(Form form)
         {
             _form = form;
@@ -17,13 +18,36 @@ namespace misery.utils
 
     class Space
     {
-        Tile[,] tile;
+        Tile[,] tiles;
+        int _divisionsVertical, _divisionsHorizontal;
+        int _height, _width;
 
-        public Space(int height, int width, int divisions)
+
+        int _divisionHeight, _divisionWidth;
+
+        public Space(int height, int width, int divisionsVertical, int divisionsHorizontal)
         {
+            _height = height;
+            _width = width;
 
+            _divisionsVertical = divisionsVertical;
+            _divisionsHorizontal = divisionsHorizontal;
 
+            _divisionHeight = height / divisionsVertical;
+            _divisionWidth = width / divisionsHorizontal;
 
+            tiles = new Tile[divisionsVertical, divisionsHorizontal];
+
+            for (int row = 0; row < _divisionsVertical; row++)
+            {
+                for (int column = 0; column < _divisionsHorizontal; column++)
+                {
+                    int top = row * _divisionHeight;
+                    int left = column * _divisionWidth;
+
+                    Tile tile = new Tile(top, left, _divisionHeight, _divisionsVertical);
+                }
+            }
 
         }
 
@@ -48,7 +72,7 @@ namespace misery.utils
         public int Top, Left; // upper left corner
         public int Width, Height;
 
-        public Tile(int top, int left, int width, int height)
+        public Tile(int top, int left, int height, int width)
         {
             Top = top;
             Left = left;
