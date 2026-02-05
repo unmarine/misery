@@ -6,10 +6,8 @@ public class VisualGrid: Panel
 {
         Grid grid;
         
-        public VisualGrid(Grid initial, int height, int width)
+        public VisualGrid(Grid initial)
         {
-                Height = height;
-                Width = width;
                 grid = initial;
                 DoubleBuffered = true;
                 this.MouseMove += OnMouse;

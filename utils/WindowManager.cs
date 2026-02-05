@@ -15,7 +15,7 @@ namespace misery.utils
         public WindowManager(Form form, int divisionsVertical, int divisionsHorizontal)
         {
             _form = form;
-            _space = new Space(form.Height, form.Width, divisionsVertical, divisionsHorizontal);
+            _space = new Space(form.ClientSize.Height, form.ClientSize.Width, divisionsVertical, divisionsHorizontal);
         }
 
         public void PlaceControl(Control control, int firstRow, int firstColumn, int secondRow, int secondColumn)
