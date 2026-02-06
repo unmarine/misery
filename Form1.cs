@@ -72,6 +72,8 @@ public partial class Form1 : Form
                 ListBox dgv = new ListBox();
 
                 ColorPairsController cpc = new ColorPairsController(stateForColor, buttonForColor, submitButton, dgv);
+
+                ClearButton clb = new ClearButton(automaton);
                 
                 wm = new WindowManager(this, 100, 50);
                 wm.PlaceControl(visualGrid, 0, 0, 55, 35);
@@ -84,13 +86,14 @@ public partial class Form1 : Form
         wm.PlaceControl(buttonForColor, 18, 37, 20, 39);
         wm.PlaceControl(submitButton, 18, 39,20, 41 );
         wm.PlaceControl(dgv, 20, 35, 55, 41);
+        wm.PlaceControl(clb, 4, 35, 6, 37);
     }
 
         protected override void OnPaint(PaintEventArgs e)
         {
                 base.OnPaint(e);
 
-                //wm.Debug(e.Graphics);
+                wm.Debug(e.Graphics);
         }
 
         private void Timer_Tick(object sender, EventArgs e)

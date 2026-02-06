@@ -61,7 +61,7 @@ public class Automaton
 
                 Parallel.For(0, Rows, row =>
                 {
-                        for (var column = 0; column < Columns; column++)
+                        for (int column = 0; column < Columns; column++)
                         {
                                 var current = readFrom.ReadState(row, column);
 
@@ -84,11 +84,21 @@ public class Automaton
                 
         }
 
+        public void Clear()
+        {
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int column = 0; column < Columns; column++) {
+                  ForceState(row, column, new State(0));
+                }
+            }
+        }
+
         public void Randomize(int lowest, int greatest)
         {
                 var random = new Random();
-                for (var row = 0; row < Rows; row++)
-                for (var column = 0; column < Columns; column++)
+                for (int row = 0; row < Rows; row++)
+                for (int column = 0; column < Columns; column++)
                 {
                         var value = random.Next(lowest, greatest + 1);
                         ForceState(row, column, new State(value));

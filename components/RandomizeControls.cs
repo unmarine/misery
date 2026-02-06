@@ -18,9 +18,6 @@ public class RandomizeControls
                 _lower = lower;
                 _upper = upper;
 
-        _lower.AutoSize = false;
-        _upper.AutoSize = false;
-
                 _button.Click += OnClick;
                 _button.Text = @"Randomize";
         }
