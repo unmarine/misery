@@ -58,25 +58,27 @@ public class Automaton
                 {
                         writeTo.SetState(row, column, new State(0));
                 }
-                
-                for (var row = 0; row < Rows; row++)
-                for (var column = 0; column < Columns; column++)
+
+                Parallel.For(0, Rows, row =>
                 {
-                        var current = readFrom.ReadState(row, column);
-
-                        var conditions = _ruleSet.GetConditionsForState(current);
-
-                        foreach (var condition in conditions)
+                        for (var column = 0; column < Columns; column++)
                         {
-                                var neighbors = _neighborhood.Count(readFrom, condition.Counted,
-                                        new Coordinate(row, column), 1);
+                                var current = readFrom.ReadState(row, column);
 
-                                if (condition.IsUnconditional)
-                                        writeTo.SetState(row, column, condition.Resulting);
-                                else if (condition.IsWithin(neighbors))
-                                        writeTo.SetState(row, column, condition.Resulting);
+                                var conditions = _ruleSet.GetConditionsForState(current);
+
+                                foreach (var condition in conditions)
+                                {
+                                        var neighbors = _neighborhood.Count(readFrom, condition.Counted,
+                                                new Coordinate(row, column), 1);
+
+                                        if (condition.IsUnconditional)
+                                                writeTo.SetState(row, column, condition.Resulting);
+                                        else if (condition.IsWithin(neighbors))
+                                                writeTo.SetState(row, column, condition.Resulting);
+                                }
                         }
-                }
+                });
                 
                 _isExploitingBufferA = !_isExploitingBufferA;
                 
