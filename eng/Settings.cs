@@ -1,7 +1,13 @@
-﻿namespace misery.Eng;
+﻿using misery.Components;
+
+namespace misery.Eng;
 
 public static class Settings
 {
+        public static VisualGrid DisplayedGrid;
+        public static System.Windows.Forms.Timer DisplayedTimer;
+
+
         public static readonly Dictionary<int, Color> ColorByStateValue = new();
 
 

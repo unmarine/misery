@@ -12,23 +12,20 @@ public class ColorPairsController
     NumericUpDown statePick;
     Button colorPick;
     Button submitButton;
-    DataGridView showPairs;
+    ListBox showPairs;
     Color pickedColor = Color.White;
 
-    public ColorPairsController(NumericUpDown s, Button b, Button sbm, DataGridView p)
+    public ColorPairsController(NumericUpDown s, Button b, Button sbm, ListBox p)
     {
         statePick = s;
         colorPick = b;
         showPairs = p;
 
-        showPairs.Columns.Add("State", "State");
-        showPairs.Columns.Add("Color", "Color");
-
         submitButton = sbm;
         submitButton.Text = "Add";
         submitButton.Click += Submit;
 
-        p.ReadOnly = true;
+        p.IntegralHeight = false;
 
         colorPick.Text = "Color";
         colorPick.Click += ColorPick;
@@ -48,11 +45,11 @@ public class ColorPairsController
 
     private void ReloadDisplay()
     {
-        showPairs.Rows.Clear();
+        showPairs.Items.Clear();
 
         foreach (var pair in Settings.ColorByStateValue)
         {
-            showPairs.Rows.Add(pair.Key, pair.Value.Name);
+            showPairs.Items.Add(pair.Key + " " + pair.Value.Name);
         }
     }
     
@@ -61,5 +58,6 @@ public class ColorPairsController
         if (sender == null) return;
         Settings.SetColorForState((int)statePick.Value, pickedColor);
         ReloadDisplay();
+        Settings.DisplayedGrid.Invalidate();
     }
 }

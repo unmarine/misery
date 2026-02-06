@@ -10,7 +10,6 @@ public class RandomizeControls
         private readonly Button _button;
         private readonly NumericUpDown _lower;
         private readonly NumericUpDown _upper;
-        private readonly VisualGrid _visualGrid;
         
         public RandomizeControls(Automaton automaton, Button button, NumericUpDown lower, NumericUpDown upper, VisualGrid vg)
         {
@@ -18,8 +17,10 @@ public class RandomizeControls
                 _button = button;
                 _lower = lower;
                 _upper = upper;
-                _visualGrid = vg;
-                
+
+        _lower.AutoSize = false;
+        _upper.AutoSize = false;
+
                 _button.Click += OnClick;
                 _button.Text = @"Randomize";
         }
@@ -27,6 +28,6 @@ public class RandomizeControls
         private void OnClick(Object? sender, EventArgs e)
         {
                 _automaton.Randomize((int)_lower.Value, (int)_upper.Value);
-                _visualGrid.Invalidate();
+                Settings.DisplayedGrid.Invalidate();    
         }
 }

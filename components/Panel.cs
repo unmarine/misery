@@ -72,13 +72,13 @@ public sealed class VisualGrid : Panel
                 {
                         // not sure
                         _automaton.ForceState(row, column, new State(1));
+                        if (!Settings.DisplayedTimer.Enabled) 
                         Invalidate();
                 }
         }
 
         public void ReplaceGrid(Grid update)
         {
-                // _automaton.TheGrid = update;
                 Invalidate();
         }
 }

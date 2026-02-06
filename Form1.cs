@@ -54,8 +54,11 @@ public partial class Form1 : Form
                 timer.Tick += Timer_Tick; // Attach tick event
                 var b = new RunPauseButton(timer);
 
+                Settings.DisplayedTimer = timer;
                 DoubleBuffered = true;
                 visualGrid = new VisualGrid(automaton);
+
+                Settings.DisplayedGrid = visualGrid;
 
                 Button randomization = new Button();
                 NumericUpDown lower = new NumericUpDown();
@@ -66,7 +69,7 @@ public partial class Form1 : Form
                 NumericUpDown stateForColor = new NumericUpDown();
                 Button buttonForColor = new Button();
                 Button submitButton = new Button();
-                DataGridView dgv = new DataGridView();
+                ListBox dgv = new ListBox();
 
                 ColorPairsController cpc = new ColorPairsController(stateForColor, buttonForColor, submitButton, dgv);
                 
@@ -80,7 +83,7 @@ public partial class Form1 : Form
         wm.PlaceControl(stateForColor, 18, 35, 20, 37);
         wm.PlaceControl(buttonForColor, 18, 37, 20, 39);
         wm.PlaceControl(submitButton, 18, 39,20, 41 );
-        wm.PlaceControl(dgv, 20, 35, 55, 48);
+        wm.PlaceControl(dgv, 20, 35, 55, 41);
     }
 
         protected override void OnPaint(PaintEventArgs e)

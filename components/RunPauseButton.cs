@@ -1,28 +1,25 @@
-﻿namespace misery.components;
+﻿using misery.Eng;
+
+namespace misery.components;
 
 public sealed class RunPauseButton : Button
 {
-        private readonly System.Windows.Forms.Timer _timer;
-        private bool _isOnPause = true;
-
         public RunPauseButton(System.Windows.Forms.Timer timer)
         {
-                _timer = timer;
                 Text = @"Run";
         }
 
         protected override void OnClick(EventArgs e)
         {
-                _isOnPause = !_isOnPause;
-                if (_isOnPause)
+                if (Settings.DisplayedTimer.Enabled)
                 {
                         Text = @"Run";
-                        _timer.Stop();
+                        Settings.DisplayedTimer.Stop();
                 }
                 else
                 {
                         Text = @"Pause";
-                        _timer.Start();
+                        Settings.DisplayedTimer.Start();
                 }
         }
 }
