@@ -6,7 +6,6 @@ using misery.utils;
 
 namespace misery;
 
-// AI GENERATED FOR DEBUG
 public partial class Form1 : Form
 {
         private Automaton automaton;
@@ -49,17 +48,11 @@ public partial class Form1 : Form
                 // GameOfLife.AddCondition(fourth);
                 //
                 automaton = new Automaton(neighborhood, 600, 600 , BriansBrain);
-                //
-                // automaton.Randomize(0, 1); // Presumed method to randomize grid
-                //
-                //
-                timer = new System.Windows.Forms.Timer();
+                
+        timer = new System.Windows.Forms.Timer();
                 timer.Interval = 1; // Set refresh rate (500 ms
                 timer.Tick += Timer_Tick; // Attach tick event
                 var b = new RunPauseButton(timer);
-                //
-                // this.Controls.Add(b);
-                // this.Controls.Add(visualGrid);
 
                 DoubleBuffered = true;
                 visualGrid = new VisualGrid(automaton);
@@ -69,7 +62,13 @@ public partial class Form1 : Form
                 NumericUpDown greater = new NumericUpDown();
 
                 RandomizeControls rdc = new RandomizeControls(automaton, randomization, lower, greater, visualGrid);
-                
+
+                NumericUpDown stateForColor = new NumericUpDown();
+                Button buttonForColor = new Button();
+                Button submitButton = new Button();
+                DataGridView dgv = new DataGridView();
+
+                ColorPairsController cpc = new ColorPairsController(stateForColor, buttonForColor, submitButton, dgv);
                 
                 wm = new WindowManager(this, 100, 50);
                 wm.PlaceControl(visualGrid, 0, 0, 55, 35);
@@ -77,7 +76,12 @@ public partial class Form1 : Form
                 wm.PlaceControl(randomization, 2, 35, 4, 37);
                 wm.PlaceControl(lower, 2, 37, 4, 39);
                 wm.PlaceControl(greater, 2, 39, 4, 41);
-        }
+
+        wm.PlaceControl(stateForColor, 18, 35, 20, 37);
+        wm.PlaceControl(buttonForColor, 18, 37, 20, 39);
+        wm.PlaceControl(submitButton, 18, 39,20, 41 );
+        wm.PlaceControl(dgv, 20, 35, 55, 41);
+    }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -90,6 +94,5 @@ public partial class Form1 : Form
         {
                 automaton.Advance();
                 visualGrid.Invalidate();
-                // visualGrid.ReplaceGrid(automaton.TheGrid);
         }
 }

@@ -2,7 +2,7 @@
 
 public static class Settings
 {
-        private static readonly Dictionary<int, Color> ColorByStateValue = new();
+        public static readonly Dictionary<int, Color> ColorByStateValue = new();
 
 
         public static void SetColorForState(int state, Color color)
