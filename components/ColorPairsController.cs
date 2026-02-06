@@ -28,10 +28,8 @@ public class ColorPairsController
         submitButton.Text = "Add";
         submitButton.Click += Submit;
 
-        p.AllowUserToAddRows = false;
-        p.AllowUserToDeleteRows = false;
-        p.AllowDrop = false;
         p.ReadOnly = true;
+
         colorPick.Text = "Color";
         colorPick.Click += ColorPick;
         ReloadDisplay();
@@ -54,7 +52,7 @@ public class ColorPairsController
 
         foreach (var pair in Settings.ColorByStateValue)
         {
-            showPairs.Rows.Add(pair);
+            showPairs.Rows.Add(pair.Key, pair.Value.Name);
         }
     }
     

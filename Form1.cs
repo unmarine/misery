@@ -47,7 +47,7 @@ public partial class Form1 : Form
                 // GameOfLife.AddCondition(third);
                 // GameOfLife.AddCondition(fourth);
                 //
-                automaton = new Automaton(neighborhood, 600, 600 , BriansBrain);
+                automaton = new Automaton(neighborhood, 400, 400, BriansBrain);
                 
         timer = new System.Windows.Forms.Timer();
                 timer.Interval = 1; // Set refresh rate (500 ms
@@ -80,14 +80,14 @@ public partial class Form1 : Form
         wm.PlaceControl(stateForColor, 18, 35, 20, 37);
         wm.PlaceControl(buttonForColor, 18, 37, 20, 39);
         wm.PlaceControl(submitButton, 18, 39,20, 41 );
-        wm.PlaceControl(dgv, 20, 35, 55, 41);
+        wm.PlaceControl(dgv, 20, 35, 55, 48);
     }
 
         protected override void OnPaint(PaintEventArgs e)
         {
                 base.OnPaint(e);
 
-                wm.Debug(e.Graphics);
+                //wm.Debug(e.Graphics);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
