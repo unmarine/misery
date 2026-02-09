@@ -4,7 +4,7 @@ namespace misery.Eng;
 
 public static class Settings
 {
-        public static VisualGrid DisplayedGrid;
+        public static InteractiveGrid DisplayedGrid;
         public static System.Windows.Forms.Timer DisplayedTimer;
 
 

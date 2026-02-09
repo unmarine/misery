@@ -11,7 +11,7 @@ public class RandomizeControls
         private readonly NumericUpDown _lower;
         private readonly NumericUpDown _upper;
         
-        public RandomizeControls(Automaton automaton, Button button, NumericUpDown lower, NumericUpDown upper, VisualGrid vg)
+        public RandomizeControls(Automaton automaton, Button button, NumericUpDown lower, NumericUpDown upper, InteractiveGrid vg)
         {
                 _automaton = automaton;
                 _button = button;

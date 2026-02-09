@@ -4,14 +4,14 @@ using misery.Eng;
 
 namespace misery.Components;
 
-public sealed class VisualGrid : Panel
+public sealed class InteractiveGrid : Panel
 {
         private Automaton _automaton;
         
         private Bitmap _canvas;
         private byte[] _rgbaValues;
 
-        public VisualGrid(Automaton initial)
+        public InteractiveGrid(Automaton initial)
         {
                 _automaton = initial;
                 DoubleBuffered = true;
