@@ -50,6 +50,6 @@ internal static class Program
         var automaton = new Automaton(neighborhood, 400, 400, BriansBrain);
 
 
-        Application.Run(new Display(automaton));
-        }
+        //Application.Run(new Display(automaton));
+    }
 }

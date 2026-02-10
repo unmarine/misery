@@ -16,5 +16,11 @@
     <Compile Update="windows\Display.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="windows\Overview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="windows\Setup.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

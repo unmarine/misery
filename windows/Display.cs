@@ -29,7 +29,7 @@ public class Display: Form
         DoubleBuffered = true;
 
 
-        _windowManager = new WindowManager(this, 10, 20);
+        _windowManager = new WindowManager(this, 40, 40);
 
         _interactiveGrid = new InteractiveGrid(_automaton);
         Settings.DisplayedGrid = _interactiveGrid;
