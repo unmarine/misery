@@ -15,19 +15,29 @@ public class Display: Form
 
     WindowManager _windowManager;
 
+    System.Windows.Forms.Timer _timer;
+
     ClearButton _clearButton;
     ColorPairsController _colorPairsController;
     InteractiveGrid _interactiveGrid;
     RandomizeControls _randomizeControls;
     RunPauseButton _runPauseButton;
 
-    public Display(Automaton _automaton)
+    public Display(Automaton automaton)
     {
-        ClientSize = (Screen.PrimaryScreen.Bounds.Size);
+        _automaton = automaton;
+        ClientSize = Screen.PrimaryScreen!.Bounds.Size;
         Text = "Viewing Simulation";
         Settings.SetDefaultColorStatePairs();
+        Settings.SetColorForState(2, Color.Yellow);
         DoubleBuffered = true;
 
+        _timer = new System.Windows.Forms.Timer();
+        _timer.Interval = 1;
+        _timer.Tick += OnTick;
+        Settings.DisplayedTimer = _timer;
+
+        _runPauseButton = new RunPauseButton(_timer);
 
         _windowManager = new WindowManager(this, 40, 40);
 
@@ -37,38 +47,32 @@ public class Display: Form
         Button randomizeButton = new Button();
         NumericUpDown from = new NumericUpDown();
         NumericUpDown to = new NumericUpDown();
-        RandomizeControls randomizeControls = new RandomizeControls(_automaton, randomizeButton, from, to, _interactiveGrid);
+        _randomizeControls = new RandomizeControls(_automaton, randomizeButton, from, to, _interactiveGrid);
     
 
         NumericUpDown stateForColor = new NumericUpDown();
         Button colorSelectionButton = new Button();
         Button addColorButton = new Button();
         ListBox colorPairsList = new ListBox();
-        ColorPairsController colorPairsController = new ColorPairsController(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
+        _colorPairsController = new ColorPairsController(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
 
         ClearButton clearButton = new ClearButton(_automaton);
+
+        _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 25);
+
+        _windowManager.PlaceControl(randomizeButton, 0, 25, 1, 27);
+        _windowManager.PlaceControl(from, 0, 27, 1, 28);
+        _windowManager.PlaceControl(to, 0, 28, 1, 29);
+        _windowManager.PlaceControl(_runPauseButton, 1, 25, 2, 27);
     }
 
+    private void OnTick(object? sender, EventArgs e)
+    {
+        _automaton.Advance();
+        _interactiveGrid.Invalidate();
+    }
     protected override void OnPaint(PaintEventArgs e)
     {
-        base.OnPaint(e);
-
         _windowManager.Debug(e.Graphics);
     }
 }
-
-
-
-
-//wm = new WindowManager(this, 100, 50);
-//wm.PlaceControl(visualGrid, 0, 0, 55, 35);
-//                wm.PlaceControl(b, 0, 35, 2, 37);
-//                wm.PlaceControl(randomization, 2, 35, 4, 37);
-//                wm.PlaceControl(lower, 2, 37, 4, 39);
-//                wm.PlaceControl(greater, 2, 39, 4, 41);
-
-//        wm.PlaceControl(stateForColor, 18, 35, 20, 37);
-//        wm.PlaceControl(buttonForColor, 18, 37, 20, 39);
-//        wm.PlaceControl(submitButton, 18, 39,20, 41 );
-//        wm.PlaceControl(dgv, 20, 35, 55, 41);
-//        wm.PlaceControl(clb, 4, 35, 6, 37);

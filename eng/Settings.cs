@@ -23,8 +23,8 @@ public static class Settings
 
         public static void SetDefaultColorStatePairs()
         {
-                ColorByStateValue.Add(0, Color.Black);
-                ColorByStateValue.Add(1, Color.White);
+                ColorByStateValue.TryAdd(0, Color.Black);
+                ColorByStateValue.TryAdd(1, Color.White);
         }
 
         public static Color GetColorByState(int value)
