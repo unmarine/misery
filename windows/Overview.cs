@@ -47,11 +47,14 @@ public class Overview: Form
 
         Display display = new Display(_simulationManager.Simulations[simulationIndex]);
         display.Show();
-        this.Close();
+        Hide();
+        display.FormClosed += (s, e) => Close();
+
+
     }
     protected override void OnPaint(PaintEventArgs e)
     {
-        //_windowManager.Debug(e.Graphics);
+        _windowManager.Debug(e.Graphics);
     }
 }
 
