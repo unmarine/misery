@@ -98,12 +98,16 @@ internal class Space
 
         public int GetHeightBetween(Tile a, Tile b)
         {
-                return Math.Abs(a.Top + a.Height - (b.Top + b.Height));
+            float lowestTop = GetLowestTop(a, b);
+            float highestBottom = Math.Max(a.Top + a.Height, b.Top + b.Height);
+            return (int)(highestBottom - lowestTop);
         }
 
         public int GetWidthBetween(Tile a, Tile b)
         {
-                return Math.Abs(a.Left - b.Left);
+            float lowestLeft = GetLowestLeft(a, b);
+            float highestRight = Math.Max(a.Left + a.Width, b.Left + b.Width);
+            return (int)(highestRight - lowestLeft);
         }
 
         public int GetLowestTop(Tile a, Tile b)

@@ -31,8 +31,8 @@ public class Overview: Form
             _listOfSimulations.Items.Add(i);
         }
 
-        _windowManager.PlaceControl(_listOfSimulations, 0, 0, 2, 8);
-        _windowManager.PlaceControl(_selectSimulationButton, 0, 8, 1, 9);
+        _windowManager.PlaceControl(_listOfSimulations, 0, 0, 2, 6);
+        _windowManager.PlaceControl(_selectSimulationButton, 0, 7, 0, 9);
     }
 
     private void OpenSimulation(object? sender, EventArgs e)
@@ -45,7 +45,7 @@ public class Overview: Form
         int simulationIndex = (int)selected;
         if (simulationIndex < 0 || simulationIndex > _simulationManager.Simulations.Count) return;
 
-        Display display = new Display(_simulationManager.Simulations[simulationIndex]);
+        Display display = new Display(_simulationManager.Simulations[simulationIndex], _simulationManager);
         display.Show();
         Hide();
         display.FormClosed += (s, e) => Close();

@@ -72,8 +72,7 @@ public sealed class InteractiveGrid : Panel
                 {
                         // not sure
                         _automaton.ForceState(row, column, new State(1));
-                        if (!Settings.DisplayedTimer.Enabled) 
-                        Invalidate();
+                        if (!Settings.DisplayedTimer.Enabled) Invalidate();
                 }
         }
 

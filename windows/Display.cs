@@ -23,7 +23,7 @@ public class Display: Form
     RandomizeControls _randomizeControls;
     RunPauseButton _runPauseButton;
 
-    public Display(Automaton automaton)
+    public Display(Automaton automaton, SimulationManager simulation)
     {
         _automaton = automaton;
         ClientSize = Screen.PrimaryScreen!.Bounds.Size;
@@ -58,12 +58,15 @@ public class Display: Form
 
         ClearButton clearButton = new ClearButton(_automaton);
 
-        _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 25);
+        ChangeFormButton returnToOverview = new ChangeFormButton(this, new Overview(simulation));
 
-        _windowManager.PlaceControl(randomizeButton, 0, 25, 1, 27);
-        _windowManager.PlaceControl(from, 0, 27, 1, 28);
-        _windowManager.PlaceControl(to, 0, 28, 1, 29);
-        _windowManager.PlaceControl(_runPauseButton, 1, 25, 2, 27);
+        _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
+
+        _windowManager.PlaceControl(randomizeButton, 0, 24, 1, 25);
+        _windowManager.PlaceControl(from, 2, 24, 2, 24);
+        _windowManager.PlaceControl(to, 2, 25, 2, 25);
+        _windowManager.PlaceControl(_runPauseButton, 0, 26, 1, 27);
+        _windowManager.PlaceControl(returnToOverview, 0, 38, 1, 39);
     }
 
     private void OnTick(object? sender, EventArgs e)
