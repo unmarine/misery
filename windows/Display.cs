@@ -67,6 +67,12 @@ public class Display: Form
         _windowManager.PlaceControl(to, 2, 25, 2, 25);
         _windowManager.PlaceControl(_runPauseButton, 0, 26, 1, 27);
         _windowManager.PlaceControl(returnToOverview, 0, 38, 1, 39);
+
+        _windowManager.PlaceControl(stateForColor, 22, 24, 36, 28);
+        _windowManager.PlaceControl(colorSelectionButton, 22, 29, 22, 29);
+        _windowManager.PlaceControl(addColorButton, 22, 30, 22, 30);
+        _windowManager.PlaceControl(colorPairsList, 23, 24, 36, 30);
+
     }
 
     private void OnTick(object? sender, EventArgs e)
@@ -76,6 +82,6 @@ public class Display: Form
     }
     protected override void OnPaint(PaintEventArgs e)
     {
-        _windowManager.Debug(e.Graphics);
+        //_windowManager.Debug(e.Graphics);
     }
 }
