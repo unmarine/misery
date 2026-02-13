@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using misery.Eng;
+﻿using misery.Eng;
 
 namespace misery.components;
 
 
-internal class ClearButton: Button
+internal class ClearButton : Button
 {
     private Automaton _automaton;
 

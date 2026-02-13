@@ -1,8 +1,7 @@
-﻿using misery.Eng;
-using misery.utils;
+﻿using misery.utils;
 
 namespace misery.windows;
-public class Overview: Form
+public class Overview : Form
 {
     WindowManager _windowManager;
     SimulationManager _simulationManager;
@@ -12,7 +11,7 @@ public class Overview: Form
 
     public Overview(SimulationManager simulationManager)
     {
-        ClientSize = new Size(600,1000);
+        ClientSize = new Size(600, 1000);
         Text = "Overview of simulations";
         DoubleBuffered = true;
         _windowManager = new WindowManager(this, 10, 10);

@@ -1,7 +1,7 @@
 ﻿using misery.utils;
 
 namespace misery.windows;
-public class Setup: Form
+public class Setup : Form
 {
     WindowManager _windowManager;
     SimulationManager _simulationManager;

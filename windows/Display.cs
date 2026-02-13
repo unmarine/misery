@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using misery.components;
+﻿using misery.components;
 using misery.Components;
 using misery.Eng;
 using misery.utils;
 
 namespace misery.windows;
-public class Display: Form
+public class Display : Form
 {
     Automaton _automaton;
 
@@ -17,11 +12,7 @@ public class Display: Form
 
     System.Windows.Forms.Timer _timer;
 
-    ClearButton _clearButton;
-    ColorPairsController _colorPairsController;
     InteractiveGrid _interactiveGrid;
-    RandomizeControls _randomizeControls;
-    RunPauseButton _runPauseButton;
 
     public Display(Automaton automaton, SimulationManager simulation)
     {
@@ -37,7 +28,7 @@ public class Display: Form
         _timer.Tick += OnTick;
         Settings.DisplayedTimer = _timer;
 
-        _runPauseButton = new RunPauseButton(_timer);
+        RunPauseButton _runPauseButton = new RunPauseButton(_timer);
 
         _windowManager = new WindowManager(this, 40, 40);
 
@@ -47,14 +38,14 @@ public class Display: Form
         Button randomizeButton = new Button();
         NumericUpDown from = new NumericUpDown();
         NumericUpDown to = new NumericUpDown();
-        _randomizeControls = new RandomizeControls(_automaton, randomizeButton, from, to, _interactiveGrid);
-    
+        _ = new RandomizeControls(_automaton, randomizeButton, from, to, _interactiveGrid);
+
 
         NumericUpDown stateForColor = new NumericUpDown();
         Button colorSelectionButton = new Button();
         Button addColorButton = new Button();
         ListBox colorPairsList = new ListBox();
-        _colorPairsController = new ColorPairsController(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
+        _ = new ColorPairsController(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
 
         ClearButton clearButton = new ClearButton(_automaton);
 
@@ -67,6 +58,8 @@ public class Display: Form
         _windowManager.PlaceControl(to, 2, 25, 2, 25);
         _windowManager.PlaceControl(_runPauseButton, 0, 26, 1, 27);
         _windowManager.PlaceControl(returnToOverview, 0, 38, 1, 39);
+
+        _windowManager.PlaceControl(clearButton, 3, 24, 4, 25);
 
         _windowManager.PlaceControl(stateForColor, 22, 24, 36, 28);
         _windowManager.PlaceControl(colorSelectionButton, 22, 29, 22, 29);
@@ -82,6 +75,6 @@ public class Display: Form
     }
     protected override void OnPaint(PaintEventArgs e)
     {
-        //_windowManager.Debug(e.Graphics);
+        _windowManager.Debug(e.Graphics);
     }
 }

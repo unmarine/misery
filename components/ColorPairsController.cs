@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using misery.Eng;
+﻿using misery.Eng;
 
 namespace misery.components;
 
@@ -52,7 +47,7 @@ public class ColorPairsController
             showPairs.Items.Add(pair.Key + " " + pair.Value.Name);
         }
     }
-    
+
     private void Submit(object? sender, EventArgs e)
     {
         if (sender == null) return;
