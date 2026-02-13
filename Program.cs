@@ -13,14 +13,8 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        //Application.Run(new Form1());
-
-        /* 
-         * Abomination to get rid of later
-         */
 
         Eng.INeighborhood neighborhood = new Moore();
         var dead = new State(0);
@@ -51,7 +45,10 @@ internal static class Program
         var automaton = new Automaton(neighborhood, 400, 400, BriansBrain);
         SimulationManager simulation = new SimulationManager();
         automaton.Randomize(0, 1);
-        simulation.AddSimulation(automaton);
+        //simulation.AddSimulation(automaton);
+        automaton = new Automaton(neighborhood, 400, 400, GameOfLife);
+        automaton.Randomize(0, 1);
+        //simulation.AddSimulation (automaton);
 
         var timer = new System.Windows.Forms.Timer();
         timer.Interval = 1;

@@ -48,4 +48,14 @@ public class RuleSet
     {
         return _conditionsForState[new State(state)];
     }
+
+    public List<Condition> GetConditions()
+    {
+        List<Condition> conditions = new List<Condition>();
+        foreach (var condition in _conditionsForState)
+        {
+            conditions.AddRange(condition.Value);
+        }
+        return conditions;
+    }
 }

@@ -62,4 +62,9 @@ public struct Condition : IEquatable<Condition>
     {
         return !left.Equals(right);
     }
+
+    public override string ToString()
+    {
+        return $"{Starting.Value}  {Counted.Value}  {Resulting.Value}  {Min}  {Max}  {(IsUnconditional ? "Unconditional" : "")}";
+    }
 }

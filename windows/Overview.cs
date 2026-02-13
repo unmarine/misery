@@ -1,4 +1,5 @@
-﻿using misery.utils;
+﻿using misery.components;
+using misery.utils;
 
 namespace misery.windows;
 public class Overview : Form
@@ -30,8 +31,13 @@ public class Overview : Form
             _listOfSimulations.Items.Add(i);
         }
 
+        ChangeFormButton createAutomaton = new ChangeFormButton(this, new Setup(_simulationManager));
+
         _windowManager.PlaceControl(_listOfSimulations, 0, 0, 2, 6);
         _windowManager.PlaceControl(_selectSimulationButton, 0, 7, 0, 9);
+        _windowManager.PlaceControl(createAutomaton, 1, 7, 1, 9);
+    
+
     }
 
     private void OpenSimulation(object? sender, EventArgs e)
