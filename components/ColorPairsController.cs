@@ -17,12 +17,12 @@ public class ColorPairsController
         showPairs = p;
 
         submitButton = sbm;
-        submitButton.Text = "Add";
+        submitButton.Text = @"Add";
         submitButton.Click += Submit;
 
         p.IntegralHeight = false;
 
-        colorPick.Text = "Color";
+        colorPick.Text = @"Color";
         colorPick.Click += ColorPick;
         ReloadDisplay();
     }

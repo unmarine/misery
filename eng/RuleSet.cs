@@ -5,9 +5,14 @@ namespace misery.eng;
 public class RuleSet
 {
     public bool Wrap = true;
-
+    public string Name;
     private readonly Dictionary<State, List<Condition>> _conditionsForState = [];
 
+    public RuleSet(string name)
+    {
+        Name = name;
+    }
+    
     public void AddCondition(Condition condition)
     {
         if (!_conditionsForState.ContainsKey(condition.Starting))
@@ -39,9 +44,10 @@ public class RuleSet
         AddConditionRangedInclusive(new State(starting), new State(counted), new State(resulting), start, end);
     }
 
-    public List<Condition> GetConditionsForState(State state)
+    public List<Condition>? GetConditionsForState(State state)
     {
-        return _conditionsForState[state];
+        _conditionsForState.TryGetValue(state, out var conditions);
+        return conditions;
     }
 
     public List<Condition> GetConditionsForState(int state)
@@ -57,5 +63,10 @@ public class RuleSet
             conditions.AddRange(condition.Value);
         }
         return conditions;
+    }
+
+    public override string ToString()
+    {
+        return Name;
     }
 }

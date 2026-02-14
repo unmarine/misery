@@ -10,7 +10,7 @@ internal class ClearButton : Button
     public ClearButton(Automaton automaton)
     {
         _automaton = automaton;
-        Text = "Clear";
+        Text = @"Clear";
     }
 
     protected override void OnClick(EventArgs e)

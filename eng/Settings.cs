@@ -34,6 +34,7 @@ public static class Settings
 
     public static Color GetColorByState(State state)
     {
-        return ColorByStateValue[state.Value];
+        ColorByStateValue.TryGetValue(state.Value, out var color);
+        return color;
     }
 }

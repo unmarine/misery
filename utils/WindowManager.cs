@@ -3,7 +3,7 @@
 public class WindowManager
 {
     private readonly Form _form;
-    private readonly Space _space; // haha
+    private readonly Space _space;
 
     public WindowManager(Form form, int divisionsVertical, int divisionsHorizontal)
     {

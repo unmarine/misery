@@ -65,8 +65,8 @@ public class Automaton
             {
                 var current = readFrom.ReadState(row, column);
 
-                var conditions = _ruleSet.GetConditionsForState(current);
-
+                List<Condition>? conditions = _ruleSet.GetConditionsForState(current);
+                if (conditions == null) continue;
                 foreach (var condition in conditions)
                 {
                     var neighbors = _neighborhood.Count(readFrom, condition.Counted,
