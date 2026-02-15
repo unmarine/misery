@@ -15,17 +15,7 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        Eng.INeighborhood neighborhood = new Moore();
-
-
-        var automaton = new Automaton(neighborhood, 400, 400, Presets.BriansBrain());
         SimulationManager simulation = new SimulationManager();
-        automaton.Randomize(0, 1);
-        // simulation.AddSimulation(automaton);
-        automaton = new Automaton(neighborhood, 400, 400, Presets.GameOfLife());
-        automaton.Randomize(0, 1);
-        // simulation.AddSimulation (automaton);
-
         var timer = new System.Windows.Forms.Timer();
         timer.Interval = 1;
 

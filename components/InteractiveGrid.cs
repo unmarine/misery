@@ -52,6 +52,15 @@ public sealed class InteractiveGrid : Panel
             }
         }
 
+        foreach (Coordinate c in _automaton.Path)
+        {
+            int index = (c.Row * data.Stride) + (c.Column * 4);
+            _rgbaValues[index] = 0;
+            _rgbaValues[index + 1] = 0xff;
+            _rgbaValues[index + 2] = 0;
+            _rgbaValues[index + 3] = 0xff;
+        }
+
         Marshal.Copy(_rgbaValues, 0, data.Scan0, _rgbaValues.Length);
         _canvas.UnlockBits(data);
     }

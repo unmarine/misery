@@ -1,4 +1,5 @@
 ﻿using misery.eng;
+using misery.utils;
 
 namespace misery.Eng;
 
@@ -7,6 +8,8 @@ public class Automaton
     private RuleSet _ruleSet;
     private INeighborhood _neighborhood;
 
+    public List<Coordinate> Path { get; private set; } = new ();
+    
     public int Columns, Rows;
 
     private bool _isExploitingBufferA = true;
@@ -80,6 +83,8 @@ public class Automaton
             }
         });
 
+        Path = AStarSearch.FindPath(GetReadyGrid(), new Coordinate(0, 0), new Coordinate(50, 50));
+        
         _isExploitingBufferA = !_isExploitingBufferA;
 
     }
