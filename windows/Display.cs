@@ -51,6 +51,21 @@ public class Display : Form
 
         ChangeFormButton returnToOverview = new ChangeFormButton(this, new Overview(simulation));
 
+        Button buttonSetStart = new Button() {Text = @"Set Start"};
+        buttonSetStart.Click += (s, e) =>
+        {
+            _interactiveGrid.CurrentMode = InteractiveGridMode.SetStart;
+        };
+            
+        Button buttonSetEnd = new Button() {Text = @"Set End"};
+        buttonSetEnd.Click += (s, e) =>
+        {
+            _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
+        };
+        
+        _windowManager.PlaceControl(buttonSetStart, 0, 30, 0, 31);
+        _windowManager.PlaceControl(buttonSetEnd, 1, 30, 1, 31);
+        
         _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
 
         _windowManager.PlaceControl(randomizeButton, 0, 24, 1, 25);

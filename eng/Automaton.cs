@@ -12,6 +12,8 @@ public class Automaton
     public Dictionary<State, int> quantityOfStates = new Dictionary<State, int>();
     
     public List<Coordinate> Path { get; private set; } = new ();
+    public Coordinate PathStart { get; set; }
+    public Coordinate PathEnd { get; set; }
     
     public int Columns, Rows;
 
@@ -88,7 +90,11 @@ public class Automaton
             }
         });
 
-        Path = AStarSearch.FindPath(GetReadyGrid(), new Coordinate(0, 0), new Coordinate(50, 50));
+        // Path = AStarSearch.FindPath(GetReadyGrid(), new Coordinate(0, 0), new Coordinate(50, 50));
+        if (GetReadyGrid().IsInside(PathStart) && GetReadyGrid().IsInside(PathEnd))
+        {
+            Path = AStarSearch.FindPath(GetReadyGrid(),  PathStart, PathEnd);
+        }
         
         _isExploitingBufferA = !_isExploitingBufferA;
 

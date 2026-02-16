@@ -1,8 +1,16 @@
 ﻿using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using misery.Eng;
+using System.ComponentModel;
 
 namespace misery.Components;
+
+public enum InteractiveGridMode
+{
+    DrawCells,
+    SetStart,
+    SetEnd
+}
 
 public sealed class InteractiveGrid : Panel
 {
@@ -10,9 +18,17 @@ public sealed class InteractiveGrid : Panel
     private Bitmap _canvas;
     private byte[] _rgbaValues;
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public InteractiveGridMode CurrentMode { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public Coordinate StartPoint { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public Coordinate EndPoint { get; set; }
+    
     public InteractiveGrid(Automaton initial)
     {
         _automaton = initial;
+        CurrentMode = InteractiveGridMode.DrawCells;
         DoubleBuffered = true;
         _canvas = new Bitmap(_automaton.Columns, _automaton.Rows, PixelFormat.Format32bppPArgb);
         _rgbaValues = new byte[_canvas.Width * _canvas.Height * 4];
@@ -67,23 +83,43 @@ public sealed class InteractiveGrid : Panel
 
     private void OnMouse(object? sender, MouseEventArgs e)
     {
-        if (_automaton == null) return;
+        if (e.Button != MouseButtons.Left) return;
 
         var cellWidth = (float)Width / _automaton.Columns;
         var cellHeight = (float)Height / _automaton.Rows;
-
         int column = (int)(e.X / cellWidth);
         int row = (int)(e.Y / cellHeight);
 
-        if (_automaton.GetExploitedGrid().IsInside(row, column))
+
+        if (!_automaton.GetExploitedGrid().IsInside(row, column)) return;
+        Coordinate clickedCoordinate = new Coordinate(row, column);
+        // _automaton.ForceState(row, column, new State(1));
+
+        switch (CurrentMode)
         {
-            if (e.Button == MouseButtons.Left)
+            case InteractiveGridMode.DrawCells:
             {
                 _automaton.ForceState(row, column, new State(1));
-                
-                if (Settings.DisplayedTimer != null && !Settings.DisplayedTimer.Enabled) 
-                    Invalidate();
+                break;
+            }
+            case InteractiveGridMode.SetStart:
+            {
+                StartPoint = clickedCoordinate;
+                _automaton.PathStart = clickedCoordinate;
+                _automaton.ForceState(row, column, new State(0));
+                break;
+            }
+            case InteractiveGridMode.SetEnd:
+            {
+                EndPoint = clickedCoordinate;
+                _automaton.PathEnd = clickedCoordinate;
+                _automaton.ForceState(row, column, new State(0));
+                break;
             }
         }
+        
+        CurrentMode = InteractiveGridMode.DrawCells;
+        
+        if (!Settings.DisplayedTimer.Enabled) Invalidate();
     }
 }
