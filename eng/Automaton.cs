@@ -8,6 +8,9 @@ public class Automaton
     private RuleSet _ruleSet;
     private INeighborhood _neighborhood;
 
+    public int Generation = 0;
+    public Dictionary<State, int> quantityOfStates = new Dictionary<State, int>();
+    
     public List<Coordinate> Path { get; private set; } = new ();
     
     public int Columns, Rows;
@@ -53,6 +56,8 @@ public class Automaton
 
     public void Advance()
     {
+        Generation++;
+        
         var readFrom = _isExploitingBufferA ? _bufferB : _bufferA;
         var writeTo = _isExploitingBufferA ? _bufferA : _bufferB;
 

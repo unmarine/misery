@@ -33,14 +33,4 @@ public static class Presets
         }
 
         public static HashSet<RuleSet> All = new() {GameOfLife(), BriansBrain()};
-        public static RuleSet GetRuleSetByName(string name)
-        {
-                switch (name)
-                {
-                        case "Brian's Brain": return BriansBrain();
-                        case "Game of Life": return GameOfLife();
-                        default: return GameOfLife();
-                }
-        }
-
 }

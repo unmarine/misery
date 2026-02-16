@@ -61,7 +61,7 @@ public class Setup : Form
         
         foreach (var ruleSet in Presets.All)
         {
-            presets.Items.Add(ruleSet.ToString());
+            presets.Items.Add(ruleSet);
         }
 
         _windowManager.PlaceControl(b, 0, 0, 0, 0);
@@ -90,7 +90,7 @@ public class Setup : Form
 
     private void addPreset(object? sender, EventArgs e)
     {
-        RuleSet selected = Presets.GetRuleSetByName((string)presets.SelectedItem);
+        RuleSet selected = presets.SelectedItem as RuleSet;
         if (selected == null) return;
         Automaton automaton = new Automaton(new Moore(), 100, 100, selected);
         _simulationManager.AddSimulation(automaton);
