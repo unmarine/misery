@@ -16,6 +16,5 @@ internal class ClearButton : Button
     protected override void OnClick(EventArgs e)
     {
         _automaton.Clear();
-        Settings.DisplayedGrid.Invalidate();
     }
 }

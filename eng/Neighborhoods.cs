@@ -16,13 +16,8 @@ public class Moore : INeighborhood
             }
 
         return count;
-    }
-
-    public int GreatestCount(int radius)
-    {
-        return (2 * radius + 1) * (2 * radius + 1) - 1;
-    }
-
+    } 
+    
     public override string ToString()
     {
         return "Moore";
@@ -40,11 +35,6 @@ public class Elementary : INeighborhood
         return (left.Value << 2) | (middle.Value << 1) | right.Value;
     }
 
-    public int GreatestCount(int radius)
-    {
-        return 0;
-    }
-    
     public override string ToString()
     {
         return "Elementary";
@@ -61,11 +51,6 @@ public class VonNeumann : INeighborhood
         return count;
     }
 
-    public int GreatestCount(int radius)
-    {
-        return 0;
-    }
-    
     public override string ToString()
     {
         return "VonNeumann";

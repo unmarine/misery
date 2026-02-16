@@ -5,21 +5,25 @@ namespace misery.Eng;
 
 public class Automaton
 {
-    private RuleSet _ruleSet;
+    private readonly RuleSet _ruleSet;
     private INeighborhood _neighborhood;
-
-    public int Generation = 0;
-    public Dictionary<State, int> quantityOfStates = new Dictionary<State, int>();
+    
+    private int _generation;
+    private Dictionary<State, int> _quantityOfStates = new Dictionary<State, int>();
+    
+    public event Action? GridUpdated;
+    public event Action? GridCleared;
+    public event Action<int, Dictionary<State, int>>? GenerationAdvanced;
     
     public List<Coordinate> Path { get; private set; } = new ();
     public Coordinate PathStart { get; set; }
     public Coordinate PathEnd { get; set; }
     
-    public int Columns, Rows;
+    public readonly int Columns, Rows;
 
     private bool _isExploitingBufferA = true;
-    private Grid _bufferA;
-    private Grid _bufferB;
+    private readonly Grid _bufferA;
+    private readonly Grid _bufferB;
 
 
     public Grid GetReadyGrid()
@@ -58,7 +62,7 @@ public class Automaton
 
     public void Advance()
     {
-        Generation++;
+        _generation++;
         
         var readFrom = _isExploitingBufferA ? _bufferB : _bufferA;
         var writeTo = _isExploitingBufferA ? _bufferA : _bufferB;
@@ -90,14 +94,26 @@ public class Automaton
             }
         });
 
-        // Path = AStarSearch.FindPath(GetReadyGrid(), new Coordinate(0, 0), new Coordinate(50, 50));
         if (GetReadyGrid().IsInside(PathStart) && GetReadyGrid().IsInside(PathEnd))
         {
             Path = AStarSearch.FindPath(GetReadyGrid(),  PathStart, PathEnd);
         }
         
+        var counts = new Dictionary<State, int>();
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int column = 0; column < Columns; column++)
+            {
+                State s = writeTo.ReadState(row, column);
+                counts.TryAdd(s, 0);
+                counts[s]++;
+            }
+        }
+        
+        _quantityOfStates = counts;
         _isExploitingBufferA = !_isExploitingBufferA;
-
+        GridUpdated?.Invoke();
+        GenerationAdvanced?.Invoke(_generation, _quantityOfStates);
     }
 
     public void Clear()
@@ -107,8 +123,13 @@ public class Automaton
             for (int column = 0; column < Columns; column++)
             {
                 ForceState(row, column, new State(0));
+                _quantityOfStates.Clear();
             }
         }
+
+        _generation = 0;
+        GridCleared?.Invoke();
+        GridUpdated?.Invoke();
     }
 
     public void Randomize(int lowest, int greatest)
@@ -119,7 +140,10 @@ public class Automaton
             {
                 var value = random.Next(lowest, greatest + 1);
                 ForceState(row, column, new State(value));
+                if (_quantityOfStates.ContainsKey(new State(value))) 
+                    _quantityOfStates[new State(value)]++;
+                else _quantityOfStates.Add(new State(value), 1);
             }
-
+        GridUpdated?.Invoke();
     }
 }

@@ -62,19 +62,23 @@ public class Display : Form
         {
             _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
         };
+
+        PopulationChart pc = new PopulationChart(automaton);
         
+        _windowManager.PlaceControl(pc, 7, 24, 21, 39);
         _windowManager.PlaceControl(buttonSetStart, 0, 30, 0, 31);
         _windowManager.PlaceControl(buttonSetEnd, 1, 30, 1, 31);
         
         _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
 
-        _windowManager.PlaceControl(randomizeButton, 0, 24, 1, 25);
-        _windowManager.PlaceControl(from, 2, 24, 2, 24);
-        _windowManager.PlaceControl(to, 2, 25, 2, 25);
-        _windowManager.PlaceControl(_runPauseButton, 0, 26, 1, 27);
+        _windowManager.PlaceControl(randomizeButton, 0, 26, 0, 27);
+        _windowManager.PlaceControl(from, 1, 26, 1, 26);
+        _windowManager.PlaceControl(to, 1, 27, 1, 27);
+        
+        _windowManager.PlaceControl(_runPauseButton, 0, 24, 1, 25);
         _windowManager.PlaceControl(returnToOverview, 0, 38, 1, 39);
 
-        _windowManager.PlaceControl(clearButton, 3, 24, 4, 25);
+        _windowManager.PlaceControl(clearButton, 0, 28, 1, 29);
 
         _windowManager.PlaceControl(stateForColor, 22, 24, 36, 28);
         _windowManager.PlaceControl(colorSelectionButton, 22, 29, 22, 29);

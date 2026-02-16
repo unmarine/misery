@@ -6,8 +6,8 @@ public struct Condition : IEquatable<Condition>
     public State Counted { get; init; }
     public State Resulting { get; init; }
 
-    public int Min { get; set; }
-    public int Max { get; set; }
+    private int Min { get; set; }
+    private int Max { get; set; }
 
     public bool IsUnconditional { get; set; } = false;
 

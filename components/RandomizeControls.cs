@@ -25,6 +25,5 @@ public class RandomizeControls
     private void OnClick(Object? sender, EventArgs e)
     {
         _automaton.Randomize((int)_lower.Value, (int)_upper.Value);
-        Settings.DisplayedGrid.Invalidate();
     }
 }

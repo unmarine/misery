@@ -32,7 +32,7 @@ public sealed class InteractiveGrid : Panel
         DoubleBuffered = true;
         _canvas = new Bitmap(_automaton.Columns, _automaton.Rows, PixelFormat.Format32bppPArgb);
         _rgbaValues = new byte[_canvas.Width * _canvas.Height * 4];
-
+        _automaton.GridUpdated += Invalidate;
         MouseMove += OnMouse;
         MouseClick += OnMouse;
     }
@@ -93,7 +93,6 @@ public sealed class InteractiveGrid : Panel
 
         if (!_automaton.GetExploitedGrid().IsInside(row, column)) return;
         Coordinate clickedCoordinate = new Coordinate(row, column);
-        // _automaton.ForceState(row, column, new State(1));
 
         switch (CurrentMode)
         {

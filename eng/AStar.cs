@@ -1,19 +1,19 @@
 ﻿using misery.Eng;
 
-namespace misery.utils
+namespace misery.eng
 {
     public class AStarSearch
     {
-        public struct Cell
+        private struct Cell
         {
             public int ParentRow, ParentCol;
-            public double f, g, h;
+            public double F, G, H;
         }
 
         public static List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest)
         {
-            int ROWS = grid.Rows;
-            int COLS = grid.Columns;
+            int rows = grid.Rows;
+            int cols = grid.Columns;
 
             if (!grid.IsInside(src) || !grid.IsInside(dest)) return new List<Coordinate>();
             
@@ -21,27 +21,27 @@ namespace misery.utils
                 return new List<Coordinate>();
 
             if (src.Row == dest.Row && src.Column == dest.Column)
-                return new List<Coordinate> { src };
+                return [src];
 
-            bool[,] closedList = new bool[ROWS, COLS];
-            Cell[,] cellDetails = new Cell[ROWS, COLS];
+            bool[,] closedList = new bool[rows, cols];
+            Cell[,] cellDetails = new Cell[rows, cols];
 
-            for (int i = 0; i < ROWS; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < COLS; j++)
+                for (int j = 0; j < cols; j++)
                 {
-                    cellDetails[i, j].f = double.MaxValue;
-                    cellDetails[i, j].g = double.MaxValue;
-                    cellDetails[i, j].h = double.MaxValue;
+                    cellDetails[i, j].F = double.MaxValue;
+                    cellDetails[i, j].G = double.MaxValue;
+                    cellDetails[i, j].H = double.MaxValue;
                     cellDetails[i, j].ParentRow = -1;
                     cellDetails[i, j].ParentCol = -1;
                 }
             }
 
             int r = src.Row, c = src.Column;
-            cellDetails[r, c].f = 0.0;
-            cellDetails[r, c].g = 0.0;
-            cellDetails[r, c].h = 0.0;
+            cellDetails[r, c].F = 0.0;
+            cellDetails[r, c].G = 0.0;
+            cellDetails[r, c].H = 0.0;
             cellDetails[r, c].ParentRow = r;
             cellDetails[r, c].ParentCol = c;
 
@@ -57,7 +57,7 @@ namespace misery.utils
                 c = current.coord.Column;
                 closedList[r, c] = true;
 
-                (int dR, int dC)[] cardinalMoves = { (-1, 0), (1, 0), (0, -1), (0, 1) };
+                (int dR, int dC)[] cardinalMoves = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
                 foreach (var move in cardinalMoves)
                 {
@@ -75,16 +75,17 @@ namespace misery.utils
 
                         if (!closedList[newR, newC] && grid.ReadState(newR, newC).Value == 0)
                         {
-                            double gNew = cellDetails[r, c].g + 1.0;
+                            double gNew = cellDetails[r, c].G + 1.0;
                             double hNew = CalculateHValue(newR, newC, dest);
                             double fNew = gNew + hNew;
 
-                            if (cellDetails[newR, newC].f == double.MaxValue || cellDetails[newR, newC].f > fNew)
+                            float tolerance = 0.05f;
+                            if (Math.Abs(cellDetails[newR, newC].F - double.MaxValue) < tolerance || cellDetails[newR, newC].F > fNew)
                             {
                                 openList.Add((fNew, new Coordinate(newR, newC)));
-                                cellDetails[newR, newC].f = fNew;
-                                cellDetails[newR, newC].g = gNew;
-                                cellDetails[newR, newC].h = hNew;
+                                cellDetails[newR, newC].F = fNew;
+                                cellDetails[newR, newC].G = gNew;
+                                cellDetails[newR, newC].H = hNew;
                                 cellDetails[newR, newC].ParentRow = r;
                                 cellDetails[newR, newC].ParentCol = c;
                             }

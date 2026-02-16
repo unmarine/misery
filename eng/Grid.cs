@@ -1,49 +1,49 @@
-﻿namespace misery.Eng;
+﻿    namespace misery.Eng;
 
-public class Grid
-{
-    public int Rows { get; }
-    public int Columns { get; }
-
-    private readonly State[,] _grid;
-
-    public Grid(int rows, int columns)
+    public class Grid
     {
-        Rows = rows;
-        Columns = columns;
-        _grid = new State[rows, columns];
-        for (var row = 0; row < rows; row++)
-            for (var column = 0; column < columns; column++)
-                _grid[row, column] = new State(0);
-    }
+        public int Rows { get; }
+        public int Columns { get; }
 
-    public State ReadState(Coordinate coordinate)
-    {
-        return _grid[coordinate.Row, coordinate.Column];
-    }
+        private readonly State[,] _grid;
 
-    public State ReadState(int row, int column)
-    {
-        return _grid[row, column];
-    }
+        public Grid(int rows, int columns)
+        {
+            Rows = rows;
+            Columns = columns;
+            _grid = new State[rows, columns];
+            for (var row = 0; row < rows; row++)
+                for (var column = 0; column < columns; column++)
+                    _grid[row, column] = new State(0);
+        }
 
-    public void SetState(int row, int column, State state)
-    {
-        _grid[row, column] = state;
-    }
+        public State ReadState(Coordinate coordinate)
+        {
+            return _grid[coordinate.Row, coordinate.Column];
+        }
 
-    public void SetState(Coordinate coordinate, State state)
-    {
-        SetState(coordinate.Row, coordinate.Column, state);
-    }
+        public State ReadState(int row, int column)
+        {
+            return _grid[row, column];
+        }
 
-    public bool IsInside(int row, int column)
-    {
-        return row < Rows && column < Columns && column >= 0 && row >= 0;
-    }
+        public void SetState(int row, int column, State state)
+        {
+            _grid[row, column] = state;
+        }
 
-    public bool IsInside(Coordinate coordinate)
-    {
-        return IsInside(coordinate.Row, coordinate.Column);
+        public void SetState(Coordinate coordinate, State state)
+        {
+            SetState(coordinate.Row, coordinate.Column, state);
+        }
+
+        public bool IsInside(int row, int column)
+        {
+            return row < Rows && column < Columns && column >= 0 && row >= 0;
+        }
+
+        public bool IsInside(Coordinate coordinate)
+        {
+            return IsInside(coordinate.Row, coordinate.Column);
+        }
     }
-}

@@ -2,17 +2,11 @@
 
 namespace misery.eng;
 
-public class RuleSet
+public class RuleSet(string name)
 {
     public bool Wrap = true;
-    public string Name;
     private readonly Dictionary<State, List<Condition>> _conditionsForState = [];
 
-    public RuleSet(string name)
-    {
-        Name = name;
-    }
-    
     public void AddCondition(Condition condition)
     {
         if (!_conditionsForState.ContainsKey(condition.Starting))
@@ -31,7 +25,7 @@ public class RuleSet
         _conditionsForState[condition.Starting].Remove(condition);
     }
 
-    public void AddConditionRangedInclusive(State starting, State counted, State resulting, int start,
+    private void AddConditionRangedInclusive(State starting, State counted, State resulting, int start,
             int end)
     {
         var up = Math.Max(start, end);
@@ -67,6 +61,6 @@ public class RuleSet
 
     public override string ToString()
     {
-        return Name;
+        return name;
     }
 }

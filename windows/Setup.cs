@@ -101,7 +101,7 @@ public class Setup : Form
     }
     private void addSimulation(object? sender, EventArgs e)
     {
-        Automaton automaton = new Automaton(new Moore(), 100, 100, _ruleSet);
+        Automaton automaton = new Automaton(new Moore(), 500, 500, _ruleSet);
         _simulationManager.AddSimulation(automaton);
         Hide();
         var o = new Overview(_simulationManager);
