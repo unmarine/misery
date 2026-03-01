@@ -5,14 +5,13 @@ namespace misery.components;
 public class RulesController
 {
 
-    // disgusting abomination.
-    RuleSet ruleSet;
+    RuleSet? ruleSet;
     NumericUpDown starting, counted, resulting, lower, upper;
     CheckBox isUnconditional;
     Button addRuleButton;
     ListBox listOfRules;
 
-    public RulesController(RuleSet ruleSet, NumericUpDown starting, NumericUpDown counted, NumericUpDown resulting, NumericUpDown lower, NumericUpDown upper, CheckBox isUnconditional, Button addRuleButton, ListBox listOfRules)
+    public RulesController(RuleSet? ruleSet, NumericUpDown starting, NumericUpDown counted, NumericUpDown resulting, NumericUpDown lower, NumericUpDown upper, CheckBox isUnconditional, Button addRuleButton, ListBox listOfRules)
     {
         this.ruleSet = ruleSet;
         this.starting = starting;
@@ -51,7 +50,7 @@ public class RulesController
         List<Condition> conditions = ruleSet.GetConditions();
         foreach (Condition condition in conditions)
         {
-            listOfRules.Items.Add(condition.ToString());
+            listOfRules.Items.Add(condition);
         }
     }
 }

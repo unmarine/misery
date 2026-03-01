@@ -4,12 +4,12 @@ using misery.Eng;
 using misery.utils;
 
 namespace misery.windows;
-public class Setup : Form
+public sealed class Setup : Form
 {
     WindowManager _windowManager;
     SimulationManager _simulationManager;
 
-    RuleSet _ruleSet = new RuleSet("Unknown");
+    RuleSet? _ruleSet = new RuleSet("Unknown");
 
     RulesController _rulesController;
     
@@ -18,15 +18,16 @@ public class Setup : Form
     ComboBox presets = new ComboBox();
     Button usePreset = new Button();
     
+    NumericUpDown width, height;
+    
     public Setup(SimulationManager simulationManager)
     {
-        Height = 900; Width = 700;
+        Height = 900; Width = 1000;
         Text = @"Create Custom Automaton";
         _windowManager = new WindowManager(this, 12, 16);
         _simulationManager = simulationManager;
 
-        Label b = new Label();
-        b.Text = @"Starting";
+        Label b = new Label() {Text = @"Starting"};
         NumericUpDown starting = new NumericUpDown();
 
         Label c = new Label();
@@ -63,7 +64,25 @@ public class Setup : Form
         {
             presets.Items.Add(ruleSet);
         }
-
+        
+        Label widthLabel = new Label {Text = @"Width"};
+        width = new NumericUpDown();
+        
+        Label heightLabel = new Label {Text = @"Height"};
+        height = new NumericUpDown();
+        
+        width.Minimum = 1;
+        width.Maximum = 1;
+        width.Maximum = Decimal.MaxValue;
+        height.Maximum = Decimal.MaxValue;
+        width.Value = 300;
+        height.Value = 300;
+        
+        _windowManager.PlaceControl(widthLabel, 0, 7, 0 ,7);
+        _windowManager.PlaceControl(width, 1, 7, 1, 7);
+        _windowManager.PlaceControl(heightLabel, 0, 8, 0, 8);
+        _windowManager.PlaceControl(height, 1, 8, 1, 8);
+        
         _windowManager.PlaceControl(b, 0, 0, 0, 0);
         _windowManager.PlaceControl(starting, 1, 0, 1, 0);
 
@@ -79,9 +98,10 @@ public class Setup : Form
         _windowManager.PlaceControl(f, 0,4,0,4);
         _windowManager.PlaceControl(upper, 1, 4, 1, 4);
 
-        _windowManager.PlaceControl(isUnconditional, 1, 5, 1, 5);
-        _windowManager.PlaceControl(addRuleButton, 1, 6, 1, 7);
-        _windowManager.PlaceControl(rules, 2, 0, 11, 13);
+        _windowManager.PlaceControl(isUnconditional, 0, 5, 0, 5);
+        _windowManager.PlaceControl(addRuleButton, 1, 5, 1, 5);
+        _windowManager.PlaceControl(rules, 2, 0, 11, 5);
+      
         _windowManager.PlaceControl(_addSimulation, 0, 12, 0, 15);
         
         _windowManager.PlaceControl(presets, 1, 12, 1, 12);
@@ -90,9 +110,11 @@ public class Setup : Form
 
     private void addPreset(object? sender, EventArgs e)
     {
-        RuleSet selected = presets.SelectedItem as RuleSet;
+        RuleSet? selected = presets.SelectedItem as RuleSet;
         if (selected == null) return;
-        Automaton automaton = new Automaton(new Moore(), 100, 100, selected);
+        int width = (int)this.width.Value;
+        int height = (int)this.height.Value;
+        Automaton automaton = new Automaton(new Moore(), height, width, selected);
         _simulationManager.AddSimulation(automaton);
         Hide();
         var o = new Overview(_simulationManager);
@@ -101,17 +123,19 @@ public class Setup : Form
     }
     private void addSimulation(object? sender, EventArgs e)
     {
-        Automaton automaton = new Automaton(new Moore(), 500, 500, _ruleSet);
+        int width = (int)this.width.Value;
+        int height = (int)this.height.Value;
+        Automaton automaton = new Automaton(new Moore(), height, width, _ruleSet);
         _simulationManager.AddSimulation(automaton);
         Hide();
         var o = new Overview(_simulationManager);
         o.Show();
-        o.FormClosed += (s, e) => Close();
+        o.FormClosed += (s,_) => Close();
     }
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        _windowManager.Debug(e.Graphics);
+        // _windowManager.Debug(e.Graphics);
     }
 }
 

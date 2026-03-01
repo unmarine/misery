@@ -19,6 +19,7 @@ public class Display : Form
         _automaton = automaton;
         ClientSize = Screen.PrimaryScreen!.Bounds.Size;
         Text = "Viewing Simulation";
+        BackColor = Color.Black;
         Settings.SetDefaultColorStatePairs();
         Settings.SetColorForState(2, Color.Yellow);
         DoubleBuffered = true;
@@ -63,12 +64,15 @@ public class Display : Form
             _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
         };
 
+        PathSelectorButton ptb = new PathSelectorButton(_interactiveGrid);
+
         PopulationChart pc = new PopulationChart(automaton);
         
         _windowManager.PlaceControl(pc, 7, 24, 21, 39);
         _windowManager.PlaceControl(buttonSetStart, 0, 30, 0, 31);
         _windowManager.PlaceControl(buttonSetEnd, 1, 30, 1, 31);
         
+        _windowManager.PlaceControl(ptb, 0, 31, 1, 32);
         _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
 
         _windowManager.PlaceControl(randomizeButton, 0, 26, 0, 27);
@@ -94,6 +98,6 @@ public class Display : Form
     }
     protected override void OnPaint(PaintEventArgs e)
     {
-        _windowManager.Debug(e.Graphics);
+        // _windowManager.Debug(e.Graphics);
     }
 }

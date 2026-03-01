@@ -22,6 +22,12 @@ public class WindowManager
         control.Top = _space.GetLowestTop(a, b);
         control.Width = _space.GetWidthBetween(a, b);
         control.Height = _space.GetHeightBetween(a, b);
+        control.BackColor = Color.White;
+
+        if (control is Button)
+        {
+            (control as Button).FlatStyle = FlatStyle.Flat;
+        }
     }
 
     public void Debug(Graphics g)

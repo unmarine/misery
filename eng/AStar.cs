@@ -38,12 +38,12 @@ namespace misery.eng
                 }
             }
 
-            int r = src.Row, c = src.Column;
-            cellDetails[r, c].F = 0.0;
-            cellDetails[r, c].G = 0.0;
-            cellDetails[r, c].H = 0.0;
-            cellDetails[r, c].ParentRow = r;
-            cellDetails[r, c].ParentCol = c;
+            int row = src.Row, column = src.Column;
+            cellDetails[row, column].F = 0.0;
+            cellDetails[row, column].G = 0.0;
+            cellDetails[row, column].H = 0.0;
+            cellDetails[row, column].ParentRow = row;
+            cellDetails[row, column].ParentCol = column;
 
             var openList = new List<(double f, Coordinate coord)>();
             openList.Add((0.0, src));
@@ -53,29 +53,29 @@ namespace misery.eng
                 var current = openList.OrderBy(t => t.f).First();
                 openList.Remove(current);
 
-                r = current.coord.Row;
-                c = current.coord.Column;
-                closedList[r, c] = true;
+                row = current.coord.Row;
+                column = current.coord.Column;
+                closedList[row, column] = true;
 
                 (int dR, int dC)[] cardinalMoves = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
                 foreach (var move in cardinalMoves)
                 {
-                    int newR = r + move.dR;
-                    int newC = c + move.dC;
+                    int newR = row + move.dR;
+                    int newC = column + move.dC;
 
                     if (grid.IsInside(newR, newC))
                     {
                         if (newR == dest.Row && newC == dest.Column)
                         {
-                            cellDetails[newR, newC].ParentRow = r;
-                            cellDetails[newR, newC].ParentCol = c;
+                            cellDetails[newR, newC].ParentRow = row;
+                            cellDetails[newR, newC].ParentCol = column;
                             return TracePath(cellDetails, dest);
                         }
 
                         if (!closedList[newR, newC] && grid.ReadState(newR, newC).Value == 0)
                         {
-                            double gNew = cellDetails[r, c].G + 1.0;
+                            double gNew = cellDetails[row, column].G + 1.0;
                             double hNew = CalculateHValue(newR, newC, dest);
                             double fNew = gNew + hNew;
 
@@ -86,8 +86,8 @@ namespace misery.eng
                                 cellDetails[newR, newC].F = fNew;
                                 cellDetails[newR, newC].G = gNew;
                                 cellDetails[newR, newC].H = hNew;
-                                cellDetails[newR, newC].ParentRow = r;
-                                cellDetails[newR, newC].ParentCol = c;
+                                cellDetails[newR, newC].ParentRow = row;
+                                cellDetails[newR, newC].ParentCol = column;
                             }
                         }
                     }
@@ -105,18 +105,18 @@ namespace misery.eng
         private static List<Coordinate> TracePath(Cell[,] cellDetails, Coordinate dest)
         {
             Stack<Coordinate> pathStack = new Stack<Coordinate>();
-            int r = dest.Row;
-            int c = dest.Column;
+            int row = dest.Row;
+            int column = dest.Column;
 
-            while (!(cellDetails[r, c].ParentRow == r && cellDetails[r, c].ParentCol == c))
+            while (!(cellDetails[row, column].ParentRow == row && cellDetails[row, column].ParentCol == column))
             {
-                pathStack.Push(new Coordinate(r, c));
-                int tempR = cellDetails[r, c].ParentRow;
-                int tempC = cellDetails[r, c].ParentCol;
-                r = tempR;
-                c = tempC;
+                pathStack.Push(new Coordinate(row, column));
+                int tempR = cellDetails[row, column].ParentRow;
+                int tempC = cellDetails[row, column].ParentCol;
+                row = tempR;
+                column = tempC;
             }
-            pathStack.Push(new Coordinate(r, c));
+            pathStack.Push(new Coordinate(row, column));
 
             return pathStack.ToList();
         }

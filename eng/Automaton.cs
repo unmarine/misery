@@ -5,7 +5,7 @@ namespace misery.Eng;
 
 public class Automaton
 {
-    private readonly RuleSet _ruleSet;
+    private readonly RuleSet? _ruleSet;
     private INeighborhood _neighborhood;
     
     private int _generation;
@@ -45,7 +45,7 @@ public class Automaton
         return _isExploitingBufferA ? _bufferB : _bufferA;
     }
 
-    public Automaton(INeighborhood neighborhood, int height, int width, RuleSet ruleSet)
+    public Automaton(INeighborhood neighborhood, int height, int width, RuleSet? ruleSet)
     {
         _neighborhood = neighborhood;
         _ruleSet = ruleSet;

@@ -68,13 +68,16 @@ public sealed class InteractiveGrid : Panel
             }
         }
 
-        foreach (Coordinate c in _automaton.Path)
+        if (_automaton.Path.Count > 1)
         {
-            int index = (c.Row * data.Stride) + (c.Column * 4);
-            _rgbaValues[index] = 0;
-            _rgbaValues[index + 1] = 0xff;
-            _rgbaValues[index + 2] = 0;
-            _rgbaValues[index + 3] = 0xff;
+            foreach (Coordinate c in _automaton.Path)
+            {
+                int index = (c.Row * data.Stride) + (c.Column * 4);
+                _rgbaValues[index] = 0;
+                _rgbaValues[index + 1] = 0xff;
+                _rgbaValues[index + 2] = 0;
+                _rgbaValues[index + 3] = 0xff;
+            }
         }
 
         Marshal.Copy(_rgbaValues, 0, data.Scan0, _rgbaValues.Length);
@@ -105,14 +108,14 @@ public sealed class InteractiveGrid : Panel
             {
                 StartPoint = clickedCoordinate;
                 _automaton.PathStart = clickedCoordinate;
-                _automaton.ForceState(row, column, new State(0));
+                _automaton.ForceState(row, column, new State());
                 break;
             }
             case InteractiveGridMode.SetEnd:
             {
                 EndPoint = clickedCoordinate;
                 _automaton.PathEnd = clickedCoordinate;
-                _automaton.ForceState(row, column, new State(0));
+                _automaton.ForceState(row, column, new State());
                 break;
             }
         }

@@ -37,13 +37,7 @@
             SetState(coordinate.Row, coordinate.Column, state);
         }
 
-        public bool IsInside(int row, int column)
-        {
-            return row < Rows && column < Columns && column >= 0 && row >= 0;
-        }
-
-        public bool IsInside(Coordinate coordinate)
-        {
-            return IsInside(coordinate.Row, coordinate.Column);
-        }
+        public bool IsInside(int row, int column) => row < Rows && column < Columns && column >= 0 && row >= 0;
+        public bool IsInside(Coordinate coordinate) => IsInside(coordinate.Row, coordinate.Column);
+        
     }

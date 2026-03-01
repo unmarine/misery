@@ -8,14 +8,10 @@ public struct Condition : IEquatable<Condition>
 
     private int Min { get; set; }
     private int Max { get; set; }
-
     public bool IsUnconditional { get; set; } = false;
-
-    public bool IsWithin(int n)
-    {
-        return n >= Min && n <= Max;
-    }
-
+    
+    public bool IsWithin(int n) => n >= Min && n <= Max;
+    
     public Condition(State starting, State counted, State resulting, int min, int max, bool isUnconditional = false)
     {
         Starting = starting;
@@ -42,29 +38,12 @@ public struct Condition : IEquatable<Condition>
                Resulting.Equals(other.Resulting) && Min == other.Min && Max == other.Max &&
                IsUnconditional == other.IsUnconditional;
     }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is Condition other && Equals(other);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Starting, Counted, Resulting, Min, Max, IsUnconditional);
-    }
-
-    public static bool operator ==(Condition left, Condition right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Condition left, Condition right)
-    {
-        return !left.Equals(right);
-    }
-
+    public override bool Equals(object? obj) => obj is Condition other && Equals(other);
+    public override int GetHashCode() => HashCode.Combine(Starting, Counted, Resulting, Min, Max, IsUnconditional);
+    public static bool operator ==(Condition left, Condition right) => left.Equals(right);
+    public static bool operator !=(Condition left, Condition right) => !left.Equals(right);
     public override string ToString()
     {
-        return $"{Starting.Value}  {Counted.Value}  {Resulting.Value}  {Min}  {Max}  {(IsUnconditional ? "Unconditional" : "")}";
+        return $"{Starting.Value} {Counted.Value} {Resulting.Value} {Min} {Max} {(IsUnconditional ? "Unconditional" : "")}";
     }
 }
