@@ -5,8 +5,6 @@ namespace misery.Eng;
 public static class Settings
 {
     public static InteractiveGrid? DisplayedGrid;
-    public static System.Windows.Forms.Timer? DisplayedTimer;
-
 
     public static event Action? ColorsChanged;
     

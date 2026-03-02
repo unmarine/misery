@@ -14,6 +14,9 @@ public class Automaton
     public event Action? GridUpdated;
     public event Action? GridCleared;
     public event Action<int, Dictionary<State, int>>? GenerationAdvanced;
+
+    public System.Windows.Forms.Timer Clock;
+
     
     public List<Coordinate> Path { get; private set; } = new ();
     public Coordinate PathStart { get; set; }

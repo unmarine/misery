@@ -16,8 +16,6 @@ internal static class Program
         ApplicationConfiguration.Initialize();
 
         SimulationManager simulation = new SimulationManager();
-        var timer = new System.Windows.Forms.Timer();
-        timer.Interval = 1;
 
         Application.Run(new Overview(simulation));
     }

@@ -10,8 +10,6 @@ public class Display : Form
 
     WindowManager _windowManager;
 
-    System.Windows.Forms.Timer _timer;
-
     InteractiveGrid _interactiveGrid;
 
     public Display(Automaton automaton, SimulationManager simulation)
@@ -24,12 +22,7 @@ public class Display : Form
         Settings.SetColorForState(2, Color.Yellow);
         DoubleBuffered = true;
 
-        _timer = new System.Windows.Forms.Timer();
-        _timer.Interval = 1;
-        _timer.Tick += OnTick;
-        Settings.DisplayedTimer = _timer;
-
-        RunPauseButton _runPauseButton = new RunPauseButton(_timer);
+        RunPauseButton _runPauseButton = new RunPauseButton(_automaton);
 
         _windowManager = new WindowManager(this, 40, 40);
 
@@ -64,7 +57,6 @@ public class Display : Form
             _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
         };
 
-        PathSelectorButton ptb = new PathSelectorButton(_interactiveGrid);
 
         PopulationChart pc = new PopulationChart(automaton);
         
@@ -72,7 +64,6 @@ public class Display : Form
         _windowManager.PlaceControl(buttonSetStart, 0, 30, 0, 31);
         _windowManager.PlaceControl(buttonSetEnd, 1, 30, 1, 31);
         
-        _windowManager.PlaceControl(ptb, 0, 31, 1, 32);
         _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
 
         _windowManager.PlaceControl(randomizeButton, 0, 26, 0, 27);
@@ -91,13 +82,7 @@ public class Display : Form
 
     }
 
-    private void OnTick(object? sender, EventArgs e)
-    {
-        _automaton.Advance();
-        _interactiveGrid.Invalidate();
-    }
     protected override void OnPaint(PaintEventArgs e)
     {
-        // _windowManager.Debug(e.Graphics);
     }
 }

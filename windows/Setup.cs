@@ -115,6 +115,15 @@ public sealed class Setup : Form
         int width = (int)this.width.Value;
         int height = (int)this.height.Value;
         Automaton automaton = new Automaton(new Moore(), height, width, selected);
+
+        System.Windows.Forms.Timer timer = new();
+        timer.Interval = 1;
+        timer.Tick += (s, e) =>
+        {
+            automaton.Advance();
+        };
+        automaton.Clock = timer;
+
         _simulationManager.AddSimulation(automaton);
         Hide();
         var o = new Overview(_simulationManager);
@@ -125,13 +134,26 @@ public sealed class Setup : Form
     {
         int width = (int)this.width.Value;
         int height = (int)this.height.Value;
+
+
         Automaton automaton = new Automaton(new Moore(), height, width, _ruleSet);
+
+        System.Windows.Forms.Timer timer = new();
+        timer.Interval = 1;
+        timer.Tick += (s, e) =>
+        {
+            automaton.Advance();
+        };
+        automaton.Clock = timer;
+
         _simulationManager.AddSimulation(automaton);
         Hide();
         var o = new Overview(_simulationManager);
         o.Show();
         o.FormClosed += (s,_) => Close();
     }
+
+
 
     protected override void OnPaint(PaintEventArgs e)
     {
