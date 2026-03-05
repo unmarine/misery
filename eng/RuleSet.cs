@@ -9,7 +9,6 @@ public class RuleSet(string name)
 
     public void LifeLike(string rule)
     {
-
         int cursor = 0;
 
         while (cursor < rule.Length)
@@ -17,28 +16,37 @@ public class RuleSet(string name)
             if (rule[cursor] == 'B')
             {
                 cursor++;
-                while (char.IsDigit(rule[cursor]))
+                while (cursor < rule.Length && char.IsDigit(rule[cursor]))
                 {
-                    var number = (int)rule[cursor];
+                    var number = rule[cursor] - '0'; 
                     var c = new Condition(0, 1, 1, number, number);
                     AddCondition(c);
                     cursor++;
                 }
             }
-            if (rule[cursor] == '/') continue;
-            if (rule[cursor] == 'S')
+            else if (rule[cursor] == 'S')
             {
                 cursor++;
-                while (char.IsDigit(rule[cursor]))
+                while (cursor < rule.Length && char.IsDigit(rule[cursor]))
                 {
-                    var number = (int)rule[cursor];
+                    var number = rule[cursor] - '0';
                     var c = new Condition(1, 1, 1, number, number);
                     AddCondition(c);
                     cursor++;
                 }
             }
+            else if (rule[cursor] == '/')
+            {
+                cursor++;
+            }
+            else
+            {
+                cursor++;
+            }
         }
     }
+
+
 
     public void AddCondition(Condition condition)
     {

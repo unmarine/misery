@@ -8,15 +8,8 @@ public static class Presets
         
         public static RuleSet GameOfLife()
         {
-                Condition first = new Condition(1, 1, 0, 0, 1);
-                Condition second = new Condition(1, 1, 1, 2, 3);
-                Condition third = new Condition(1, 1, 0, 4, 8);
-                Condition fourth = new Condition(0, 1, 1, 3, 3);
                 RuleSet gameOfLife = new RuleSet("Game of Life");
-                gameOfLife.AddCondition(first);
-                gameOfLife.AddCondition(third);
-                gameOfLife.AddCondition(second);
-                gameOfLife.AddCondition(fourth);
+                gameOfLife.LifeLike("B3/S23");
                 return gameOfLife;
         }
 
@@ -34,20 +27,31 @@ public static class Presets
 
         public static RuleSet DayAndNight()
         {
-            //var first = new Condition(0, 1, 1, 3, 3);
-            //var second = new Condition(0, 1, 1, 6, 8);
-
-            //var third = new Condition(1, 1, 1, 3, 4);
-            //var fourth = new Condition(1, 1, 1, 6, 8);
-
-            var dayAndNight = new RuleSet("Day and Night");
-            dayAndNight.LifeLike("B3678/S34678");    
-        //dayAndNight.AddCondition(first);
-            //dayAndNight.AddCondition(second);
-            //dayAndNight.AddCondition(third);
-            //dayAndNight.AddCondition(fourth);
-            return dayAndNight;
+                var dayAndNight = new RuleSet("Day and Night");
+                dayAndNight.LifeLike("B3678/S34678");    
+                return dayAndNight;
         }
 
-        public static HashSet<RuleSet> All = new() {GameOfLife(), BriansBrain(), DayAndNight()};
+        public static RuleSet Diamoeba()
+        {
+                var diamoeba = new RuleSet("Diamoeba");
+                diamoeba.LifeLike("B35678/S5678");
+                return diamoeba;
+        }
+
+    public static RuleSet TwoXTwo()
+    {
+        var twoXTwo = new RuleSet("2x2");
+        twoXTwo.LifeLike("B36/S125");
+        return twoXTwo;
+    }
+
+    public static RuleSet Anneal()
+        {
+            var anneal = new RuleSet("Anneal");
+            anneal.LifeLike("B4678/S35678");
+            return anneal;
+        }
+
+    public static HashSet<RuleSet> All = new() {GameOfLife(), BriansBrain(), DayAndNight(), Diamoeba(), Anneal(), TwoXTwo()};
 }
