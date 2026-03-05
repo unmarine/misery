@@ -19,8 +19,8 @@ public class Automaton
 
     
     public List<Coordinate> Path { get; private set; } = new ();
-    public Coordinate PathStart { get; set; }
-    public Coordinate PathEnd { get; set; }
+    public Coordinate PathStart { get; set; } = new Coordinate(-1, -1);
+    public Coordinate PathEnd { get; set; } = new Coordinate(-1, -1);
     
     public readonly int Columns, Rows;
 

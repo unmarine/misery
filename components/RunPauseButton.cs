@@ -25,4 +25,16 @@ public sealed class RunPauseButton : Button
             _automaton.Clock.Start();
         }
     }
+
+    public void Actualize()
+    {
+        if (!_automaton.Clock.Enabled)
+        {
+            Text = @"Run";
+        }
+        else
+        {
+            Text = @"Pause";
+        }
+    }
 }

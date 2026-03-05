@@ -23,6 +23,7 @@ public class Display : Form
         DoubleBuffered = true;
 
         RunPauseButton _runPauseButton = new RunPauseButton(_automaton);
+        _runPauseButton.Actualize();
 
         _windowManager = new WindowManager(this, 40, 40);
 

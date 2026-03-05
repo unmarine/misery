@@ -32,5 +32,21 @@ public static class Presets
                 return briansBrain;
         }
 
-        public static HashSet<RuleSet> All = new() {GameOfLife(), BriansBrain()};
+        public static RuleSet DayAndNight()
+        {
+            var first = new Condition(0, 1, 1, 3, 3);
+            var second = new Condition(0, 1, 1, 6, 8);
+
+            var third = new Condition(1, 1, 1, 3, 4);
+            var fourth = new Condition(1, 1, 1, 6, 8);
+
+            var dayAndNight = new RuleSet("Day and Night");
+            dayAndNight.AddCondition(first);
+            dayAndNight.AddCondition(second);
+            dayAndNight.AddCondition(third);
+            dayAndNight.AddCondition(fourth);
+            return dayAndNight;
+        }
+
+        public static HashSet<RuleSet> All = new() {GameOfLife(), BriansBrain(), DayAndNight()};
 }
