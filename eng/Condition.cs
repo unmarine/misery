@@ -1,4 +1,6 @@
-﻿namespace misery.Eng;
+﻿using System.Security.Policy;
+
+namespace misery.Eng;
 
 public struct Condition : IEquatable<Condition>
 {

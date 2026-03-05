@@ -7,6 +7,39 @@ public class RuleSet(string name)
     public bool Wrap = true;
     private readonly Dictionary<State, List<Condition>> _conditionsForState = [];
 
+    public void LifeLike(string rule)
+    {
+
+        int cursor = 0;
+
+        while (cursor < rule.Length)
+        {
+            if (rule[cursor] == 'B')
+            {
+                cursor++;
+                while (char.IsDigit(rule[cursor]))
+                {
+                    var number = (int)rule[cursor];
+                    var c = new Condition(0, 1, 1, number, number);
+                    AddCondition(c);
+                    cursor++;
+                }
+            }
+            if (rule[cursor] == '/') continue;
+            if (rule[cursor] == 'S')
+            {
+                cursor++;
+                while (char.IsDigit(rule[cursor]))
+                {
+                    var number = (int)rule[cursor];
+                    var c = new Condition(1, 1, 1, number, number);
+                    AddCondition(c);
+                    cursor++;
+                }
+            }
+        }
+    }
+
     public void AddCondition(Condition condition)
     {
         if (!_conditionsForState.ContainsKey(condition.Starting))

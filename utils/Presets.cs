@@ -34,17 +34,18 @@ public static class Presets
 
         public static RuleSet DayAndNight()
         {
-            var first = new Condition(0, 1, 1, 3, 3);
-            var second = new Condition(0, 1, 1, 6, 8);
+            //var first = new Condition(0, 1, 1, 3, 3);
+            //var second = new Condition(0, 1, 1, 6, 8);
 
-            var third = new Condition(1, 1, 1, 3, 4);
-            var fourth = new Condition(1, 1, 1, 6, 8);
+            //var third = new Condition(1, 1, 1, 3, 4);
+            //var fourth = new Condition(1, 1, 1, 6, 8);
 
             var dayAndNight = new RuleSet("Day and Night");
-            dayAndNight.AddCondition(first);
-            dayAndNight.AddCondition(second);
-            dayAndNight.AddCondition(third);
-            dayAndNight.AddCondition(fourth);
+            dayAndNight.LifeLike("B3678/S34678");    
+        //dayAndNight.AddCondition(first);
+            //dayAndNight.AddCondition(second);
+            //dayAndNight.AddCondition(third);
+            //dayAndNight.AddCondition(fourth);
             return dayAndNight;
         }
 
