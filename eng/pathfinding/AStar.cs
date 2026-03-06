@@ -1,8 +1,8 @@
-﻿using misery.Eng;
+﻿using misery.eng.automaton;
 
-namespace misery.eng
+namespace misery.eng.pathfinding
 {
-    public class AStarSearch: Pathfinding
+    public class AStarSearch : Pathfinding
     {
         public override string ToString()
         {
@@ -15,8 +15,8 @@ namespace misery.eng
             int cols = grid.Columns;
 
             if (!grid.IsInside(src) || !grid.IsInside(dest)) return new List<Coordinate>();
-            
-            if (grid.ReadState(src).Value != 0 || grid.ReadState(dest).Value != 0) 
+
+            if (grid.ReadState(src).Value != 0 || grid.ReadState(dest).Value != 0)
                 return new List<Coordinate>();
 
             if (src.Row == dest.Row && src.Column == dest.Column)
@@ -92,7 +92,7 @@ namespace misery.eng
                     }
                 }
             }
-            
+
             return new List<Coordinate>();
         }
 

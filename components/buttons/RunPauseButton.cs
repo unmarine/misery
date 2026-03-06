@@ -1,6 +1,6 @@
-﻿using misery.Eng;
+﻿using misery.eng.automaton;
 
-namespace misery.components;
+namespace misery.components.buttons;
 
 public sealed class RunPauseButton : Button
 {

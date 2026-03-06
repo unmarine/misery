@@ -1,4 +1,4 @@
-﻿using misery.Eng;
+﻿using misery.eng.automaton;
 
 namespace misery.utils;
 public class SimulationManager

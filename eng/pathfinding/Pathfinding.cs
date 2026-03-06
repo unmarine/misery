@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using misery.Eng;
+﻿using misery.eng.automaton;
 
-namespace misery.eng
+namespace misery.eng.pathfinding
 {
     public abstract class Pathfinding
     {

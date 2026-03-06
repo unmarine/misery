@@ -1,7 +1,9 @@
-﻿using misery.components;
+﻿using misery.components.combiners;
 using misery.eng;
-using misery.Eng;
+using misery.eng.automaton;
 using misery.utils;
+
+using misery.eng.neighborhoods;
 
 namespace misery.windows;
 public sealed class Setup : Form

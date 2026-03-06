@@ -1,7 +1,7 @@
 ﻿using misery.eng;
 using misery.Eng;
 
-namespace misery.components;
+namespace misery.components.combiners;
 public class RulesController
 {
 
@@ -39,7 +39,7 @@ public class RulesController
         bool isUnconditionalValue = isUnconditional.Checked;
 
         condition = new Condition(startingState, countedState, resultingState, lowerNumber, upperNumber, isUnconditionalValue);
-        this.ruleSet.AddCondition(condition);
+        ruleSet.AddCondition(condition);
         listOfRules.Invalidate();
         ReloadList();
     }

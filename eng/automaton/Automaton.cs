@@ -1,27 +1,33 @@
 ﻿using misery.eng;
+using misery.eng.neighborhoods;
+using misery.eng.pathfinding;
+using misery.Eng;
 using misery.utils;
 
-namespace misery.Eng;
+namespace misery.eng.automaton;
 
 public class Automaton
 {
     private readonly RuleSet? _ruleSet;
     private INeighborhood _neighborhood;
-    
+
     private int _generation;
     private Dictionary<State, int> _quantityOfStates = new Dictionary<State, int>();
-    
+
     public event Action? GridUpdated;
     public event Action? GridCleared;
     public event Action<int, Dictionary<State, int>>? GenerationAdvanced;
 
+    public Pathfinding PathFinder = new DijkstraSearch();
+    public event Action PathChanged;
+
     public System.Windows.Forms.Timer Clock;
 
-    
-    public List<Coordinate> Path { get; private set; } = new ();
+
+    public List<Coordinate> Path { get; private set; } = new();
     public Coordinate PathStart { get; set; } = new Coordinate(-1, -1);
     public Coordinate PathEnd { get; set; } = new Coordinate(-1, -1);
-    
+
     public readonly int Columns, Rows;
 
     private bool _isExploitingBufferA = true;
@@ -66,7 +72,7 @@ public class Automaton
     public void Advance()
     {
         _generation++;
-        
+
         var readFrom = _isExploitingBufferA ? _bufferB : _bufferA;
         var writeTo = _isExploitingBufferA ? _bufferA : _bufferB;
 
@@ -97,11 +103,11 @@ public class Automaton
             }
         });
 
-        if (GetReadyGrid().IsInside(PathStart) && GetReadyGrid().IsInside(PathEnd))
-        {
-            Path = DijkstraSearch.FindPath(GetReadyGrid(),  PathStart, PathEnd);
-        }
-        
+        //if (GetReadyGrid().IsInside(PathStart) && GetReadyGrid().IsInside(PathEnd))
+        //{
+        //    Path = PathFinder.FindPath(GetReadyGrid(), PathStart, PathEnd);
+        //}
+
         var counts = new Dictionary<State, int>();
         for (int row = 0; row < Rows; row++)
         {
@@ -112,7 +118,7 @@ public class Automaton
                 counts[s]++;
             }
         }
-        
+
         _quantityOfStates = counts;
         _isExploitingBufferA = !_isExploitingBufferA;
         GridUpdated?.Invoke();
@@ -143,7 +149,7 @@ public class Automaton
             {
                 var value = random.Next(lowest, greatest + 1);
                 ForceState(row, column, new State(value));
-                if (_quantityOfStates.ContainsKey(new State(value))) 
+                if (_quantityOfStates.ContainsKey(new State(value)))
                     _quantityOfStates[new State(value)]++;
                 else _quantityOfStates.Add(new State(value), 1);
             }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using misery.Eng;
+using misery.eng.automaton;
 
-namespace misery.eng
+namespace misery.eng.pathfinding
 {
-    public class DijkstraSearch: Pathfinding
+    public class DijkstraSearch : Pathfinding
     {
         public override string ToString()
         {

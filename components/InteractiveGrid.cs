@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using misery.Eng;
 using System.ComponentModel;
+using misery.eng.automaton;
 
 namespace misery.Components;
 
@@ -67,10 +68,15 @@ public sealed class InteractiveGrid : Panel
                 _rgbaValues[index + 3] = color.A;
             }
         }
-
-        if (_automaton.Path.Count > 1)
+        List<Coordinate> path = new();
+        if (_automaton.GetReadyGrid().IsInside(_automaton.PathStart) && _automaton.GetReadyGrid().IsInside(_automaton.PathEnd))
         {
-            foreach (Coordinate c in _automaton.Path)
+            path = _automaton.PathFinder.FindPath(_automaton.GetReadyGrid(), _automaton.PathStart, _automaton.PathEnd);
+        }
+
+        if (path.Count > 1)
+        {
+            foreach (Coordinate c in path)
             {
                 int index = (c.Row * data.Stride) + (c.Column * 4);
                 _rgbaValues[index] = 0;

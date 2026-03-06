@@ -1,4 +1,5 @@
-﻿using misery.Eng;
+﻿using misery.eng.automaton;
+using misery.Eng;
 
 namespace misery.eng;
 

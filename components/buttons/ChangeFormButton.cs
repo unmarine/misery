@@ -1,5 +1,4 @@
-﻿
-namespace misery.components;
+﻿namespace misery.components.buttons;
 public class ChangeFormButton : Button
 {
     Form _current, _movedTo;

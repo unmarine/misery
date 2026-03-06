@@ -1,4 +1,4 @@
-﻿using misery.components;
+﻿using misery.components.buttons;
 using misery.utils;
 
 namespace misery.windows;

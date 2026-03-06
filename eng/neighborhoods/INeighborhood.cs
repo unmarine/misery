@@ -1,4 +1,6 @@
-﻿namespace misery.Eng;
+﻿using misery.eng.automaton;
+
+namespace misery.eng.neighborhoods;
 
 public interface INeighborhood
 {

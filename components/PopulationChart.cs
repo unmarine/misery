@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
+using misery.eng.automaton;
 using misery.Eng;
 
 namespace misery.components;
@@ -32,15 +33,15 @@ public class PopulationChart : Chart
 
         mainArea.AxisY.MajorGrid.LineColor = Color.LightGray;
         
-        this.ChartAreas.Add(mainArea);
+        ChartAreas.Add(mainArea);
 
         Settings.ColorsChanged += OnColorsChanged;
 
         _automaton.GridCleared += () =>
         {
-            this.BeginInvoke(() =>
+            BeginInvoke(() =>
             {
-                foreach (Series s in this.Series)
+                foreach (Series s in Series)
                 {
                     s.Points.Clear();
                 }
@@ -50,11 +51,11 @@ public class PopulationChart : Chart
 
     private void OnColorsChanged()
     {
-        if (this.IsHandleCreated)
+        if (IsHandleCreated)
         {
-            this.BeginInvoke(() =>
+            BeginInvoke(() =>
             {
-                foreach (Series series in this.Series)
+                foreach (Series series in Series)
                 {
                     if (int.TryParse(series.Name.Replace("State ", ""), out int stateValue))
                     {
@@ -66,7 +67,7 @@ public class PopulationChart : Chart
     }
     private void OnGenerationAdvanced(int generation, Dictionary<State, int> states)
     {
-        this.BeginInvoke(() =>
+        BeginInvoke(() =>
         {
             foreach (var pair in states)
             {
@@ -74,7 +75,7 @@ public class PopulationChart : Chart
                 if (generation < 20) continue;
                 string stateName = $"State {pair.Key.Value}";
 
-                if (this.Series.FindByName(stateName) == null)
+                if (Series.FindByName(stateName) == null)
                 {
                     AddState(stateName, Settings.GetColorByState(pair.Key));
                 }
@@ -84,7 +85,7 @@ public class PopulationChart : Chart
     }
     public void AddState(string stateName, Color color, bool useSecondaryAxis = false)
     {
-        if (this.Series.IsUniqueName(stateName))
+        if (Series.IsUniqueName(stateName))
         {
             Series series = new Series(stateName)
             {
@@ -98,18 +99,18 @@ public class PopulationChart : Chart
             if (useSecondaryAxis)
             {
                 series.YAxisType = AxisType.Secondary;
-                this.ChartAreas[0].AxisY2.Enabled = AxisEnabled.True;
+                ChartAreas[0].AxisY2.Enabled = AxisEnabled.True;
             }
 
-            this.Series.Add(series);
+            Series.Add(series);
         }
     }
 
     public void UpdatePopulation(string stateName, int generation, double population)
     {
-        if (this.Series.IndexOf(stateName) != -1)
+        if (Series.IndexOf(stateName) != -1)
         {
-            this.Series[stateName].Points.AddXY(generation, population);
+            Series[stateName].Points.AddXY(generation, population);
         }
     }
 }

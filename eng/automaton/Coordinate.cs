@@ -1,4 +1,4 @@
-﻿namespace misery.Eng;
+﻿namespace misery.eng.automaton;
 
 public struct Coordinate(int row, int column) : IEquatable<Coordinate>
 {

@@ -1,5 +1,5 @@
 using misery.Components;
-using misery.Eng;
+using misery.eng.automaton;
 using misery.utils;
 
 namespace misery;

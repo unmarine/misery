@@ -1,5 +1,8 @@
 ﻿using misery.components;
+using misery.components.buttons;
+using misery.components.combiners;
 using misery.Components;
+using misery.eng.automaton;
 using misery.Eng;
 using misery.utils;
 
@@ -17,7 +20,7 @@ public class Display : Form
         _automaton = automaton;
         ClientSize = Screen.PrimaryScreen!.Bounds.Size;
         Text = "Viewing Simulation";
-        BackColor = Color.Black;
+        BackColor = Color.FromArgb(255, 38, 38, 38);
         Settings.SetDefaultColorStatePairs();
         Settings.SetColorForState(2, Color.Yellow);
         DoubleBuffered = true;
@@ -60,7 +63,15 @@ public class Display : Form
 
 
         PopulationChart pc = new PopulationChart(automaton);
-        
+
+        ComboBox pathfinders = new();
+        Button selectPathfinder = new();
+        PathfindingControl pfc = new PathfindingControl(pathfinders, automaton, selectPathfinder);
+
+
+        _windowManager.PlaceControl(pathfinders, 0, 32, 0, 33);
+        _windowManager.PlaceControl(selectPathfinder, 1, 32, 1, 33);
+
         _windowManager.PlaceControl(pc, 7, 24, 21, 39);
         _windowManager.PlaceControl(buttonSetStart, 0, 30, 0, 31);
         _windowManager.PlaceControl(buttonSetEnd, 1, 30, 1, 31);
@@ -85,5 +96,6 @@ public class Display : Form
 
     protected override void OnPaint(PaintEventArgs e)
     {
+        //_windowManager.Debug(e.Graphics);
     }
 }
