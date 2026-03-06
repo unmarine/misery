@@ -99,7 +99,7 @@ public class Automaton
 
         if (GetReadyGrid().IsInside(PathStart) && GetReadyGrid().IsInside(PathEnd))
         {
-            Path = AStarSearch.FindPath(GetReadyGrid(),  PathStart, PathEnd);
+            Path = DijkstraSearch.FindPath(GetReadyGrid(),  PathStart, PathEnd);
         }
         
         var counts = new Dictionary<State, int>();

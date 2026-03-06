@@ -1,12 +1,15 @@
-﻿using misery.Eng;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using misery.Eng;
 
 namespace misery.eng
 {
-    public class AStarSearch: Pathfinding
+    public class DijkstraSearch: Pathfinding
     {
         public override string ToString()
         {
-            return "AStar";
+            return "Dijkstra";
         }
 
         public override List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest)
@@ -15,12 +18,12 @@ namespace misery.eng
             int cols = grid.Columns;
 
             if (!grid.IsInside(src) || !grid.IsInside(dest)) return new List<Coordinate>();
-            
-            if (grid.ReadState(src).Value != 0 || grid.ReadState(dest).Value != 0) 
+
+            if (grid.ReadState(src).Value != 0 || grid.ReadState(dest).Value != 0)
                 return new List<Coordinate>();
 
             if (src.Row == dest.Row && src.Column == dest.Column)
-                return [src];
+                return new List<Coordinate> { src };
 
             bool[,] closedList = new bool[rows, cols];
             Cell[,] cellDetails = new Cell[rows, cols];
@@ -29,34 +32,30 @@ namespace misery.eng
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    cellDetails[i, j].F = double.MaxValue;
                     cellDetails[i, j].G = double.MaxValue;
-                    cellDetails[i, j].H = double.MaxValue;
                     cellDetails[i, j].ParentRow = -1;
                     cellDetails[i, j].ParentCol = -1;
                 }
             }
 
-            int row = src.Row, column = src.Column;
-            cellDetails[row, column].F = 0.0;
-            cellDetails[row, column].G = 0.0;
-            cellDetails[row, column].H = 0.0;
-            cellDetails[row, column].ParentRow = row;
-            cellDetails[row, column].ParentCol = column;
+            int startRow = src.Row, startCol = src.Column;
+            cellDetails[startRow, startCol].G = 0.0;
+            cellDetails[startRow, startCol].ParentRow = startRow;
+            cellDetails[startRow, startCol].ParentCol = startCol;
 
-            var openList = new List<(double f, Coordinate coord)>();
+            var openList = new List<(double g, Coordinate coord)>();
             openList.Add((0.0, src));
 
             while (openList.Count > 0)
             {
-                var current = openList.OrderBy(t => t.f).First();
+                var current = openList.OrderBy(t => t.g).First();
                 openList.Remove(current);
 
-                row = current.coord.Row;
-                column = current.coord.Column;
+                int row = current.coord.Row;
+                int column = current.coord.Column;
                 closedList[row, column] = true;
 
-                (int dR, int dC)[] cardinalMoves = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+                (int dR, int dC)[] cardinalMoves = { (-1, 0), (1, 0), (0, -1), (0, 1) };
 
                 foreach (var move in cardinalMoves)
                 {
@@ -75,16 +74,11 @@ namespace misery.eng
                         if (!closedList[newR, newC] && grid.ReadState(newR, newC).Value == 0)
                         {
                             double gNew = cellDetails[row, column].G + 1.0;
-                            double hNew = CalculateHValue(newR, newC, dest);
-                            double fNew = gNew + hNew;
 
-                            float tolerance = 0.05f;
-                            if (Math.Abs(cellDetails[newR, newC].F - double.MaxValue) < tolerance || cellDetails[newR, newC].F > fNew)
+                            if (gNew < cellDetails[newR, newC].G)
                             {
-                                openList.Add((fNew, new Coordinate(newR, newC)));
-                                cellDetails[newR, newC].F = fNew;
+                                openList.Add((gNew, new Coordinate(newR, newC)));
                                 cellDetails[newR, newC].G = gNew;
-                                cellDetails[newR, newC].H = hNew;
                                 cellDetails[newR, newC].ParentRow = row;
                                 cellDetails[newR, newC].ParentCol = column;
                             }
@@ -92,13 +86,8 @@ namespace misery.eng
                     }
                 }
             }
-            
-            return new List<Coordinate>();
-        }
 
-        private static double CalculateHValue(int row, int col, Coordinate dest)
-        {
-            return Math.Sqrt(Math.Pow(row - dest.Row, 2) + Math.Pow(col - dest.Column, 2));
+            return new List<Coordinate>();
         }
     }
 }
