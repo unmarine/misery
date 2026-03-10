@@ -97,6 +97,6 @@ public class Display : Form
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        //_windowManager.Debug(e.Graphics);
+        _windowManager.Debug(e.Graphics);
     }
 }

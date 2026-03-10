@@ -12,7 +12,7 @@ public class Overview : Form
 
     public Overview(SimulationManager simulationManager)
     {
-        ClientSize = new Size(600, 1000);
+        ClientSize = new Size(600, 200);
         Text = "Overview of simulations";
         DoubleBuffered = true;
         _windowManager = new WindowManager(this, 10, 10);
@@ -34,8 +34,8 @@ public class Overview : Form
         ChangeFormButton createAutomaton = new ChangeFormButton(this, new Setup(_simulationManager));
 
         _windowManager.PlaceControl(_listOfSimulations, 0, 0, 2, 6);
-        _windowManager.PlaceControl(_selectSimulationButton, 0, 7, 0, 9);
-        _windowManager.PlaceControl(createAutomaton, 1, 7, 1, 9);
+        _windowManager.PlaceControl(_selectSimulationButton, 0, 7, 1, 9);
+        _windowManager.PlaceControl(createAutomaton, 2, 7, 3, 9);
     
 
     }
@@ -59,7 +59,7 @@ public class Overview : Form
     }
     protected override void OnPaint(PaintEventArgs e)
     {
-        // _windowManager.Debug(e.Graphics);
+         //_windowManager.Debug(e.Graphics);
     }
 }
 
