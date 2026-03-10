@@ -7,6 +7,7 @@ namespace misery.components;
 public class PopulationChart : Chart
 {
     private readonly Automaton _automaton;
+
     public PopulationChart(Automaton automaton)
     {
         _automaton = automaton;
@@ -83,6 +84,27 @@ public class PopulationChart : Chart
             }
         });
     }
+
+    public void Actualize()
+    {
+        int i = 0;
+        foreach (var record in _automaton.Records)
+        {
+            foreach (var pair in record)
+            {
+                if (pair.Key.Value == 0) continue;
+                string stateName = $"State {pair.Key.Value}";
+
+                if (Series.FindByName(stateName) == null)
+                {
+                    AddState(stateName, Settings.GetColorByState(pair.Key));
+                }
+                UpdatePopulation(stateName, i, pair.Value);
+                i++;
+            }
+        }
+    }
+
     public void AddState(string stateName, Color color, bool useSecondaryAxis = false)
     {
         if (Series.IsUniqueName(stateName))

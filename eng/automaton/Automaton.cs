@@ -12,7 +12,9 @@ public class Automaton
     private INeighborhood _neighborhood;
 
     private int _generation;
+
     private Dictionary<State, int> _quantityOfStates = new Dictionary<State, int>();
+    public List<Dictionary<State, int>> Records = new();
 
     public event Action? GridUpdated;
     public event Action? GridCleared;
@@ -103,11 +105,6 @@ public class Automaton
             }
         });
 
-        //if (GetReadyGrid().IsInside(PathStart) && GetReadyGrid().IsInside(PathEnd))
-        //{
-        //    Path = PathFinder.FindPath(GetReadyGrid(), PathStart, PathEnd);
-        //}
-
         var counts = new Dictionary<State, int>();
         for (int row = 0; row < Rows; row++)
         {
@@ -120,6 +117,8 @@ public class Automaton
         }
 
         _quantityOfStates = counts;
+        Records.Add(counts);
+
         _isExploitingBufferA = !_isExploitingBufferA;
         GridUpdated?.Invoke();
         GenerationAdvanced?.Invoke(_generation, _quantityOfStates);

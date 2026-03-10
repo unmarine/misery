@@ -63,6 +63,7 @@ public class Display : Form
 
 
         PopulationChart pc = new PopulationChart(automaton);
+        pc.Actualize();
 
         ComboBox pathfinders = new();
         Button selectPathfinder = new();
