@@ -23,6 +23,8 @@ public class Automaton
     public Pathfinding PathFinder = new DijkstraSearch();
     public event Action PathChanged;
 
+    public string Name;
+
     public System.Windows.Forms.Timer Clock;
 
 
@@ -56,11 +58,12 @@ public class Automaton
         return _isExploitingBufferA ? _bufferB : _bufferA;
     }
 
-    public Automaton(INeighborhood neighborhood, int height, int width, RuleSet? ruleSet)
+    public Automaton(INeighborhood neighborhood, int height, int width, RuleSet? ruleSet, string name)
     {
         _neighborhood = neighborhood;
         _ruleSet = ruleSet;
         Columns = width;
+        Name = name;
         Rows = height;
         _bufferA = new Grid(Rows, Columns);
         _bufferB = new Grid(Rows, Columns);
@@ -69,6 +72,12 @@ public class Automaton
     public void ChangeNeighborhood(INeighborhood neighborhood)
     {
         _neighborhood = neighborhood;
+    }
+
+    public override string ToString()
+    {
+        if (Name == null) return _ruleSet!.ToString();
+        else return Name;
     }
 
     public void Advance()

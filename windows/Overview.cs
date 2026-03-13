@@ -1,14 +1,14 @@
-﻿using misery.components.buttons;
+﻿using misery.eng.automaton;
 using misery.utils;
-
 namespace misery.windows;
+
 public class Overview : Form
 {
     WindowManager _windowManager;
     SimulationManager _simulationManager;
 
-    ComboBox _listOfSimulations;
-    Button _selectSimulationButton;
+    ComboBox comboboxListOfSimulations;
+    Button buttonSelectSimulation;
 
     public Overview(SimulationManager simulationManager)
     {
@@ -17,46 +17,50 @@ public class Overview : Form
         DoubleBuffered = true;
         _windowManager = new WindowManager(this, 10, 10);
 
-        _selectSimulationButton = new Button();
-        _selectSimulationButton.Text = "Select";
-        _selectSimulationButton.Click += OpenSimulation;
+        buttonSelectSimulation = new Button();
+        buttonSelectSimulation.Text = "Select";
+        buttonSelectSimulation.Click += OpenSimulation;
 
         _simulationManager = simulationManager;
 
-        _listOfSimulations = new ComboBox();
-        _listOfSimulations.Text = "Choose simulation";
+        comboboxListOfSimulations = new ComboBox();
+        comboboxListOfSimulations.Text = "Choose simulation";
 
-        for (int i = 0; i < _simulationManager.Simulations.Count; i++)
+        
+        comboboxListOfSimulations.Items.Clear();
+        if (simulationManager.Simulations.Count > 0)
         {
-            _listOfSimulations.Items.Add(i);
+            for (int i = 0; i < _simulationManager.Simulations.Count; i++)
+            {
+                comboboxListOfSimulations.Items.Add(_simulationManager.Simulations[i]);
+            }
         }
 
-        ChangeFormButton createAutomaton = new ChangeFormButton(this, new Setup(_simulationManager));
 
-        _windowManager.PlaceControl(_listOfSimulations, 0, 0, 2, 6);
-        _windowManager.PlaceControl(_selectSimulationButton, 0, 7, 1, 9);
-        _windowManager.PlaceControl(createAutomaton, 2, 7, 3, 9);
-    
+        Button create = new Button() { Text = @"Add simulation" };
+        create.Click += (_, e) =>
+        {
+            var setupForm = new Setup(_simulationManager);
+            WindowManager.MoveForms(this, setupForm);
+        };
 
+        _windowManager.PlaceControl(create, 2, 7, 3, 9);
+
+        _windowManager.PlaceControl(comboboxListOfSimulations, 0, 0, 2, 6);
+        _windowManager.PlaceControl(buttonSelectSimulation, 0, 7, 1, 9);
     }
+
 
     private void OpenSimulation(object? sender, EventArgs e)
     {
-        if (sender == null) return;
-
-        var selected = _listOfSimulations.SelectedItem;
+        var selected = comboboxListOfSimulations.SelectedItem;
         if (selected == null) return;
 
-        int simulationIndex = (int)selected;
-        if (simulationIndex < 0 || simulationIndex > _simulationManager.Simulations.Count) return;
-
-        Display display = new Display(_simulationManager.Simulations[simulationIndex], _simulationManager);
-        display.Show();
-        Hide();
-        display.FormClosed += (s, e) => Close();
-
-
+        var selectedSimulation = selected as Automaton;
+        Display display = new Display(selectedSimulation!, _simulationManager);
+        WindowManager.MoveForms(this, display);
     }
+
     protected override void OnPaint(PaintEventArgs e)
     {
          //_windowManager.Debug(e.Graphics);

@@ -13,13 +13,13 @@ public sealed class Setup : Form
 
     RuleSet? _ruleSet = new RuleSet("Unknown");
 
-    RulesController _rulesController;
-    
     Button _addSimulation = new Button();
 
     ComboBox presets = new ComboBox();
     Button usePreset = new Button();
     
+    TextBox textboxName = new TextBox();
+
     NumericUpDown width, height;
     
     public Setup(SimulationManager simulationManager)
@@ -29,30 +29,29 @@ public sealed class Setup : Form
         _windowManager = new WindowManager(this, 12, 16);
         _simulationManager = simulationManager;
 
-        Label b = new Label() {Text = @"Starting"};
-        NumericUpDown starting = new NumericUpDown();
 
-        Label c = new Label();
-        c.Text = @"Counted";
-        NumericUpDown counted = new NumericUpDown();
+        Label labelStarting = new Label() { Text = @"Starting" };
+        NumericUpDown updownStarting = new NumericUpDown();
 
-        Label d = new Label();
-        d.Text = @"Resulting";
-        NumericUpDown resulting = new NumericUpDown();
+        Label labelCounted = new Label() { Text = @"Counted" };
+        NumericUpDown updownCounted = new NumericUpDown();
 
-        Label e = new Label();
-        e.Text = @"Lower";
-        NumericUpDown lower = new NumericUpDown();
+        Label labelResulting = new Label() { Text = @"Resulting" };
+        NumericUpDown updownResulting = new NumericUpDown();
 
-        Label f = new Label();
-        f.Text = @"Upper";
-        NumericUpDown upper = new NumericUpDown();
-        
+        Label labelLower = new Label() { Text = @"Lower" };
+        NumericUpDown updownLower = new NumericUpDown();
+
+        Label labelUpper = new Label() { Text = @"Upper" };
+        NumericUpDown updownUpper = new NumericUpDown();
+
+
+
         CheckBox isUnconditional = new CheckBox();
         Button addRuleButton = new Button();
         ListBox rules = new ListBox();
 
-        _rulesController = new RulesController(_ruleSet, starting, counted, resulting, lower, upper, isUnconditional, addRuleButton, rules);
+        _ = new RulesController(_ruleSet, updownStarting, updownCounted, updownResulting, updownLower, updownUpper, isUnconditional, addRuleButton, rules);
 
         _addSimulation.Click += addSimulation;
         _addSimulation.Text = @"Add Simulation";
@@ -79,26 +78,29 @@ public sealed class Setup : Form
         height.Maximum = Decimal.MaxValue;
         width.Value = 300;
         height.Value = 300;
+
+        _windowManager.PlaceControl(textboxName, 0, 9, 0, 11);
         
+
         _windowManager.PlaceControl(widthLabel, 0, 7, 0 ,7);
         _windowManager.PlaceControl(width, 1, 7, 1, 7);
         _windowManager.PlaceControl(heightLabel, 0, 8, 0, 8);
         _windowManager.PlaceControl(height, 1, 8, 1, 8);
         
-        _windowManager.PlaceControl(b, 0, 0, 0, 0);
-        _windowManager.PlaceControl(starting, 1, 0, 1, 0);
+        _windowManager.PlaceControl(labelStarting, 0, 0, 0, 0);
+        _windowManager.PlaceControl(updownStarting, 1, 0, 1, 0);
 
-        _windowManager.PlaceControl(c, 0, 1, 0, 1);
-        _windowManager.PlaceControl(counted, 1, 1, 1, 1);
+        _windowManager.PlaceControl(labelCounted, 0, 1, 0, 1);
+        _windowManager.PlaceControl(updownCounted, 1, 1, 1, 1);
 
-        _windowManager.PlaceControl(d, 0, 2, 0, 2);
-        _windowManager.PlaceControl(resulting, 1, 2, 1, 2);
+        _windowManager.PlaceControl(labelResulting, 0, 2, 0, 2);
+        _windowManager.PlaceControl(updownResulting, 1, 2, 1, 2);
 
-        _windowManager.PlaceControl(e, 0, 3, 0, 3);
-        _windowManager.PlaceControl(lower, 1, 3, 1, 3);
+        _windowManager.PlaceControl(labelLower, 0, 3, 0, 3);
+        _windowManager.PlaceControl(updownLower, 1, 3, 1, 3);
 
-        _windowManager.PlaceControl(f, 0,4,0,4);
-        _windowManager.PlaceControl(upper, 1, 4, 1, 4);
+        _windowManager.PlaceControl(labelUpper, 0,4,0,4);
+        _windowManager.PlaceControl(updownUpper, 1, 4, 1, 4);
 
         _windowManager.PlaceControl(isUnconditional, 0, 5, 0, 5);
         _windowManager.PlaceControl(addRuleButton, 1, 5, 1, 5);
@@ -116,7 +118,10 @@ public sealed class Setup : Form
         if (selected == null) return;
         int width = (int)this.width.Value;
         int height = (int)this.height.Value;
-        Automaton automaton = new Automaton(new Moore(), height, width, selected);
+        
+        string name = textboxName.Text;
+
+        Automaton automaton = new Automaton(new Moore(), height, width, selected, name);
 
         System.Windows.Forms.Timer timer = new();
         timer.Interval = 1;
@@ -127,18 +132,16 @@ public sealed class Setup : Form
         automaton.Clock = timer;
 
         _simulationManager.AddSimulation(automaton);
-        Hide();
         var o = new Overview(_simulationManager);
-        o.Show();
-        o.FormClosed += (s, e) => Close();
+        WindowManager.MoveForms(this, o);
     }
     private void addSimulation(object? sender, EventArgs e)
     {
         int width = (int)this.width.Value;
         int height = (int)this.height.Value;
+        string name = textboxName.Text;
 
-
-        Automaton automaton = new Automaton(new Moore(), height, width, _ruleSet);
+        Automaton automaton = new Automaton(new Moore(), height, width, _ruleSet, name);
 
         System.Windows.Forms.Timer timer = new();
         timer.Interval = 1;
@@ -149,17 +152,15 @@ public sealed class Setup : Form
         automaton.Clock = timer;
 
         _simulationManager.AddSimulation(automaton);
-        Hide();
-        var o = new Overview(_simulationManager);
-        o.Show();
-        o.FormClosed += (s,_) => Close();
+        var overview = new Overview(_simulationManager);
+        WindowManager.MoveForms(this, overview);
     }
 
 
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        // _windowManager.Debug(e.Graphics);
+         _windowManager.Debug(e.Graphics);
     }
 }
 
