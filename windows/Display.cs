@@ -31,12 +31,14 @@ public class Display : Form
         _windowManager = new WindowManager(this, 40, 40);
 
         _interactiveGrid = new InteractiveGrid(_automaton);
-        Settings.DisplayedGrid = _interactiveGrid;
 
-        Button randomizeButton = new Button();
-        NumericUpDown from = new NumericUpDown();
-        NumericUpDown to = new NumericUpDown();
-        _ = new RandomizeControls(_automaton, randomizeButton, from, to, _interactiveGrid);
+        /* Button for randomizing grid with random states. 
+         * If lower bound is 0, and upper bound is 3, then grid will be randomly filled with states 0,1,2,3
+        */
+        Button buttonRandomize = new Button();
+        NumericUpDown updownLowerBound = new NumericUpDown();
+        NumericUpDown updownUpperBound = new NumericUpDown();
+        _ = new RandomizeControls(_automaton, buttonRandomize, updownLowerBound, updownUpperBound, _interactiveGrid);
 
 
         NumericUpDown stateForColor = new NumericUpDown();
@@ -45,9 +47,14 @@ public class Display : Form
         ListBox colorPairsList = new ListBox();
         _ = new ColorPairsController(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
 
-        ClearButton clearButton = new ClearButton(_automaton);
+        ClearButton buttonClear = new ClearButton(_automaton);
 
-        ChangeFormButton returnToOverview = new ChangeFormButton(this, new Overview(simulation));
+        var buttonToOverview = new Button() { Text = @"Overview" };
+        buttonToOverview.Click += (sender, e) =>
+        {
+            var overview = new Overview(simulation);
+            WindowManager.MoveForms(this, overview);
+        };
 
         Button buttonSetStart = new Button() {Text = @"Set Start"};
         buttonSetStart.Click += (s, e) =>
@@ -68,6 +75,7 @@ public class Display : Form
         ComboBox pathfinders = new();
         Button selectPathfinder = new();
         PathfindingControl pfc = new PathfindingControl(pathfinders, automaton, selectPathfinder);
+        _windowManager.PlaceControl(buttonToOverview, 0, 38, 1, 39);
 
 
         _windowManager.PlaceControl(pathfinders, 0, 32, 0, 33);
@@ -79,14 +87,13 @@ public class Display : Form
         
         _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
 
-        _windowManager.PlaceControl(randomizeButton, 0, 26, 0, 27);
-        _windowManager.PlaceControl(from, 1, 26, 1, 26);
-        _windowManager.PlaceControl(to, 1, 27, 1, 27);
+        _windowManager.PlaceControl(buttonRandomize, 0, 26, 0, 27);
+        _windowManager.PlaceControl(updownLowerBound, 1, 26, 1, 26);
+        _windowManager.PlaceControl(updownUpperBound, 1, 27, 1, 27);
         
         _windowManager.PlaceControl(_runPauseButton, 0, 24, 1, 25);
-        _windowManager.PlaceControl(returnToOverview, 0, 38, 1, 39);
 
-        _windowManager.PlaceControl(clearButton, 0, 28, 1, 29);
+        _windowManager.PlaceControl(buttonClear, 0, 28, 1, 29);
 
         _windowManager.PlaceControl(stateForColor, 22, 24, 36, 28);
         _windowManager.PlaceControl(colorSelectionButton, 22, 29, 22, 29);

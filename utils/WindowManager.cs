@@ -5,6 +5,13 @@ public class WindowManager
     private readonly Form _form;
     private readonly Space _space;
 
+    public static void MoveForms(Form from, Form to)
+    {
+        from.Hide();
+        to.Show();
+        to.FormClosed += (sender, e) => from.Close();
+    }
+
     public WindowManager(Form form, int divisionsVertical, int divisionsHorizontal)
     {
         _form = form;
