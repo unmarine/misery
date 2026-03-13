@@ -33,9 +33,7 @@ public class WindowManager
 
         if (control is Button)
         {
-            (control as Button).FlatStyle = FlatStyle.Flat;
-        } else if (control is ComboBox)
-        {
+            ((Button)control).FlatStyle = FlatStyle.Flat;
         }
     }
 

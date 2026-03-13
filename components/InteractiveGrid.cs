@@ -100,7 +100,7 @@ public sealed class InteractiveGrid : Panel
         int row = (int)(e.Y / cellHeight);
 
 
-        if (!_automaton.GetExploitedGrid().IsInside(row, column)) return;
+        if (!_automaton.GetReadyGrid().IsInside(row, column)) return;
         Coordinate clickedCoordinate = new Coordinate(row, column);
 
         switch (CurrentMode)
