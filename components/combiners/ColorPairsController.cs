@@ -59,6 +59,7 @@ namespace misery.components.combiners
 
             Settings.SetColorForState((int)statePicker.Value, selectedColor);
             ReloadDisplay();
+            if (Settings.DisplayedGrid != null)
             Settings.DisplayedGrid.Invalidate();
         }
     }

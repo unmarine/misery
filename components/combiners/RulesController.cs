@@ -39,6 +39,8 @@ public class RulesController
         bool isUnconditionalValue = isUnconditional.Checked;
 
         condition = new Condition(startingState, countedState, resultingState, lowerNumber, upperNumber, isUnconditionalValue);
+        
+        if (ruleSet != null)
         ruleSet.AddCondition(condition);
         listOfRules.Invalidate();
         ReloadList();
@@ -47,6 +49,7 @@ public class RulesController
     private void ReloadList()
     {
         listOfRules.Items.Clear();
+        if (ruleSet == null) return;
         List<Condition> conditions = ruleSet.GetConditions();
         foreach (Condition condition in conditions)
         {

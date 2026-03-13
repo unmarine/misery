@@ -14,6 +14,7 @@ public sealed class RunPauseButton : Button
 
     protected override void OnClick(EventArgs e)
     {
+        if (_automaton.Clock != null)
         if (_automaton.Clock.Enabled)
         {
             Text = @"Run";
@@ -28,6 +29,7 @@ public sealed class RunPauseButton : Button
 
     public void Actualize()
     {
+        if (_automaton.Clock != null)
         if (!_automaton.Clock.Enabled)
         {
             Text = @"Run";

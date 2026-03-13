@@ -128,6 +128,7 @@ public sealed class InteractiveGrid : Panel
         
         CurrentMode = InteractiveGridMode.DrawCells;
         
+        if (_automaton.Clock != null)
         if (!_automaton.Clock.Enabled) Invalidate();
     }
 }
