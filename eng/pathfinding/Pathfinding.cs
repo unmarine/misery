@@ -31,9 +31,6 @@ namespace misery.eng.pathfinding
 
         public abstract List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest);
 
-        public override string ToString()
-        {
-            return "Unnamed";
-        }
+        public override string ToString() => "Unnamed";
     }
 }

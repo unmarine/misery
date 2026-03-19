@@ -4,15 +4,13 @@ namespace misery.eng.pathfinding
 {
     public class AStarSearch : Pathfinding
     {
-        public override string ToString()
-        {
-            return "AStar";
-        }
+        public override string ToString() => "AStar";
+        
 
         public override List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest)
         {
             int rows = grid.Rows;
-            int cols = grid.Columns;
+            int columns = grid.Columns;
 
             if (!grid.IsInside(src) || !grid.IsInside(dest)) return new List<Coordinate>();
 
@@ -22,12 +20,12 @@ namespace misery.eng.pathfinding
             if (src.Row == dest.Row && src.Column == dest.Column)
                 return [src];
 
-            bool[,] closedList = new bool[rows, cols];
-            Cell[,] cellDetails = new Cell[rows, cols];
+            bool[,] closedList = new bool[rows, columns];
+            Cell[,] cellDetails = new Cell[rows, columns];
 
             for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < cols; j++)
+                for (int j = 0; j < columns; j++)
                 {
                     cellDetails[i, j].F = double.MaxValue;
                     cellDetails[i, j].G = double.MaxValue;
@@ -60,33 +58,33 @@ namespace misery.eng.pathfinding
 
                 foreach (var move in cardinalMoves)
                 {
-                    int newR = row + move.dR;
-                    int newC = column + move.dC;
+                    int newRow = row + move.dR;
+                    int newColumn = column + move.dC;
 
-                    if (grid.IsInside(newR, newC))
+                    if (grid.IsInside(newRow, newColumn))
                     {
-                        if (newR == dest.Row && newC == dest.Column)
+                        if (newRow == dest.Row && newColumn == dest.Column)
                         {
-                            cellDetails[newR, newC].ParentRow = row;
-                            cellDetails[newR, newC].ParentCol = column;
+                            cellDetails[newRow, newColumn].ParentRow = row;
+                            cellDetails[newRow, newColumn].ParentCol = column;
                             return TracePath(cellDetails, dest);
                         }
 
-                        if (!closedList[newR, newC] && grid.ReadState(newR, newC).Value == 0)
+                        if (!closedList[newRow, newColumn] && grid.ReadState(newRow, newColumn).Value == 0)
                         {
                             double gNew = cellDetails[row, column].G + 1.0;
-                            double hNew = CalculateHValue(newR, newC, dest);
+                            double hNew = CalculateHValue(newRow, newColumn, dest);
                             double fNew = gNew + hNew;
 
                             float tolerance = 0.05f;
-                            if (Math.Abs(cellDetails[newR, newC].F - double.MaxValue) < tolerance || cellDetails[newR, newC].F > fNew)
+                            if (Math.Abs(cellDetails[newRow, newColumn].F - double.MaxValue) < tolerance || cellDetails[newRow, newColumn].F > fNew)
                             {
-                                openList.Add((fNew, new Coordinate(newR, newC)));
-                                cellDetails[newR, newC].F = fNew;
-                                cellDetails[newR, newC].G = gNew;
-                                cellDetails[newR, newC].H = hNew;
-                                cellDetails[newR, newC].ParentRow = row;
-                                cellDetails[newR, newC].ParentCol = column;
+                                openList.Add((fNew, new Coordinate(newRow, newColumn)));
+                                cellDetails[newRow, newColumn].F = fNew;
+                                cellDetails[newRow, newColumn].G = gNew;
+                                cellDetails[newRow, newColumn].H = hNew;
+                                cellDetails[newRow, newColumn].ParentRow = row;
+                                cellDetails[newRow, newColumn].ParentCol = column;
                             }
                         }
                     }

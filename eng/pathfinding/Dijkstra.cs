@@ -7,10 +7,8 @@ namespace misery.eng.pathfinding
 {
     public class DijkstraSearch : Pathfinding
     {
-        public override string ToString()
-        {
-            return "Dijkstra";
-        }
+        public override string ToString() => "Dijkstra";
+        
 
         public override List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest)
         {
@@ -59,28 +57,28 @@ namespace misery.eng.pathfinding
 
                 foreach (var move in cardinalMoves)
                 {
-                    int newR = row + move.dR;
-                    int newC = column + move.dC;
+                    int newRow = row + move.dR;
+                    int newColumn = column + move.dC;
 
-                    if (grid.IsInside(newR, newC))
+                    if (grid.IsInside(newRow, newColumn))
                     {
-                        if (newR == dest.Row && newC == dest.Column)
+                        if (newRow == dest.Row && newColumn == dest.Column)
                         {
-                            cellDetails[newR, newC].ParentRow = row;
-                            cellDetails[newR, newC].ParentCol = column;
+                            cellDetails[newRow, newColumn].ParentRow = row;
+                            cellDetails[newRow, newColumn].ParentCol = column;
                             return TracePath(cellDetails, dest);
                         }
 
-                        if (!closedList[newR, newC] && grid.ReadState(newR, newC).Value == 0)
+                        if (!closedList[newRow, newColumn] && grid.ReadState(newRow, newColumn).Value == 0)
                         {
                             double gNew = cellDetails[row, column].G + 1.0;
 
-                            if (gNew < cellDetails[newR, newC].G)
+                            if (gNew < cellDetails[newRow, newColumn].G)
                             {
-                                openList.Add((gNew, new Coordinate(newR, newC)));
-                                cellDetails[newR, newC].G = gNew;
-                                cellDetails[newR, newC].ParentRow = row;
-                                cellDetails[newR, newC].ParentCol = column;
+                                openList.Add((gNew, new Coordinate(newRow, newColumn)));
+                                cellDetails[newRow, newColumn].G = gNew;
+                                cellDetails[newRow, newColumn].ParentRow = row;
+                                cellDetails[newRow, newColumn].ParentCol = column;
                             }
                         }
                     }
