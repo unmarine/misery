@@ -11,17 +11,16 @@ public sealed class Setup : Form
     WindowManager _windowManager;
     SimulationManager _simulationManager;
 
+
     RuleSet? _ruleSet = new RuleSet("Unknown");
 
-    Button _addSimulation = new Button();
-
-    ComboBox presets = new ComboBox();
-    Button usePreset = new Button();
+    Button _buttonAddSimulation = new Button() { Text = @"Add Simulation"};
+    ComboBox _comboboxPresets = new ComboBox();
+    Button _buttonUsePreset = new Button();
+    TextBox _textboxName = new TextBox();
+    NumericUpDown _updownWidth, _updownHeight;
     
-    TextBox textboxName = new TextBox();
 
-    NumericUpDown width, height;
-    
     public Setup(SimulationManager simulationManager)
     {
         Height = 900; Width = 1000;
@@ -32,10 +31,10 @@ public sealed class Setup : Form
 
         Label labelStarting = new Label() { Text = @"Starting" };
         NumericUpDown updownStarting = new NumericUpDown();
-
+        
         Label labelCounted = new Label() { Text = @"Counted" };
         NumericUpDown updownCounted = new NumericUpDown();
-
+        
         Label labelResulting = new Label() { Text = @"Resulting" };
         NumericUpDown updownResulting = new NumericUpDown();
 
@@ -51,41 +50,49 @@ public sealed class Setup : Form
         Button addRuleButton = new Button();
         ListBox rules = new ListBox();
 
-        _ = new RulesController(_ruleSet, updownStarting, updownCounted, updownResulting, updownLower, updownUpper, isUnconditional, addRuleButton, rules);
+        _ = new RulesController(_ruleSet, updownStarting, 
+            updownCounted, updownResulting, 
+            updownLower, updownUpper, 
+            isUnconditional, addRuleButton, rules);
+        _buttonAddSimulation.Click += addSimulation;
 
-        _addSimulation.Click += addSimulation;
-        _addSimulation.Text = @"Add Simulation";
 
-        presets = new ComboBox();
-        usePreset = new Button();
-        usePreset.Text = @"Use Preset";
-        usePreset.Click += addPreset;
+        _comboboxPresets = new ComboBox();
+        _buttonUsePreset = new Button() { Text = @"Use Preset" };
+        _buttonUsePreset.Click += addPreset;
         
+
         foreach (var ruleSet in Presets.All)
         {
-            presets.Items.Add(ruleSet);
+            _comboboxPresets.Items.Add(ruleSet);
         }
         
         Label widthLabel = new Label {Text = @"Width"};
-        width = new NumericUpDown();
+        _updownWidth = new NumericUpDown();
         
         Label heightLabel = new Label {Text = @"Height"};
-        height = new NumericUpDown();
+        _updownHeight = new NumericUpDown();
         
-        width.Minimum = 1;
-        width.Maximum = 1;
-        width.Maximum = Decimal.MaxValue;
-        height.Maximum = Decimal.MaxValue;
-        width.Value = 300;
-        height.Value = 300;
+        _updownWidth.Minimum = 1;
+        _updownWidth.Maximum = 1;
+        _updownWidth.Maximum = decimal.MaxValue;
+        _updownHeight.Maximum = decimal.MaxValue;
+        _updownWidth.Value = 300;
+        _updownHeight.Value = 300;
 
-        _windowManager.PlaceControl(textboxName, 0, 9, 0, 11);
+        Button _buttonLeave = new Button() { Text = "Leave" };
+        _buttonLeave.Click += (s, e) =>
+        {
+            WindowManager.MoveForms(this, new Overview(_simulationManager));
+        };
+        _windowManager.PlaceControl(_buttonLeave, 11, 13, 11, 15);
+
+        _windowManager.PlaceControl(_textboxName, 0, 9, 0, 11);
         
-
         _windowManager.PlaceControl(widthLabel, 0, 7, 0 ,7);
-        _windowManager.PlaceControl(width, 1, 7, 1, 7);
+        _windowManager.PlaceControl(_updownWidth, 1, 7, 1, 7);
         _windowManager.PlaceControl(heightLabel, 0, 8, 0, 8);
-        _windowManager.PlaceControl(height, 1, 8, 1, 8);
+        _windowManager.PlaceControl(_updownHeight, 1, 8, 1, 8);
         
         _windowManager.PlaceControl(labelStarting, 0, 0, 0, 0);
         _windowManager.PlaceControl(updownStarting, 1, 0, 1, 0);
@@ -106,56 +113,35 @@ public sealed class Setup : Form
         _windowManager.PlaceControl(addRuleButton, 1, 5, 1, 5);
         _windowManager.PlaceControl(rules, 2, 0, 11, 5);
       
-        _windowManager.PlaceControl(_addSimulation, 0, 12, 0, 15);
+        _windowManager.PlaceControl(_buttonAddSimulation, 0, 12, 0, 15);
         
-        _windowManager.PlaceControl(presets, 1, 12, 1, 12);
-        _windowManager.PlaceControl(usePreset, 1, 13 , 1, 15);
+        _windowManager.PlaceControl(_comboboxPresets, 1, 12, 1, 12);
+        _windowManager.PlaceControl(_buttonUsePreset, 1, 13 , 1, 15);
     }
 
     private void addPreset(object? sender, EventArgs e)
     {
-        RuleSet? selected = presets.SelectedItem as RuleSet;
+        RuleSet? selected = _comboboxPresets.SelectedItem as RuleSet;
         if (selected == null) return;
-        int width = (int)this.width.Value;
-        int height = (int)this.height.Value;
-        
-        string name = textboxName.Text;
-
-        Automaton automaton = new Automaton(new Moore(), height, width, selected, name);
-
-        System.Windows.Forms.Timer timer = new();
-        timer.Interval = 1;
-        timer.Tick += (s, e) =>
-        {
-            automaton.Advance();
-        };
-        automaton.Clock = timer;
-
-        _simulationManager.AddSimulation(automaton);
-        var o = new Overview(_simulationManager);
-        WindowManager.MoveForms(this, o);
+        _ruleSet = selected;
+        addSimulation(sender, e);
     }
     private void addSimulation(object? sender, EventArgs e)
     {
-        int width = (int)this.width.Value;
-        int height = (int)this.height.Value;
-        string name = textboxName.Text;
+        int width = (int)this._updownWidth.Value;
+        int height = (int)this._updownHeight.Value;
+        string name = _textboxName.Text;
 
         Automaton automaton = new Automaton(new Moore(), height, width, _ruleSet, name);
 
         System.Windows.Forms.Timer timer = new();
         timer.Interval = 1;
-        timer.Tick += (s, e) =>
-        {
-            automaton.Advance();
-        };
+        timer.Tick += (s, e) => automaton.Advance();
         automaton.Clock = timer;
 
         _simulationManager.AddSimulation(automaton);
-        var overview = new Overview(_simulationManager);
-        WindowManager.MoveForms(this, overview);
+        WindowManager.MoveForms(this, new Overview(_simulationManager));
     }
-
 
 
     protected override void OnPaint(PaintEventArgs e)

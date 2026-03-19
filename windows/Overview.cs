@@ -7,11 +7,14 @@ public class Overview : Form
     WindowManager _windowManager;
     SimulationManager _simulationManager;
 
+
     ComboBox comboboxListOfSimulations;
     Button buttonSelectSimulation;
 
     public Overview(SimulationManager simulationManager)
     {
+        _simulationManager = simulationManager;
+        
         ClientSize = new Size(600, 200);
         Text = "Overview of simulations";
         DoubleBuffered = true;
@@ -21,7 +24,6 @@ public class Overview : Form
         buttonSelectSimulation.Text = "Select";
         buttonSelectSimulation.Click += OpenSimulation;
 
-        _simulationManager = simulationManager;
 
         comboboxListOfSimulations = new ComboBox();
         comboboxListOfSimulations.Text = "Choose simulation";
@@ -45,7 +47,6 @@ public class Overview : Form
         };
 
         _windowManager.PlaceControl(create, 2, 7, 3, 9);
-
         _windowManager.PlaceControl(comboboxListOfSimulations, 0, 0, 2, 6);
         _windowManager.PlaceControl(buttonSelectSimulation, 0, 7, 1, 9);
     }
@@ -55,10 +56,9 @@ public class Overview : Form
     {
         var selected = comboboxListOfSimulations.SelectedItem;
         if (selected == null) return;
-
+        
         var selectedSimulation = selected as Automaton;
-        Display display = new Display(selectedSimulation!, _simulationManager);
-        WindowManager.MoveForms(this, display);
+        WindowManager.MoveForms(this, new Display(selectedSimulation!, _simulationManager));
     }
 
     protected override void OnPaint(PaintEventArgs e)
