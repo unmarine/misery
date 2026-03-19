@@ -6,7 +6,7 @@ namespace misery.eng.pathfinding
     {
         protected struct Cell
         {
-            public int ParentRow, ParentCol;
+            public int ParentRow, ParentColumn;
             public double F, G, H;
         }
 
@@ -16,13 +16,10 @@ namespace misery.eng.pathfinding
             int row = dest.Row;
             int column = dest.Column;
 
-            while (!(cellDetails[row, column].ParentRow == row && cellDetails[row, column].ParentCol == column))
+            while (!(cellDetails[row, column].ParentRow == row && cellDetails[row, column].ParentColumn == column))
             {
                 pathStack.Push(new Coordinate(row, column));
-                int tempR = cellDetails[row, column].ParentRow;
-                int tempC = cellDetails[row, column].ParentCol;
-                row = tempR;
-                column = tempC;
+                (row, column) = (cellDetails[row, column].ParentRow, cellDetails[row, column].ParentColumn);
             }
             pathStack.Push(new Coordinate(row, column));
 

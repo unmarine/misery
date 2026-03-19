@@ -60,7 +60,7 @@ public class PopulationChart : Chart
                 {
                     if (int.TryParse(series.Name.Replace("State ", ""), out int stateValue))
                     {
-                        series.Color = Settings.GetColorByState(stateValue);
+                        series.Color = Settings.GetColorByValue(stateValue);
                     }
                 }
             });

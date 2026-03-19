@@ -26,18 +26,18 @@ public static class Settings
     public static void SetDefaultColorStatePairs()
     {
         ColorByStateValue.TryAdd(0, Color.Black);
-        ColorByStateValue.TryAdd(1, Color.White);
+        ColorByStateValue.TryAdd(1, Color.IndianRed);
+        ColorByStateValue.TryAdd(2, Color.Khaki);
         ColorsChanged?.Invoke();
     }
 
-    public static Color GetColorByState(int value)
+    public static Color GetColorByValue(int value)
     {
-        return ColorByStateValue[value];
+        return ColorByStateValue.TryGetValue(value, out var color) ? color : Color.Black;
     }
 
     public static Color GetColorByState(State state)
     {
-        ColorByStateValue.TryGetValue(state.Value, out var color);
-        return color;
+        return GetColorByValue(state.Value);
     }
 }

@@ -29,14 +29,14 @@ namespace misery.eng.pathfinding
                 {
                     cellDetails[i, j].G = double.MaxValue;
                     cellDetails[i, j].ParentRow = -1;
-                    cellDetails[i, j].ParentCol = -1;
+                    cellDetails[i, j].ParentColumn = -1;
                 }
             }
 
             int startRow = src.Row, startCol = src.Column;
             cellDetails[startRow, startCol].G = 0.0;
             cellDetails[startRow, startCol].ParentRow = startRow;
-            cellDetails[startRow, startCol].ParentCol = startCol;
+            cellDetails[startRow, startCol].ParentColumn = startCol;
 
             var openList = new List<(double g, Coordinate coord)>();
             openList.Add((0.0, src));
@@ -62,7 +62,7 @@ namespace misery.eng.pathfinding
                         if (newRow == dest.Row && newColumn == dest.Column)
                         {
                             cellDetails[newRow, newColumn].ParentRow = row;
-                            cellDetails[newRow, newColumn].ParentCol = column;
+                            cellDetails[newRow, newColumn].ParentColumn = column;
                             return TracePath(cellDetails, dest);
                         }
 
@@ -75,7 +75,7 @@ namespace misery.eng.pathfinding
                                 openList.Add((gNew, new Coordinate(newRow, newColumn)));
                                 cellDetails[newRow, newColumn].G = gNew;
                                 cellDetails[newRow, newColumn].ParentRow = row;
-                                cellDetails[newRow, newColumn].ParentCol = column;
+                                cellDetails[newRow, newColumn].ParentColumn = column;
                             }
                         }
                     }

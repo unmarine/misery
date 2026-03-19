@@ -3,10 +3,14 @@ using misery.Eng;
 
 namespace misery.eng;
 
-public class RuleSet(string name)
+public class RuleSet
 {
     public bool Wrap = true;
+
+    private string _name;
     private readonly Dictionary<State, List<Condition>> _conditionsForState = [];
+
+    public RuleSet(string name) => _name = name;
 
     public void LifeLike(string rule)
     {
@@ -36,14 +40,8 @@ public class RuleSet(string name)
                     cursor++;
                 }
             }
-            else if (rule[cursor] == '/')
-            {
-                cursor++;
-            }
-            else
-            {
-                cursor++;
-            }
+            else if (rule[cursor] == '/') cursor++;
+            else cursor++;
         }
     }
 
@@ -52,8 +50,10 @@ public class RuleSet(string name)
     public void AddCondition(Condition condition)
     {
         if (!_conditionsForState.ContainsKey(condition.Starting))
-            _conditionsForState.Add(condition.Starting, new List<Condition>());
-        _conditionsForState[condition.Starting].Add(condition);
+            _conditionsForState[condition.Starting] = new List<Condition>();
+
+        if (!_conditionsForState[condition.Starting].Contains(condition))
+            _conditionsForState[condition.Starting].Add(condition);
     }
 
     public void AddCondition(State starting, State counted, State resulting, int amount)
@@ -64,7 +64,8 @@ public class RuleSet(string name)
 
     public void RemoveCondition(Condition condition)
     {
-        _conditionsForState[condition.Starting].Remove(condition);
+        if (_conditionsForState.TryGetValue(condition.Starting, out var conditions))
+            conditions.Remove(condition);
     }
 
     private void AddConditionRangedInclusive(State starting, State counted, State resulting, int start,
@@ -80,29 +81,19 @@ public class RuleSet(string name)
         AddConditionRangedInclusive(new State(starting), new State(counted), new State(resulting), start, end);
     }
 
-    public List<Condition>? GetConditionsForState(State state)
+    public List<Condition> GetConditionsForState(State state)
     {
-        _conditionsForState.TryGetValue(state, out var conditions);
-        return conditions;
+        return _conditionsForState.TryGetValue(state, out var conditions) ? conditions : new List<Condition>();
     }
-
-    public List<Condition> GetConditionsForState(int state)
-    {
-        return _conditionsForState[new State(state)];
-    }
+    public List<Condition> GetConditionsForState(int value) => GetConditionsForState(new State(value));
 
     public List<Condition> GetConditions()
     {
-        List<Condition> conditions = new List<Condition>();
-        foreach (var condition in _conditionsForState)
-        {
-            conditions.AddRange(condition.Value);
-        }
-        return conditions;
+        return _conditionsForState.Values.SelectMany(x => x).ToList();
     }
 
     public override string ToString()
     {
-        return name;
+        return _name;
     }
 }
