@@ -30,13 +30,7 @@ public sealed class RunPauseButton : Button
     public void Actualize()
     {
         if (_automaton.Clock != null)
-        if (!_automaton.Clock.Enabled)
-        {
-            Text = @"Run";
-        }
-        else
-        {
-            Text = @"Pause";
-        }
+        if (!_automaton.Clock.Enabled) Text = @"Run";
+        else Text = @"Pause";
     }
 }
