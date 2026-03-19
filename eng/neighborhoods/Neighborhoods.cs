@@ -48,10 +48,10 @@ public class VonNeumann : INeighborhood
     public int Count(Grid grid, State state, Coordinate coordinate, int radius = 1)
     {
         var count = 0;
-        
+
         void check(int row, int column)
         {
-            if ( !grid.IsInside(new Coordinate(row, column))
+            if (!grid.IsInside(new Coordinate(row, column))
                  || row == coordinate.Row && column == coordinate.Column) return;
             if (grid.ReadState(row, column).Equals(state)) count++;
         }

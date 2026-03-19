@@ -1,8 +1,8 @@
-﻿using System.Drawing.Imaging;
+﻿using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using misery.Eng;
-using System.ComponentModel;
 using misery.eng.automaton;
+using misery.Eng;
 
 namespace misery.Components;
 
@@ -25,7 +25,7 @@ public sealed class InteractiveGrid : Panel
     public Coordinate StartPoint { get; set; }
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Coordinate EndPoint { get; set; }
-    
+
     public InteractiveGrid(Automaton initial)
     {
         _automaton = initial;
@@ -49,7 +49,7 @@ public sealed class InteractiveGrid : Panel
     private void UpdateBitmap()
     {
         Grid grid = _automaton.GetReadyGrid();
-        BitmapData data = _canvas.LockBits(new Rectangle(0, 0, _canvas.Width, _canvas.Height), 
+        BitmapData data = _canvas.LockBits(new Rectangle(0, 0, _canvas.Width, _canvas.Height),
                                          ImageLockMode.WriteOnly, _canvas.PixelFormat);
 
         for (int row = 0; row < _automaton.Rows; row++)
@@ -59,7 +59,7 @@ public sealed class InteractiveGrid : Panel
                 State state = grid.ReadState(row, column);
                 Color color = Settings.GetColorByState(state);
 
-                
+
                 int index = (row * data.Stride) + (column * 4);
 
                 _rgbaValues[index] = color.B;
@@ -106,29 +106,29 @@ public sealed class InteractiveGrid : Panel
         switch (CurrentMode)
         {
             case InteractiveGridMode.DrawCells:
-            {
-                _automaton.ForceState(row, column, new State(1));
-                break;
-            }
+                {
+                    _automaton.ForceState(row, column, new State(1));
+                    break;
+                }
             case InteractiveGridMode.SetStart:
-            {
-                StartPoint = clickedCoordinate;
-                _automaton.PathStart = clickedCoordinate;
-                _automaton.ForceState(row, column, new State());
-                break;
-            }
+                {
+                    StartPoint = clickedCoordinate;
+                    _automaton.PathStart = clickedCoordinate;
+                    _automaton.ForceState(row, column, new State());
+                    break;
+                }
             case InteractiveGridMode.SetEnd:
-            {
-                EndPoint = clickedCoordinate;
-                _automaton.PathEnd = clickedCoordinate;
-                _automaton.ForceState(row, column, new State());
-                break;
-            }
+                {
+                    EndPoint = clickedCoordinate;
+                    _automaton.PathEnd = clickedCoordinate;
+                    _automaton.ForceState(row, column, new State());
+                    break;
+                }
         }
-        
+
         CurrentMode = InteractiveGridMode.DrawCells;
-        
+
         if (_automaton.Clock != null)
-        if (!_automaton.Clock.Enabled) Invalidate();
+            if (!_automaton.Clock.Enabled) Invalidate();
     }
 }

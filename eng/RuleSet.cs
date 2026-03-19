@@ -19,7 +19,7 @@ public class RuleSet(string name)
                 cursor++;
                 while (cursor < rule.Length && char.IsDigit(rule[cursor]))
                 {
-                    var number = rule[cursor] - '0'; 
+                    var number = rule[cursor] - '0';
                     var c = new Condition(0, 1, 1, number, number);
                     AddCondition(c);
                     cursor++;

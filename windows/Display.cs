@@ -56,13 +56,13 @@ public class Display : Form
             WindowManager.MoveForms(this, overview);
         };
 
-        Button buttonSetStart = new Button() {Text = @"Set Start"};
+        Button buttonSetStart = new Button() { Text = @"Set Start" };
         buttonSetStart.Click += (s, e) =>
         {
             _interactiveGrid.CurrentMode = InteractiveGridMode.SetStart;
         };
-            
-        Button buttonSetEnd = new Button() {Text = @"Set End"};
+
+        Button buttonSetEnd = new Button() { Text = @"Set End" };
         buttonSetEnd.Click += (s, e) =>
         {
             _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
@@ -84,13 +84,13 @@ public class Display : Form
         _windowManager.PlaceControl(pc, 7, 24, 21, 39);
         _windowManager.PlaceControl(buttonSetStart, 0, 30, 0, 31);
         _windowManager.PlaceControl(buttonSetEnd, 1, 30, 1, 31);
-        
+
         _windowManager.PlaceControl(_interactiveGrid, 0, 0, 37, 23);
 
         _windowManager.PlaceControl(buttonRandomize, 0, 26, 0, 27);
         _windowManager.PlaceControl(updownLowerBound, 1, 26, 1, 26);
         _windowManager.PlaceControl(updownUpperBound, 1, 27, 1, 27);
-        
+
         _windowManager.PlaceControl(_runPauseButton, 0, 24, 1, 25);
 
         _windowManager.PlaceControl(buttonClear, 0, 28, 1, 29);

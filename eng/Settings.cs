@@ -8,8 +8,8 @@ public static class Settings
     public static InteractiveGrid? DisplayedGrid;
 
     public static event Action? ColorsChanged;
-    
-    public static readonly Dictionary<int, Color> ColorByStateValue = new();    
+
+    public static readonly Dictionary<int, Color> ColorByStateValue = new();
 
     public static void SetColorForState(int state, Color color)
     {

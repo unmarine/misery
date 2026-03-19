@@ -1,8 +1,6 @@
-﻿using misery.eng;
-using misery.eng.neighborhoods;
+﻿using misery.eng.neighborhoods;
 using misery.eng.pathfinding;
 using misery.Eng;
-using misery.utils;
 
 namespace misery.eng.automaton;
 

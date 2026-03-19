@@ -1,9 +1,8 @@
 ﻿using misery.components.combiners;
 using misery.eng;
 using misery.eng.automaton;
-using misery.utils;
-
 using misery.eng.neighborhoods;
+using misery.utils;
 
 namespace misery.windows;
 public sealed class Setup : Form
@@ -14,12 +13,12 @@ public sealed class Setup : Form
 
     RuleSet? _ruleSet = new RuleSet("Unknown");
 
-    Button _buttonAddSimulation = new Button() { Text = @"Add Simulation"};
+    Button _buttonAddSimulation = new Button() { Text = @"Add Simulation" };
     ComboBox _comboboxPresets = new ComboBox();
     Button _buttonUsePreset = new Button();
     TextBox _textboxName = new TextBox();
     NumericUpDown _updownWidth, _updownHeight;
-    
+
 
     public Setup(SimulationManager simulationManager)
     {
@@ -31,10 +30,10 @@ public sealed class Setup : Form
 
         Label labelStarting = new Label() { Text = @"Starting" };
         NumericUpDown updownStarting = new NumericUpDown();
-        
+
         Label labelCounted = new Label() { Text = @"Counted" };
         NumericUpDown updownCounted = new NumericUpDown();
-        
+
         Label labelResulting = new Label() { Text = @"Resulting" };
         NumericUpDown updownResulting = new NumericUpDown();
 
@@ -50,9 +49,9 @@ public sealed class Setup : Form
         Button addRuleButton = new Button();
         ListBox rules = new ListBox();
 
-        _ = new RulesController(_ruleSet, updownStarting, 
-            updownCounted, updownResulting, 
-            updownLower, updownUpper, 
+        _ = new RulesController(_ruleSet, updownStarting,
+            updownCounted, updownResulting,
+            updownLower, updownUpper,
             isUnconditional, addRuleButton, rules);
         _buttonAddSimulation.Click += addSimulation;
 
@@ -60,19 +59,19 @@ public sealed class Setup : Form
         _comboboxPresets = new ComboBox();
         _buttonUsePreset = new Button() { Text = @"Use Preset" };
         _buttonUsePreset.Click += addPreset;
-        
+
 
         foreach (var ruleSet in Presets.All)
         {
             _comboboxPresets.Items.Add(ruleSet);
         }
-        
-        Label widthLabel = new Label {Text = @"Width"};
+
+        Label widthLabel = new Label { Text = @"Width" };
         _updownWidth = new NumericUpDown();
-        
-        Label heightLabel = new Label {Text = @"Height"};
+
+        Label heightLabel = new Label { Text = @"Height" };
         _updownHeight = new NumericUpDown();
-        
+
         _updownWidth.Minimum = 1;
         _updownWidth.Maximum = 1;
         _updownWidth.Maximum = decimal.MaxValue;
@@ -88,12 +87,12 @@ public sealed class Setup : Form
         _windowManager.PlaceControl(_buttonLeave, 11, 13, 11, 15);
 
         _windowManager.PlaceControl(_textboxName, 0, 9, 0, 11);
-        
-        _windowManager.PlaceControl(widthLabel, 0, 7, 0 ,7);
+
+        _windowManager.PlaceControl(widthLabel, 0, 7, 0, 7);
         _windowManager.PlaceControl(_updownWidth, 1, 7, 1, 7);
         _windowManager.PlaceControl(heightLabel, 0, 8, 0, 8);
         _windowManager.PlaceControl(_updownHeight, 1, 8, 1, 8);
-        
+
         _windowManager.PlaceControl(labelStarting, 0, 0, 0, 0);
         _windowManager.PlaceControl(updownStarting, 1, 0, 1, 0);
 
@@ -106,17 +105,17 @@ public sealed class Setup : Form
         _windowManager.PlaceControl(labelLower, 0, 3, 0, 3);
         _windowManager.PlaceControl(updownLower, 1, 3, 1, 3);
 
-        _windowManager.PlaceControl(labelUpper, 0,4,0,4);
+        _windowManager.PlaceControl(labelUpper, 0, 4, 0, 4);
         _windowManager.PlaceControl(updownUpper, 1, 4, 1, 4);
 
         _windowManager.PlaceControl(isUnconditional, 0, 5, 0, 5);
         _windowManager.PlaceControl(addRuleButton, 1, 5, 1, 5);
         _windowManager.PlaceControl(rules, 2, 0, 11, 5);
-      
+
         _windowManager.PlaceControl(_buttonAddSimulation, 0, 12, 0, 15);
-        
+
         _windowManager.PlaceControl(_comboboxPresets, 1, 12, 1, 12);
-        _windowManager.PlaceControl(_buttonUsePreset, 1, 13 , 1, 15);
+        _windowManager.PlaceControl(_buttonUsePreset, 1, 13, 1, 15);
     }
 
     private void addPreset(object? sender, EventArgs e)
@@ -146,7 +145,7 @@ public sealed class Setup : Form
 
     protected override void OnPaint(PaintEventArgs e)
     {
-         _windowManager.Debug(e.Graphics);
+        _windowManager.Debug(e.Graphics);
     }
 }
 

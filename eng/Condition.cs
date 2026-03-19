@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using misery.eng.automaton;
+﻿using misery.eng.automaton;
 
 namespace misery.Eng;
 
@@ -12,9 +11,9 @@ public struct Condition : IEquatable<Condition>
     private int Min { get; set; }
     private int Max { get; set; }
     public bool IsUnconditional { get; set; } = false;
-    
+
     public bool IsWithin(int n) => n >= Min && n <= Max;
-    
+
     public Condition(State starting, State counted, State resulting, int min, int max, bool isUnconditional = false)
     {
         Starting = starting;

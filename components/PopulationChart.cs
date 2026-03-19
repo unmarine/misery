@@ -15,25 +15,25 @@ public class PopulationChart : Chart
         BackColor = Color.Black;
 
         ChartArea mainArea = new ChartArea("MainArea");
-        
+
         mainArea.AxisX.Title = "Generation";
         mainArea.AxisX.TitleForeColor = Color.White;
         mainArea.AxisX.Minimum = 0;
-        
+
         mainArea.BackColor = Color.Black;
 
         mainArea.Position = new ElementPosition(0, 0, 100, 100);
         mainArea.InnerPlotPosition = new ElementPosition(0, 0, 100, 100);
-        
+
         mainArea.AxisX.IsMarginVisible = false;
         mainArea.AxisY.IsMarginVisible = false;
-        
+
         mainArea.AxisX.LabelStyle.IsEndLabelVisible = true;
         mainArea.AxisX.LabelStyle.Angle = 0;
-        mainArea.AxisY.LabelStyle.Angle = 0;        
+        mainArea.AxisY.LabelStyle.Angle = 0;
 
         mainArea.AxisY.MajorGrid.LineColor = Color.LightGray;
-        
+
         ChartAreas.Add(mainArea);
 
         Settings.ColorsChanged += OnColorsChanged;
@@ -72,7 +72,7 @@ public class PopulationChart : Chart
         {
             foreach (var pair in states)
             {
-                if (pair.Key.Value == 0) continue; 
+                if (pair.Key.Value == 0) continue;
                 if (generation < 20) continue;
                 string stateName = $"State {pair.Key.Value}";
 

@@ -14,7 +14,7 @@ public class Overview : Form
     public Overview(SimulationManager simulationManager)
     {
         _simulationManager = simulationManager;
-        
+
         ClientSize = new Size(600, 200);
         Text = "Overview of simulations";
         DoubleBuffered = true;
@@ -28,7 +28,7 @@ public class Overview : Form
         comboboxListOfSimulations = new ComboBox();
         comboboxListOfSimulations.Text = "Choose simulation";
 
-        
+
         comboboxListOfSimulations.Items.Clear();
         if (simulationManager.Simulations.Count > 0)
         {
@@ -56,14 +56,14 @@ public class Overview : Form
     {
         var selected = comboboxListOfSimulations.SelectedItem;
         if (selected == null) return;
-        
+
         var selectedSimulation = selected as Automaton;
         WindowManager.MoveForms(this, new Display(selectedSimulation!, _simulationManager));
     }
 
     protected override void OnPaint(PaintEventArgs e)
     {
-         //_windowManager.Debug(e.Graphics);
+        //_windowManager.Debug(e.Graphics);
     }
 }
 

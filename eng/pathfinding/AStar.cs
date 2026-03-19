@@ -5,7 +5,7 @@ namespace misery.eng.pathfinding
     public class AStarSearch : Pathfinding
     {
         public override string ToString() => "AStar";
-        
+
 
         public override List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest)
         {

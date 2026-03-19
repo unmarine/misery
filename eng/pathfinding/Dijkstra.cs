@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using misery.eng.automaton;
+﻿using misery.eng.automaton;
 
 namespace misery.eng.pathfinding
 {
     public class DijkstraSearch : Pathfinding
     {
         public override string ToString() => "Dijkstra";
-        
+
 
         public override List<Coordinate> FindPath(Grid grid, Coordinate src, Coordinate dest)
         {

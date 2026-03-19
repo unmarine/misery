@@ -39,9 +39,9 @@ public class RulesController
         bool isUnconditionalValue = isUnconditional.Checked;
 
         condition = new Condition(startingState, countedState, resultingState, lowerNumber, upperNumber, isUnconditionalValue);
-        
+
         if (ruleSet != null)
-        ruleSet.AddCondition(condition);
+            ruleSet.AddCondition(condition);
         listOfRules.Invalidate();
         ReloadList();
     }
