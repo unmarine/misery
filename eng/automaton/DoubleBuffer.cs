@@ -19,6 +19,7 @@ public class DoubleBuffer
 
     public void ForceState(int row, int column, State state)
     {
+        if (!_bufferA.IsInside(row, column)) return;
         _bufferA.SetState(row, column, state);
         _bufferB.SetState(row, column, state);
     }

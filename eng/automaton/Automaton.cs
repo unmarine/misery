@@ -5,30 +5,24 @@ namespace misery.eng.automaton;
 
 public class Automaton
 {
-
-    private Dictionary<State, int> _quantityOfStates = new Dictionary<State, int>();
-    public List<Dictionary<State, int>> Records = new();
-
-    public event Action? GridUpdated;
-    public event Action? GridCleared;
-    public event Action<int, Dictionary<State, int>>? GenerationAdvanced;
-
-    public Pathfinding PathFinder = new DijkstraSearch();
-
     public string Name;
+    public readonly int Columns, Rows;
+    
+    public List<Dictionary<State, int>> Records = new();
+    private Dictionary<State, int> _quantityOfStates = new Dictionary<State, int>();
 
-    public System.Windows.Forms.Timer? Clock;
-
+    public DoubleBuffer doubleBuffer;
     public Simulation simulation;
-
+    public Pathfinding PathFinder = new DijkstraSearch();
+    public System.Windows.Forms.Timer? Clock;
+    
     public List<Coordinate> Path { get; private set; } = new();
     public Coordinate PathStart { get; set; } = new Coordinate(-1, -1);
     public Coordinate PathEnd { get; set; } = new Coordinate(-1, -1);
 
-    public readonly int Columns, Rows;
-
-
-    public DoubleBuffer doubleBuffer;
+    public event Action? GridUpdated;
+    public event Action? GridCleared;
+    public event Action<int, Dictionary<State, int>>? GenerationAdvanced;
 
 
     public Automaton(INeighborhood neighborhood, int height, int width, RuleSet ruleSet, string name)
