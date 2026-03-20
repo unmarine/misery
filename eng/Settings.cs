@@ -1,7 +1,7 @@
-﻿using misery.Components;
+﻿using misery.components;
 using misery.eng.automaton;
 
-namespace misery.Eng;
+namespace misery.eng;
 
 public static class Settings
 {

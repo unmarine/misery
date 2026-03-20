@@ -1,15 +1,10 @@
 ﻿using misery.eng.neighborhoods;
 using misery.eng.pathfinding;
-using misery.Eng;
 
 namespace misery.eng.automaton;
 
 public class Automaton
 {
-    private readonly RuleSet? _ruleSet;
-    private INeighborhood _neighborhood;
-
-    private int _generation;
 
     private Dictionary<State, int> _quantityOfStates = new Dictionary<State, int>();
     public List<Dictionary<State, int>> Records = new();
@@ -19,12 +14,12 @@ public class Automaton
     public event Action<int, Dictionary<State, int>>? GenerationAdvanced;
 
     public Pathfinding PathFinder = new DijkstraSearch();
-    //public event Action PathChanged;
 
     public string Name;
 
     public System.Windows.Forms.Timer? Clock;
 
+    public Simulation simulation;
 
     public List<Coordinate> Path { get; private set; } = new();
     public Coordinate PathStart { get; set; } = new Coordinate(-1, -1);
@@ -32,90 +27,33 @@ public class Automaton
 
     public readonly int Columns, Rows;
 
-    private bool _isExploitingBufferA = true;
-    private readonly Grid _bufferA;
-    private readonly Grid _bufferB;
+
+    public DoubleBuffer doubleBuffer;
 
 
-    public Grid GetReadyGrid()
+    public Automaton(INeighborhood neighborhood, int height, int width, RuleSet ruleSet, string name)
     {
-        return _isExploitingBufferA ? _bufferA : _bufferB;
-    }
-
-    public void ForceState(int row, int column, State state)
-    {
-        if (!_bufferA.IsInside(row, column) || !_bufferB.IsInside(row, column)) return;
-        _bufferA.SetState(row, column, state);
-        _bufferB.SetState(row, column, state);
-    }
-    public Grid GetUnexploitedGrid()
-    {
-        return _isExploitingBufferA ? _bufferB : _bufferA;
-    }
-
-    public Automaton(INeighborhood neighborhood, int height, int width, RuleSet? ruleSet, string name)
-    {
-        _neighborhood = neighborhood;
-        _ruleSet = ruleSet;
+        simulation = new Simulation(ruleSet, neighborhood);
         Columns = width;
         Name = name;
         Rows = height;
-        _bufferA = new Grid(Rows, Columns);
-        _bufferB = new Grid(Rows, Columns);
+        doubleBuffer = new DoubleBuffer(Rows, Columns);
+        Name = name == "" ? ruleSet.ToString() : name;
     }
 
-    public void ChangeNeighborhood(INeighborhood neighborhood)
-    {
-        _neighborhood = neighborhood;
-    }
-
-    public override string ToString()
-    {
-        if (Name == "") return _ruleSet!.ToString();
-        else return Name;
-    }
+    public override string ToString() => Name;
 
     public void Advance()
     {
-        _generation++;
-
-        var readFrom = _isExploitingBufferA ? _bufferB : _bufferA;
-        var writeTo = _isExploitingBufferA ? _bufferA : _bufferB;
-
-        for (int row = 0; row < Rows; row++)
-            for (int column = 0; column < Columns; column++)
-            {
-                writeTo.SetState(row, column, new State(0));
-            }
-
-        Parallel.For(0, Rows, row =>
-        {
-            for (int column = 0; column < Columns; column++)
-            {
-                var current = readFrom.ReadState(row, column);
-
-                if (_ruleSet == null) continue;
-                List<Condition>? conditions = _ruleSet.GetConditionsForState(current);
-                if (conditions == null) continue;
-                foreach (var condition in conditions)
-                {
-                    var neighbors = _neighborhood.Count(readFrom, condition.Counted,
-                                    new Coordinate(row, column), 1);
-
-                    if (condition.IsUnconditional)
-                        writeTo.SetState(row, column, condition.Resulting);
-                    else if (condition.IsWithin(neighbors))
-                        writeTo.SetState(row, column, condition.Resulting);
-                }
-            }
-        });
+        simulation.Advance(doubleBuffer.ReadBuffer, doubleBuffer.WriteBuffer, Rows, Columns);
+        doubleBuffer.Swap();
 
         var counts = new Dictionary<State, int>();
         for (int row = 0; row < Rows; row++)
         {
             for (int column = 0; column < Columns; column++)
             {
-                State s = writeTo.ReadState(row, column);
+                State s = doubleBuffer.WriteBuffer.ReadState(row, column);
                 counts.TryAdd(s, 0);
                 counts[s]++;
             }
@@ -124,23 +62,18 @@ public class Automaton
         _quantityOfStates = counts;
         Records.Add(counts);
 
-        _isExploitingBufferA = !_isExploitingBufferA;
         GridUpdated?.Invoke();
-        GenerationAdvanced?.Invoke(_generation, _quantityOfStates);
+        GenerationAdvanced?.Invoke(simulation.Generation, _quantityOfStates);
     }
 
     public void Clear()
     {
         for (int row = 0; row < Rows; row++)
-        {
             for (int column = 0; column < Columns; column++)
-            {
-                ForceState(row, column, new State(0));
+                doubleBuffer.ForceState(row, column, new State(0));
                 _quantityOfStates.Clear();
-            }
-        }
 
-        _generation = 0;
+        simulation.Reset();
         GridCleared?.Invoke();
         GridUpdated?.Invoke();
     }
@@ -152,7 +85,7 @@ public class Automaton
             for (int column = 0; column < Columns; column++)
             {
                 var value = random.Next(lowest, greatest + 1);
-                ForceState(row, column, new State(value));
+                doubleBuffer.ForceState(row, column, new State(value));
                 if (_quantityOfStates.ContainsKey(new State(value)))
                     _quantityOfStates[new State(value)]++;
                 else _quantityOfStates.Add(new State(value), 1);

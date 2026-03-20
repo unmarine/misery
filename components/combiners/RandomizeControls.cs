@@ -1,5 +1,4 @@
-﻿using misery.Components;
-using misery.eng.automaton;
+﻿using misery.eng.automaton;
 
 namespace misery.components.combiners;
 

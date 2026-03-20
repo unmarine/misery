@@ -1,9 +1,8 @@
 ﻿using misery.components;
 using misery.components.buttons;
 using misery.components.combiners;
-using misery.Components;
 using misery.eng.automaton;
-using misery.Eng;
+using misery.eng;
 using misery.utils;
 
 namespace misery.windows;

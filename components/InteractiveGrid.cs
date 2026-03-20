@@ -2,9 +2,9 @@
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using misery.eng.automaton;
-using misery.Eng;
+using misery.eng;
 
-namespace misery.Components;
+namespace misery.components;
 
 public enum InteractiveGridMode
 {
@@ -48,7 +48,7 @@ public sealed class InteractiveGrid : Panel
 
     private void UpdateBitmap()
     {
-        Grid grid = _automaton.GetReadyGrid();
+        Grid grid = _automaton.doubleBuffer.ReadBuffer;
         BitmapData data = _canvas.LockBits(new Rectangle(0, 0, _canvas.Width, _canvas.Height),
                                          ImageLockMode.WriteOnly, _canvas.PixelFormat);
 
@@ -69,9 +69,9 @@ public sealed class InteractiveGrid : Panel
             }
         }
         List<Coordinate> path = new();
-        if (_automaton.GetReadyGrid().IsInside(_automaton.PathStart) && _automaton.GetReadyGrid().IsInside(_automaton.PathEnd))
+        if (_automaton.doubleBuffer.ReadBuffer.IsInside(_automaton.PathStart) && _automaton.doubleBuffer.ReadBuffer.IsInside(_automaton.PathEnd))
         {
-            path = _automaton.PathFinder.FindPath(_automaton.GetReadyGrid(), _automaton.PathStart, _automaton.PathEnd);
+            path = _automaton.PathFinder.FindPath(_automaton.doubleBuffer.ReadBuffer, _automaton.PathStart, _automaton.PathEnd);
         }
 
         if (path.Count > 1)
@@ -100,19 +100,18 @@ public sealed class InteractiveGrid : Panel
         int row = (int)(e.Y / cellHeight);
 
 
-        if (!_automaton.GetReadyGrid().IsInside(row, column)) return;
+        if (!_automaton.doubleBuffer.ReadBuffer.IsInside(row, column)) return;
         Coordinate clickedCoordinate = new Coordinate(row, column);
 
         switch (CurrentMode)
         {
             case InteractiveGridMode.DrawCells:
                 {
-                    //_automaton.ForceState(row, column, new State(1));
                     for (int i = row - Settings.brushSize; i < row + Settings.brushSize - 1; i++)
                     {
                         for (int j = column - Settings.brushSize; j < column + Settings.brushSize; j++)
                         {
-                            _automaton.ForceState(i, j, new State(Settings.brushState));
+                            _automaton.doubleBuffer.ForceState(i, j, new State(Settings.brushState));
                         }
                     }
                     break;
@@ -121,14 +120,14 @@ public sealed class InteractiveGrid : Panel
                 {
                     StartPoint = clickedCoordinate;
                     _automaton.PathStart = clickedCoordinate;
-                    _automaton.ForceState(row, column, new State());
+                    _automaton.doubleBuffer.ForceState(row, column, new State());
                     break;
                 }
             case InteractiveGridMode.SetEnd:
                 {
                     EndPoint = clickedCoordinate;
                     _automaton.PathEnd = clickedCoordinate;
-                    _automaton.ForceState(row, column, new State());
+                    _automaton.doubleBuffer.ForceState(row, column, new State());
                     break;
                 }
         }

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
 using misery.eng.automaton;
-using misery.Eng;
+using misery.eng;
 
 namespace misery.components;
 

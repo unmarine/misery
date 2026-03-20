@@ -1,6 +1,6 @@
 ﻿using misery.eng.automaton;
 
-namespace misery.Eng;
+namespace misery.eng;
 
 public struct Condition : IEquatable<Condition>
 {
