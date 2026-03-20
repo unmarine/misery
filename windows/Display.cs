@@ -45,7 +45,7 @@ public class Display : Form
         Button colorSelectionButton = new Button();
         Button addColorButton = new Button();
         ListBox colorPairsList = new ListBox();
-        _ = new ColorPairsController(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
+        _ = new ColorPairsControls(stateForColor, colorSelectionButton, addColorButton, colorPairsList);
 
         ClearButton buttonClear = new ClearButton(_automaton);
 
@@ -74,9 +74,14 @@ public class Display : Form
 
         ComboBox pathfinders = new();
         Button selectPathfinder = new();
-        PathfindingControl pfc = new PathfindingControl(pathfinders, automaton, selectPathfinder);
+        PathfindingControls pfc = new PathfindingControls(pathfinders, automaton, selectPathfinder);
         _windowManager.PlaceControl(buttonToOverview, 0, 38, 1, 39);
 
+        NumericUpDown updownBrushSize = new NumericUpDown();
+        NumericUpDown updownBrushState = new NumericUpDown();
+        _ = new StateInputControls(updownBrushSize, updownBrushState);
+        _windowManager.PlaceControl(updownBrushSize, 23, 31, 22, 32);
+        _windowManager.PlaceControl(updownBrushState, 23, 33, 23, 34);
 
         _windowManager.PlaceControl(pathfinders, 0, 32, 0, 33);
         _windowManager.PlaceControl(selectPathfinder, 1, 32, 1, 33);

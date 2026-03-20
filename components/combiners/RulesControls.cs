@@ -2,7 +2,7 @@
 using misery.Eng;
 
 namespace misery.components.combiners;
-public class RulesController
+public class RulesControls
 {
 
     RuleSet? ruleSet;
@@ -11,7 +11,7 @@ public class RulesController
     Button addRuleButton;
     ListBox listOfRules;
 
-    public RulesController(RuleSet? ruleSet, NumericUpDown starting, NumericUpDown counted, NumericUpDown resulting, NumericUpDown lower, NumericUpDown upper, CheckBox isUnconditional, Button addRuleButton, ListBox listOfRules)
+    public RulesControls(RuleSet? ruleSet, NumericUpDown starting, NumericUpDown counted, NumericUpDown resulting, NumericUpDown lower, NumericUpDown upper, CheckBox isUnconditional, Button addRuleButton, ListBox listOfRules)
     {
         this.ruleSet = ruleSet;
         this.starting = starting;

@@ -2,7 +2,7 @@
 
 namespace misery.components.combiners
 {
-    public class ColorPairsController
+    public class ColorPairsControls
     {
         private NumericUpDown statePicker;
         private Button colorPicker;
@@ -10,7 +10,7 @@ namespace misery.components.combiners
         private ListBox pairsListBox;
         private Color selectedColor = Color.White;
 
-        public ColorPairsController(NumericUpDown statePicker, Button colorPicker, Button submitButton, ListBox pairsListBox)
+        public ColorPairsControls(NumericUpDown statePicker, Button colorPicker, Button submitButton, ListBox pairsListBox)
         {
             this.statePicker = statePicker;
             this.colorPicker = colorPicker;

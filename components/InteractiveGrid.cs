@@ -107,7 +107,14 @@ public sealed class InteractiveGrid : Panel
         {
             case InteractiveGridMode.DrawCells:
                 {
-                    _automaton.ForceState(row, column, new State(1));
+                    //_automaton.ForceState(row, column, new State(1));
+                    for (int i = row - Settings.brushSize; i < row + Settings.brushSize - 1; i++)
+                    {
+                        for (int j = column - Settings.brushSize; j < column + Settings.brushSize; j++)
+                        {
+                            _automaton.ForceState(i, j, new State(Settings.brushState));
+                        }
+                    }
                     break;
                 }
             case InteractiveGridMode.SetStart:

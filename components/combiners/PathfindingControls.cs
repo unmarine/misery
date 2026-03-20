@@ -3,9 +3,9 @@ using misery.eng.pathfinding;
 
 namespace misery.components.combiners
 {
-    public class PathfindingControl
+    public class PathfindingControls
     {
-        public PathfindingControl(ComboBox pathfinders, Automaton automaton, Button selectPathFinder)
+        public PathfindingControls(ComboBox pathfinders, Automaton automaton, Button selectPathFinder)
         {
             pathfinders.Items.Add(new AStarSearch());
             pathfinders.Items.Add(new DijkstraSearch());

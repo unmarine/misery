@@ -49,7 +49,7 @@ public sealed class Setup : Form
         Button addRuleButton = new Button();
         ListBox rules = new ListBox();
 
-        _ = new RulesController(_ruleSet, updownStarting,
+        _ = new RulesControls(_ruleSet, updownStarting,
             updownCounted, updownResulting,
             updownLower, updownUpper,
             isUnconditional, addRuleButton, rules);

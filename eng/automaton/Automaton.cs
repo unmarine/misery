@@ -44,6 +44,7 @@ public class Automaton
 
     public void ForceState(int row, int column, State state)
     {
+        if (!_bufferA.IsInside(row, column) || !_bufferB.IsInside(row, column)) return;
         _bufferA.SetState(row, column, state);
         _bufferB.SetState(row, column, state);
     }

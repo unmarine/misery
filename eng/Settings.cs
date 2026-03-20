@@ -5,10 +5,10 @@ namespace misery.Eng;
 
 public static class Settings
 {
+    public static int brushSize = 1, brushState = 1;
     public static InteractiveGrid? DisplayedGrid;
 
     public static event Action? ColorsChanged;
-
     public static readonly Dictionary<int, Color> ColorByStateValue = new();
 
     public static void SetColorForState(int state, Color color)
@@ -36,8 +36,10 @@ public static class Settings
         return ColorByStateValue.TryGetValue(value, out var color) ? color : Color.Black;
     }
 
-    public static Color GetColorByState(State state)
-    {
-        return GetColorByValue(state.Value);
-    }
+    public static Color GetColorByState(State state) => GetColorByValue(state.Value);
+
+    public static void SetBrushSize(int size) => brushSize = size;
+    public static void SetState(int state) => brushState = state;
+    public static void SetState(State state) => brushState = state.Value;
+
 }
