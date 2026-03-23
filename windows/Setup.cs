@@ -1,4 +1,5 @@
-﻿using misery.components.combiners;
+﻿using System.Net.Http.Headers;
+using misery.components.combiners;
 using misery.eng;
 using misery.eng.automaton;
 using misery.eng.neighborhoods;
@@ -24,7 +25,7 @@ public sealed class Setup : Form
     {
         Height = 900; Width = 1000;
         Text = @"Create Custom Automaton";
-        _windowManager = new WindowManager(this, 12, 16);
+        _windowManager = new WindowManager(this, 12, 9);
         _simulationManager = simulationManager;
 
 
@@ -84,38 +85,47 @@ public sealed class Setup : Form
         {
             WindowManager.MoveForms(this, new Overview(_simulationManager));
         };
-        _windowManager.PlaceControl(_buttonLeave, 11, 13, 11, 15);
+        _windowManager.PlaceControl(_buttonLeave, 11, 8, 11, 8);
+        _windowManager.PlaceControl(new Label() { Text = "Description of simulation" }, 0,0, 0,8);
 
-        _windowManager.PlaceControl(_textboxName, 0, 9, 0, 11);
 
-        _windowManager.PlaceControl(widthLabel, 0, 7, 0, 7);
-        _windowManager.PlaceControl(_updownWidth, 1, 7, 1, 7);
-        _windowManager.PlaceControl(heightLabel, 0, 8, 0, 8);
-        _windowManager.PlaceControl(_updownHeight, 1, 8, 1, 8);
+        _windowManager.PlaceControl(new Label() { Text = "Name" }, 1,0, 1,1);
+        _windowManager.PlaceControl(_textboxName, 2, 0, 2, 1);
 
-        _windowManager.PlaceControl(labelStarting, 0, 0, 0, 0);
-        _windowManager.PlaceControl(updownStarting, 1, 0, 1, 0);
+        _windowManager.PlaceControl(new Label() {  Text= "Width" }, 1, 2, 1, 3);
+        _windowManager.PlaceControl(_updownWidth, 2, 2, 2, 3);
 
-        _windowManager.PlaceControl(labelCounted, 0, 1, 0, 1);
-        _windowManager.PlaceControl(updownCounted, 1, 1, 1, 1);
+        _windowManager.PlaceControl(new Label() { Text = "Height"}, 1, 4, 1, 5);
+        _windowManager.PlaceControl(_updownHeight, 2, 4, 2, 5);
 
-        _windowManager.PlaceControl(labelResulting, 0, 2, 0, 2);
-        _windowManager.PlaceControl(updownResulting, 1, 2, 1, 2);
+        _windowManager.PlaceControl(labelStarting, 7, 2, 7, 2);
+        _windowManager.PlaceControl(updownStarting, 8, 2, 8, 2);
 
-        _windowManager.PlaceControl(labelLower, 0, 3, 0, 3);
-        _windowManager.PlaceControl(updownLower, 1, 3, 1, 3);
+        _windowManager.PlaceControl(labelCounted, 9, 2, 9, 2);
+        _windowManager.PlaceControl(updownCounted, 10, 2, 10, 2);
 
-        _windowManager.PlaceControl(labelUpper, 0, 4, 0, 4);
-        _windowManager.PlaceControl(updownUpper, 1, 4, 1, 4);
+        _windowManager.PlaceControl(labelResulting, 7, 3, 7, 3);
+        _windowManager.PlaceControl(updownResulting, 8, 3, 8, 3);
 
-        _windowManager.PlaceControl(isUnconditional, 0, 5, 0, 5);
-        _windowManager.PlaceControl(addRuleButton, 1, 5, 1, 5);
-        _windowManager.PlaceControl(rules, 2, 0, 11, 5);
+        _windowManager.PlaceControl(labelLower, 9, 3, 9, 3);
+        _windowManager.PlaceControl(updownLower, 10, 3, 10, 3);
 
-        _windowManager.PlaceControl(_buttonAddSimulation, 0, 12, 0, 15);
+        _windowManager.PlaceControl(labelUpper, 7, 4, 7, 4);
+        _windowManager.PlaceControl(updownUpper, 8, 4, 8, 4);
 
-        _windowManager.PlaceControl(_comboboxPresets, 1, 12, 1, 12);
-        _windowManager.PlaceControl(_buttonUsePreset, 1, 13, 1, 15);
+        _windowManager.PlaceControl(new Label() { Text = "Awlays" }, 9, 4, 9, 4);
+        _windowManager.PlaceControl(isUnconditional, 10, 4, 10, 4);
+        
+        _windowManager.PlaceControl(addRuleButton, 11, 2, 11, 3);
+
+        _windowManager.PlaceControl(rules, 7, 0, 11, 1);
+
+        _windowManager.PlaceControl(_buttonAddSimulation, 11, 4, 11, 4);
+
+        _windowManager.PlaceControl(new Label() { Text = "Logic of simulation" }, 6, 0, 6, 8);
+
+        _windowManager.PlaceControl(_buttonUsePreset, 7, 6, 7,  7);
+        _windowManager.PlaceControl(_comboboxPresets, 8, 6, 8,  7);
     }
 
     private void addPreset(object? sender, EventArgs e)

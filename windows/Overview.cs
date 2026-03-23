@@ -15,10 +15,10 @@ public class Overview : Form
     {
         _simulationManager = simulationManager;
 
-        ClientSize = new Size(600, 200);
+        ClientSize = new Size(600, 100);
         Text = "Overview of simulations";
         DoubleBuffered = true;
-        _windowManager = new WindowManager(this, 10, 10);
+        _windowManager = new WindowManager(this, 3, 2);
 
         buttonSelectSimulation = new Button();
         buttonSelectSimulation.Text = "Select";
@@ -27,7 +27,6 @@ public class Overview : Form
 
         comboboxListOfSimulations = new ComboBox();
         comboboxListOfSimulations.Text = "Choose simulation";
-
 
         comboboxListOfSimulations.Items.Clear();
         if (simulationManager.Simulations.Count > 0)
@@ -46,9 +45,9 @@ public class Overview : Form
             WindowManager.MoveForms(this, setupForm);
         };
 
-        _windowManager.PlaceControl(create, 2, 7, 3, 9);
-        _windowManager.PlaceControl(comboboxListOfSimulations, 0, 0, 2, 6);
-        _windowManager.PlaceControl(buttonSelectSimulation, 0, 7, 1, 9);
+        _windowManager.PlaceControl(comboboxListOfSimulations, 0, 0, 0, 1);
+        _windowManager.PlaceControl(buttonSelectSimulation, 1, 0, 2, 0);
+        _windowManager.PlaceControl(create, 1, 1, 2, 1);
     }
 
 
