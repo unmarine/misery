@@ -6,9 +6,7 @@ public class Simulation
 {
     private readonly RuleSet? _ruleSet;
     private INeighborhood _neighborhood;
-    private int _generation;
-
-    public int Generation => _generation;
+    public int Generation { get ; private set; }
 
     public Simulation(RuleSet ruleSet, INeighborhood neighborhood)
     {
@@ -18,7 +16,7 @@ public class Simulation
 
     public void Advance(Grid readFrom, Grid writeTo, int rows, int columns)
     {
-        _generation++;
+        Generation++;
         ClearBuffer(writeTo, rows, columns);
         ApplyRules(readFrom, writeTo, rows, columns);
     }
@@ -55,7 +53,7 @@ public class Simulation
         });
     }
 
-    public void Reset() => _generation = 0;
+    public void Reset() => Generation = 0;
     public void ChangeNeighborhood(INeighborhood neighborhood) => _neighborhood = neighborhood;
 }
 
