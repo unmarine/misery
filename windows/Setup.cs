@@ -12,6 +12,7 @@ public sealed class Setup : Form
     SimulationManager _simulationManager;
 
 
+
     RuleSet? _ruleSet = new RuleSet("Unknown");
 
     Button _buttonAddSimulation = new Button() { Text = @"Add Simulation" };
@@ -29,19 +30,14 @@ public sealed class Setup : Form
         _simulationManager = simulationManager;
 
 
-        Label labelStarting = new Label() { Text = @"Starting" };
         NumericUpDown updownStarting = new NumericUpDown();
 
-        Label labelCounted = new Label() { Text = @"Counted" };
         NumericUpDown updownCounted = new NumericUpDown();
 
-        Label labelResulting = new Label() { Text = @"Resulting" };
         NumericUpDown updownResulting = new NumericUpDown();
 
-        Label labelLower = new Label() { Text = @"Lower" };
         NumericUpDown updownLower = new NumericUpDown();
 
-        Label labelUpper = new Label() { Text = @"Upper" };
         NumericUpDown updownUpper = new NumericUpDown();
 
 
@@ -67,10 +63,7 @@ public sealed class Setup : Form
             _comboboxPresets.Items.Add(ruleSet);
         }
 
-        Label widthLabel = new Label { Text = @"Width" };
         _updownWidth = new NumericUpDown();
-
-        Label heightLabel = new Label { Text = @"Height" };
         _updownHeight = new NumericUpDown();
 
         _updownWidth.Minimum = 1;
@@ -86,46 +79,46 @@ public sealed class Setup : Form
             WindowManager.MoveForms(this, new Overview(_simulationManager));
         };
         _windowManager.PlaceControl(_buttonLeave, 11, 8, 11, 8);
-        _windowManager.PlaceControl(new Label() { Text = "Description of simulation" }, 0,0, 0,8);
+        _windowManager.PlaceLabel("Description of simulation", 0, 0, 0, 8);
 
 
-        _windowManager.PlaceControl(new Label() { Text = "Name" }, 1,0, 1,1);
+        _windowManager.PlaceLabel("Name", 1, 0, 1, 1);
         _windowManager.PlaceControl(_textboxName, 2, 0, 2, 1);
 
-        _windowManager.PlaceControl(new Label() {  Text= "Width" }, 1, 2, 1, 3);
+        _windowManager.PlaceLabel("Width", 1, 2, 1, 3);
         _windowManager.PlaceControl(_updownWidth, 2, 2, 2, 3);
 
-        _windowManager.PlaceControl(new Label() { Text = "Height"}, 1, 4, 1, 5);
+        _windowManager.PlaceLabel("Height", 1, 4, 1, 5);
         _windowManager.PlaceControl(_updownHeight, 2, 4, 2, 5);
 
-        _windowManager.PlaceControl(labelStarting, 7, 2, 7, 2);
+        _windowManager.PlaceLabel("Starting", 7, 2, 7, 2);
         _windowManager.PlaceControl(updownStarting, 8, 2, 8, 2);
 
-        _windowManager.PlaceControl(labelCounted, 9, 2, 9, 2);
+        _windowManager.PlaceLabel("Counted", 9, 2, 9, 2);
         _windowManager.PlaceControl(updownCounted, 10, 2, 10, 2);
 
-        _windowManager.PlaceControl(labelResulting, 7, 3, 7, 3);
+        _windowManager.PlaceLabel("Resulting", 7, 3, 7, 3);
         _windowManager.PlaceControl(updownResulting, 8, 3, 8, 3);
 
-        _windowManager.PlaceControl(labelLower, 9, 3, 9, 3);
+        _windowManager.PlaceLabel("Lower", 9, 3, 9, 3);
         _windowManager.PlaceControl(updownLower, 10, 3, 10, 3);
 
-        _windowManager.PlaceControl(labelUpper, 7, 4, 7, 4);
+        _windowManager.PlaceLabel("Upper", 7, 4, 7, 4);
         _windowManager.PlaceControl(updownUpper, 8, 4, 8, 4);
 
-        _windowManager.PlaceControl(new Label() { Text = "Awlays" }, 9, 4, 9, 4);
+        _windowManager.PlaceLabel("Awlays", 9, 4, 9, 4);
         _windowManager.PlaceControl(isUnconditional, 10, 4, 10, 4);
-        
+
         _windowManager.PlaceControl(addRuleButton, 11, 2, 11, 3);
 
         _windowManager.PlaceControl(rules, 7, 0, 11, 1);
 
         _windowManager.PlaceControl(_buttonAddSimulation, 11, 4, 11, 4);
 
-        _windowManager.PlaceControl(new Label() { Text = "Logic of simulation" }, 6, 0, 6, 8);
+        _windowManager.PlaceLabel("Logic of simulation", 6, 0, 6, 8);
 
-        _windowManager.PlaceControl(_buttonUsePreset, 7, 6, 7,  7);
-        _windowManager.PlaceControl(_comboboxPresets, 8, 6, 8,  7);
+        _windowManager.PlaceControl(_buttonUsePreset, 7, 6, 7, 7);
+        _windowManager.PlaceControl(_comboboxPresets, 8, 6, 8, 7);
     }
 
     private void addPreset(object? sender, EventArgs e)
@@ -155,7 +148,6 @@ public sealed class Setup : Form
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        _windowManager.Debug(e.Graphics);
+        //_windowManager.Debug(e.Graphics);
     }
 }
-

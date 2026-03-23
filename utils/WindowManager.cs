@@ -36,6 +36,10 @@ public class WindowManager
             ((Button)control).FlatStyle = FlatStyle.Flat;
         }
     }
+    public void PlaceLabel(string text, int firstRow, int firstColumn, int secondRow, int secondColumn) { 
+        Label label = new Label() { Text = text };
+        PlaceControl(label, firstRow, firstColumn, secondRow, secondColumn);
+    }
 
     public void Debug(Graphics g)
     {
