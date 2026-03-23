@@ -78,9 +78,14 @@ public class Display : Form
 
         NumericUpDown updownBrushSize = new NumericUpDown();
         NumericUpDown updownBrushState = new NumericUpDown();
-        _ = new StateInputControls(updownBrushSize, updownBrushState);
-        _windowManager.PlaceControl(updownBrushSize, 23, 31, 22, 32);
-        _windowManager.PlaceControl(updownBrushState, 23, 33, 23, 34);
+        _ = new StateInputControls(updownBrushState, updownBrushSize);
+
+        _windowManager.PlaceLabel("Brush Size", 22, 33, 22, 34);
+        _windowManager.PlaceControl(updownBrushSize, 23, 33, 23, 34);
+
+        _windowManager.PlaceLabel("Brush State", 22, 31, 22, 32);
+        _windowManager.PlaceControl(updownBrushState, 23, 31, 23, 32);
+
 
         _windowManager.PlaceControl(pathfinders, 0, 32, 0, 33);
         _windowManager.PlaceControl(selectPathfinder, 1, 32, 1, 33);

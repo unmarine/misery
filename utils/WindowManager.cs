@@ -25,15 +25,50 @@ public class WindowManager
         var a = _space.Tiles[firstRow, firstColumn];
         var b = _space.Tiles[secondRow, secondColumn];
 
-        control.Left = _space.GetLowestLeft(a, b);
-        control.Top = _space.GetLowestTop(a, b);
-        control.Width = _space.GetWidthBetween(a, b);
-        control.Height = _space.GetHeightBetween(a, b);
+        control.Left = (int)float.Round(_space.GetLowestLeft(a, b));
+        control.Top = (int)float.Round(_space.GetLowestTop(a, b));
+        control.Width = (int)float.Round(_space.GetWidthBetween(a, b));
+        control.Height = (int)float.Round(_space.GetHeightBetween(a, b));
         control.BackColor = Color.White;
 
-        if (control is Button)
+        control.BackColor = Color.FromArgb(250, 250, 250);
+        control.ForeColor = Color.FromArgb(30, 30, 30);
+        control.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+
+        _form.BackColor = Color.FromArgb(230, 230, 230);
+
+        switch (control)
         {
-            ((Button)control).FlatStyle = FlatStyle.Flat;
+            case Button button:
+                {
+                    button.FlatStyle = FlatStyle.Flat;
+                    button.FlatAppearance.BorderSize = 1;
+                    button.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
+                    button.Padding = new Padding(6, 4, 6, 4);
+                    button.TextAlign = ContentAlignment.MiddleCenter;
+                    button.BackColor = Color.FromArgb(240, 240, 240);
+                    button.Cursor = Cursors.Hand;
+
+                    break;
+                }
+            case Label label:
+                {
+                    label.AutoSize = false;
+                    label.TextAlign = ContentAlignment.BottomLeft;
+                    label.Padding = new Padding(4, 2, 4, 2);
+                    //label.BackColor = Color.Transparent;
+                    break;
+                }
+            case TextBox textBox:
+                {
+                    textBox.BorderStyle = BorderStyle.FixedSingle;
+                    textBox.Margin = new Padding(0);
+                    break;
+                }
+                case NumericUpDown numericUpDown:
+                {
+                    break;
+                }
         }
     }
     public void PlaceLabel(string text, int firstRow, int firstColumn, int secondRow, int secondColumn) { 
@@ -113,42 +148,37 @@ internal class Space
             }
     }
 
-    public int GetHeightBetween(Tile a, Tile b)
+    public float GetHeightBetween(Tile a, Tile b)
     {
         float lowestTop = GetLowestTop(a, b);
         float highestBottom = Math.Max(a.Top + a.Height, b.Top + b.Height);
         return (int)(highestBottom - lowestTop);
     }
 
-    public int GetWidthBetween(Tile a, Tile b)
+    public float GetWidthBetween(Tile a, Tile b)
     {
         float lowestLeft = GetLowestLeft(a, b);
         float highestRight = Math.Max(a.Left + a.Width, b.Left + b.Width);
         return (int)(highestRight - lowestLeft);
     }
 
-    public int GetLowestTop(Tile a, Tile b)
+    public float GetLowestTop(Tile a, Tile b)
     {
         return Math.Min(a.Top, b.Top);
     }
 
-    public int GetLowestLeft(Tile a, Tile b)
+    public float GetLowestLeft(Tile a, Tile b)
     {
         return Math.Min(a.Left, b.Left);
-    }
-
-    public (int, int) GetHeightWidthBetween(Tile a, Tile b)
-    {
-        return (GetHeightBetween(a, b), GetWidthBetween(a, b));
     }
 }
 
 internal class Tile
 {
-    public int Top, Left; // upper left corner
-    public int Width, Height;
+    public float Top, Left; // upper left corner
+    public float Width, Height;
 
-    public Tile(int top, int left, int height, int width)
+    public Tile(float top, float left, float height, float width)
     {
         Top = top;
         Left = left;
