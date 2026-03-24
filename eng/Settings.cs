@@ -25,8 +25,8 @@ public static class Settings
 
     public static void SetDefaultColorStatePairs()
     {
-        ColorByStateValue.TryAdd(0, Color.Black);
-        ColorByStateValue.TryAdd(1, Color.RebeccaPurple);
+        ColorByStateValue.TryAdd(0, Color.DarkCyan);
+        ColorByStateValue.TryAdd(1, Color.Yellow);
         ColorByStateValue.TryAdd(2, Color.Khaki);
         ColorsChanged?.Invoke();
     }

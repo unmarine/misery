@@ -25,6 +25,7 @@ public sealed class InteractiveGrid : Panel
     public Coordinate StartPoint { get; set; }
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Coordinate EndPoint { get; set; }
+    List<Coordinate> PreviousPath = new List<Coordinate>();
 
     public InteractiveGrid(Automaton initial)
     {
@@ -73,16 +74,19 @@ public sealed class InteractiveGrid : Panel
         {
             path = _automaton.PathFinder.FindPath(_automaton.doubleBuffer.ReadBuffer, _automaton.PathStart, _automaton.PathEnd);
         }
-
-        if (path.Count > 1)
+        if (!(path == PreviousPath))
         {
-            foreach (Coordinate c in path)
+            PreviousPath = path;
+            if (path.Count > 1)
             {
-                int index = (c.Row * data.Stride) + (c.Column * 4);
-                _rgbaValues[index] = 0;
-                _rgbaValues[index + 1] = 0xff;
-                _rgbaValues[index + 2] = 0;
-                _rgbaValues[index + 3] = 0xff;
+                foreach (Coordinate c in path)
+                {
+                    int index = (c.Row * data.Stride) + (c.Column * 4);
+                    _rgbaValues[index] = 0;
+                    _rgbaValues[index + 1] = 0xff;
+                    _rgbaValues[index + 2] = 0;
+                    _rgbaValues[index + 3] = 0xff;
+                }
             }
         }
 
@@ -107,13 +111,10 @@ public sealed class InteractiveGrid : Panel
         {
             case InteractiveGridMode.DrawCells:
                 {
-                    for (int i = row - Settings.brushSize; i < row + Settings.brushSize - 1; i++)
-                    {
-                        for (int j = column - Settings.brushSize; j < column + Settings.brushSize; j++)
-                        {
+                    if (Settings.brushSize == 1) _automaton.doubleBuffer.ForceState(row, column, new State(Settings.brushState));
+                    else for (int i = row - Settings.brushSize; i < row + Settings.brushSize / 2 - 1; i++)
+                        for (int j = column - Settings.brushSize; j < column + Settings.brushSize / 2 - 1; j++)
                             _automaton.doubleBuffer.ForceState(i, j, new State(Settings.brushState));
-                        }
-                    }
                     break;
                 }
             case InteractiveGridMode.SetStart:
