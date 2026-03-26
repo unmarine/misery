@@ -59,12 +59,12 @@ public sealed class InteractiveGrid : Panel
             {
                 State state = grid.ReadState(row, column);
                 //Color color = Settings.GetColorByState(state);
-                double t = state.GetNormalizedIndex(50);
+                double t = state.GetNormalizedIndex();
+
                 byte r = (byte)(255 * (1.0 - t));
                 byte g = 0;
                 byte b = (byte)(255 * t);
                 byte a = 0xff;
-
 
                 int index = (row * data.Stride) + (column * 4);
 

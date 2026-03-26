@@ -7,27 +7,31 @@ public struct State : IEquatable<State>
     public State(int value) => Value = value;
     public State() => Value = 0;
 
-    private int transitions = 0;
-    private int lastValueSnapshot = 0;
+    private int lastAlive;          // 0/1 snapshot
+    private double activity;        // 0..1 activity level
+
+    private const double DecayFactor = 0.95; // per generation
+
     public void Older()
     {
-        int current = (Value == 0) ? 0 : 1;
-        if (current != lastValueSnapshot)
+        int currentAlive = (Value == 0) ? 0 : 1;
+        if (currentAlive != lastAlive)
         {
-            transitions++;
-            lastValueSnapshot = current;
+            activity = 1.0;        // spike on transition
+            lastAlive = currentAlive;
+        }
+        else
+        {
+            activity *= DecayFactor; // decay when no transition
+            if (activity < 1e-6) activity = 0.0;
         }
     }
-    public int GetAge()
-    {
-        return transitions;
-    }
 
-    public double GetNormalizedIndex(int maxExpectedTransitions = 100)
-    {
-        if (maxExpectedTransitions <= 0) return 0.0;
-        return Math.Min(1.0, (double)transitions / maxExpectedTransitions);
-    }
+    // expose 0..1 index for coloring
+    public double GetNormalizedIndex(int _ = 1) => activity;
+
+    // optional: raw for diagnostics
+    public double GetActivity() => activity;
 
     public bool Equals(State other) => Value == other.Value;
     public override bool Equals(object? obj) => obj is State other && Equals(other);

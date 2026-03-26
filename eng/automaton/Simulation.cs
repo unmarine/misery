@@ -17,7 +17,15 @@ public class Simulation
     public void Advance(Grid readFrom, Grid writeTo, int rows, int columns)
     {
         Generation++;
-        ClearBuffer(writeTo, rows, columns);
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c < columns; c++)
+            {
+                var dest = writeTo.ReadState(r, c);
+                dest.Value = 0;
+                writeTo.SetState(r, c, dest);
+            }
+
+        //ClearBuffer(writeTo, rows, columns);
         ApplyRules(readFrom, writeTo, rows, columns);
 
         for (int r = 0; r < rows; r++)
