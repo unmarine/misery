@@ -4,6 +4,7 @@ using misery.components.combiners;
 using misery.eng.automaton;
 using misery.eng;
 using misery.utils;
+using misery.components.pathfinding;
 
 namespace misery.windows;
 public class Display : Form
@@ -31,9 +32,6 @@ public class Display : Form
 
         _interactiveGrid = new InteractiveGrid(_automaton);
 
-        /* Button for randomizing grid with random states. 
-         * If lower bound is 0, and upper bound is 3, then grid will be randomly filled with states 0,1,2,3
-        */
         Button buttonRandomize = new Button();
         NumericUpDown updownLowerBound = new NumericUpDown();
         NumericUpDown updownUpperBound = new NumericUpDown();
@@ -55,17 +53,9 @@ public class Display : Form
             WindowManager.MoveForms(this, overview);
         };
 
-        Button buttonSetStart = new Button() { Text = @"Set Start" };
-        buttonSetStart.Click += (s, e) =>
-        {
-            _interactiveGrid.CurrentMode = InteractiveGridMode.SetStart;
-        };
+        SetStartButton buttonSetStart = new SetStartButton(_interactiveGrid);
 
-        Button buttonSetEnd = new Button() { Text = @"Set End" };
-        buttonSetEnd.Click += (s, e) =>
-        {
-            _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
-        };
+        SetEndButton buttonSetEnd = new SetEndButton(_interactiveGrid);
 
 
         PopulationChart pc = new PopulationChart(automaton);
