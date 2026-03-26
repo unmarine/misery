@@ -71,6 +71,9 @@ public class Display : Form
         var brushControls = new StateInputControls(updownBrushState, updownBrushSize);
         brushControls.Actualize();
 
+        SwitchColorView sclButton = new SwitchColorView() { Text = "Check activity" };
+        _windowManager.PlaceControl(sclButton, 0, 34, 1, 35);
+        
         _windowManager.PlaceLabel("Brush Size", 22, 33, 22, 34);
         _windowManager.PlaceControl(updownBrushSize, 23, 33, 23, 34);
 
@@ -104,6 +107,6 @@ public class Display : Form
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        //_windowManager.Debug(e.Graphics);
+        _windowManager.Debug(e.Graphics);
     }
 }

@@ -57,22 +57,30 @@ public sealed class InteractiveGrid : Panel
         {
             for (int column = 0; column < _automaton.Columns; column++)
             {
+                byte r, g, b, a;
                 State state = grid.ReadState(row, column);
-                //Color color = Settings.GetColorByState(state);
-                double t = state.GetNormalizedIndex();
 
-                byte r = (byte)(255 * (1.0 - t));
-                byte g = 0;
-                byte b = (byte)(255 * t);
-                byte a = 0xff;
+                if (Settings.IsViewingActivity)
+                {
+                    double t = state.GetNormalizedIndex();
+
+                    r = (byte)(255 * (1.0 - t));
+                    g = 0;
+                    b = (byte)(255 * t);
+                    a = 0xff;
+                } else
+                {
+                    Color color = Settings.GetColorByValue(state.Value);
+                    r = color.R;
+                    g = color.G; 
+                    b = color.B;
+                    a = color.A;
+                }
+
+
 
                 int index = (row * data.Stride) + (column * 4);
 
-                //_rgbaValues[index] = color.B;
-                //_rgbaValues[index + 1] = color.G;
-                //_rgbaValues[index + 2] = color.R;
-                //_rgbaValues[index + 3] = color.A;
-                
                 _rgbaValues[index] = b;
                 _rgbaValues[index + 1] = g;
                 _rgbaValues[index + 2] = r;

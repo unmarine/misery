@@ -8,6 +8,8 @@ public static class Settings
     public static int brushSize = 1, brushState = 1;
     public static InteractiveGrid? DisplayedGrid;
 
+    public static bool IsViewingActivity = false;
+
     public static event Action? ColorsChanged;
     public static readonly Dictionary<int, Color> ColorByStateValue = new();
 
