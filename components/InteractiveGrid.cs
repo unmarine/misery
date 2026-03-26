@@ -58,15 +58,25 @@ public sealed class InteractiveGrid : Panel
             for (int column = 0; column < _automaton.Columns; column++)
             {
                 State state = grid.ReadState(row, column);
-                Color color = Settings.GetColorByState(state);
+                //Color color = Settings.GetColorByState(state);
+                double t = state.GetNormalizedIndex(50);
+                byte r = (byte)(255 * (1.0 - t));
+                byte g = 0;
+                byte b = (byte)(255 * t);
+                byte a = 0xff;
 
 
                 int index = (row * data.Stride) + (column * 4);
 
-                _rgbaValues[index] = color.B;
-                _rgbaValues[index + 1] = color.G;
-                _rgbaValues[index + 2] = color.R;
-                _rgbaValues[index + 3] = color.A;
+                //_rgbaValues[index] = color.B;
+                //_rgbaValues[index + 1] = color.G;
+                //_rgbaValues[index + 2] = color.R;
+                //_rgbaValues[index + 3] = color.A;
+                
+                _rgbaValues[index] = b;
+                _rgbaValues[index + 1] = g;
+                _rgbaValues[index + 2] = r;
+                _rgbaValues[index + 3] = a;
             }
         }
         List<Coordinate> path = new();

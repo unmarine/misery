@@ -19,14 +19,31 @@ public class Simulation
         Generation++;
         ClearBuffer(writeTo, rows, columns);
         ApplyRules(readFrom, writeTo, rows, columns);
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                var s = writeTo.ReadState(r, c);
+                s.Older();
+                writeTo.SetState(r, c, s);
+            }
+        }
     }
 
 
     private void ClearBuffer(Grid grid, int rows, int columns)
     {
-        for (int row = 0; row < rows; row++)
+        for (int row = 0; row < rows; row++) 
+        {
             for (int column = 0; column < columns; column++)
-                grid.SetState(row, column, new State(0));
+            {
+                var existing = grid.ReadState(row, column);
+                existing.Value = 0;
+                grid.SetState(row, column, existing);
+            }
+        }
+                    //grid.SetState(row, column, new State(0));
     }
 
     private void ApplyRules(Grid readFrom, Grid writeTo, int rows, int columns)
@@ -41,13 +58,18 @@ public class Simulation
                 List<Condition>? conditions = _ruleSet.GetConditionsForState(current);
                 if (conditions == null) continue;
 
+                State destination = writeTo.ReadState(row, column);
+
                 foreach (var condition in conditions)
                 {
                     var neighbors = _neighborhood.Count(readFrom, condition.Counted,
                         new Coordinate(row, column), 1);
 
                     if (condition.IsUnconditional || condition.IsWithin(neighbors))
-                        writeTo.SetState(row, column, condition.Resulting);
+                    {
+                        destination.Value = condition.Resulting.Value;
+                        writeTo.SetState(row, column, destination); 
+                    }
                 }
             }
         });
