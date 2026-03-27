@@ -7,6 +7,9 @@
     <Compile Update="components\buttons\RunPauseButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="components\buttons\SwitchColorView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="components\InteractiveGrid.cs">
       <SubType>Component</SubType>
     </Compile>
