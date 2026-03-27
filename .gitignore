@@ -6,3 +6,4 @@ riderModule.iml
 /.vs/misery
 /components/grid/GridRendered.cs
 /components/grid/ColorProvider.cs
+*.cs

@@ -1,4 +1,6 @@
-﻿namespace misery.components.pathfinding;
+﻿using misery.components.grid;
+
+namespace misery.components.pathfinding;
 
 public class SetEndButton : Button
 {

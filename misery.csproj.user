@@ -10,7 +10,13 @@
     <Compile Update="components\buttons\SwitchColorView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="components\InteractiveGrid.cs">
+    <Compile Update="components\grid\InteractiveGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="components\pathfinding\SetEndButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="components\pathfinding\SetStartButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="components\PopulationChart.cs">

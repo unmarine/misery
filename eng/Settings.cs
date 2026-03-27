@@ -1,4 +1,4 @@
-﻿using misery.components;
+﻿using misery.components.grid;
 using misery.eng.automaton;
 
 namespace misery.eng;

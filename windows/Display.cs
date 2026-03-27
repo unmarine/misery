@@ -5,6 +5,7 @@ using misery.eng.automaton;
 using misery.eng;
 using misery.utils;
 using misery.components.pathfinding;
+using misery.components.grid;
 
 namespace misery.windows;
 public class Display : Form

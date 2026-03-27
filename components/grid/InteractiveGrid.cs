@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using misery.eng.automaton;
 using misery.eng;
 
-namespace misery.components;
+namespace misery.components.grid;
 
 public enum InteractiveGridMode
 {
@@ -16,8 +16,8 @@ public enum InteractiveGridMode
 public sealed class InteractiveGrid : Panel
 {
     private Automaton _automaton;
-    private Bitmap _canvas;
-    private byte[] _rgbaValues;
+
+    public GridDrawing grd;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public InteractiveGridMode CurrentMode { get; set; }
@@ -32,8 +32,12 @@ public sealed class InteractiveGrid : Panel
         _automaton = initial;
         CurrentMode = InteractiveGridMode.DrawCells;
         DoubleBuffered = true;
-        _canvas = new Bitmap(_automaton.Columns, _automaton.Rows, PixelFormat.Format32bppPArgb);
-        _rgbaValues = new byte[_canvas.Width * _canvas.Height * 4];
+
+
+        var canvas = new Bitmap(_automaton.Columns, _automaton.Rows, PixelFormat.Format32bppPArgb);
+        var rgba = new byte[canvas.Width * canvas.Height * 4];
+        grd = new GridDrawing(canvas, rgba);
+
         _automaton.GridUpdated += Invalidate;
         MouseMove += OnMouse;
         MouseClick += OnMouse;
@@ -45,49 +49,15 @@ public sealed class InteractiveGrid : Panel
         UpdateBitmap();
         e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        e.Graphics.DrawImage(_canvas, 0, 0, Width, Height);
+        e.Graphics.DrawImage(grd.GetCanvas(), 0, 0, Width, Height);
     }
 
     private void UpdateBitmap()
     {
         Grid grid = _automaton.doubleBuffer.ReadBuffer;
-        BitmapData data = _canvas.LockBits(new Rectangle(0, 0, _canvas.Width, _canvas.Height),
-                                         ImageLockMode.WriteOnly, _canvas.PixelFormat);
 
-        for (int row = 0; row < _automaton.Rows; row++)
-        {
-            for (int column = 0; column < _automaton.Columns; column++)
-            {
-                byte r, g, b, a;
-                State state = grid.ReadState(row, column);
-
-                if (Settings.IsViewingActivity)
-                {
-                    double t = state.GetNormalizedIndex();
-
-                    r = (byte)(255 * (1.0 - t));
-                    g = 0;
-                    b = (byte)(255 * t);
-                    a = 0xff;
-                } else
-                {
-                    Color color = Settings.GetColorByValue(state.Value);
-                    r = color.R;
-                    g = color.G; 
-                    b = color.B;
-                    a = color.A;
-                }
-
-
-
-                int index = (row * data.Stride) + (column * 4);
-
-                _rgbaValues[index] = b;
-                _rgbaValues[index + 1] = g;
-                _rgbaValues[index + 2] = r;
-                _rgbaValues[index + 3] = a;
-            }
-        }
+        grd.UpdateBitmap(grid);
+        
         List<Coordinate> path = new();
         if (_automaton.doubleBuffer.ReadBuffer.IsInside(_automaton.PathStart) && _automaton.doubleBuffer.ReadBuffer.IsInside(_automaton.PathEnd))
         {
@@ -98,19 +68,16 @@ public sealed class InteractiveGrid : Panel
             PreviousPath = path;
             if (path.Count > 1)
             {
-                foreach (Coordinate c in path)
-                {
-                    int index = (c.Row * data.Stride) + (c.Column * 4);
-                    _rgbaValues[index] = 0;
-                    _rgbaValues[index + 1] = 0xff;
-                    _rgbaValues[index + 2] = 0;
-                    _rgbaValues[index + 3] = 0xff;
-                }
+                grd.DrawPathOver(path);
             }
         }
 
-        Marshal.Copy(_rgbaValues, 0, data.Scan0, _rgbaValues.Length);
-        _canvas.UnlockBits(data);
+        var canvas = grd.GetCanvas();
+        var rgba = grd.GetRgba();
+        BitmapData data = canvas.LockBits(new Rectangle(0, 0, canvas.Width, canvas.Height),
+                         ImageLockMode.WriteOnly, canvas.PixelFormat);
+        Marshal.Copy(rgba, 0, data.Scan0, rgba.Length);
+        canvas.UnlockBits(data);
     }
 
     private void OnMouse(object? sender, MouseEventArgs e)
@@ -132,8 +99,8 @@ public sealed class InteractiveGrid : Panel
                 {
                     if (Settings.brushSize == 1) _automaton.doubleBuffer.ForceState(row, column, new State(Settings.brushState));
                     else for (int i = row - Settings.brushSize; i < row + Settings.brushSize / 2 - 1; i++)
-                        for (int j = column - Settings.brushSize; j < column + Settings.brushSize / 2 - 1; j++)
-                            _automaton.doubleBuffer.ForceState(i, j, new State(Settings.brushState));
+                            for (int j = column - Settings.brushSize; j < column + Settings.brushSize / 2 - 1; j++)
+                                _automaton.doubleBuffer.ForceState(i, j, new State(Settings.brushState));
                     break;
                 }
             case InteractiveGridMode.SetStart:
