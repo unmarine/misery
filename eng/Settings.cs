@@ -13,6 +13,12 @@ public static class Settings
     public static event Action? ColorsChanged;
     public static readonly Dictionary<int, Color> ColorByStateValue = new();
 
+    public static void SwitchColorView()
+    {
+        IsViewingActivity = !IsViewingActivity;
+        ColorsChanged?.Invoke();
+    }
+
     public static void SetColorForState(int state, Color color)
     {
         ColorByStateValue[state] = color;

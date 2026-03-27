@@ -37,6 +37,7 @@ public sealed class InteractiveGrid : Panel
         _automaton.GridUpdated += Invalidate;
         MouseMove += OnMouse;
         MouseClick += OnMouse;
+        Settings.ColorsChanged += Invalidate;
     }
 
     protected override void OnPaint(PaintEventArgs e)
