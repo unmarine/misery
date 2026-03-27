@@ -55,7 +55,6 @@ public sealed class InteractiveGrid : Panel
     private void UpdateBitmap()
     {
         Grid grid = _automaton.doubleBuffer.ReadBuffer;
-
         gridDrawing.UpdateCanvas(grid);
         
         List<Coordinate> path = new();
