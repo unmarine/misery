@@ -17,7 +17,7 @@ public sealed class InteractiveGrid : Panel
 {
     private Automaton _automaton;
 
-    public GridDrawing grd;
+    public GridDrawing gridDrawing;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public InteractiveGridMode CurrentMode { get; set; }
@@ -36,7 +36,7 @@ public sealed class InteractiveGrid : Panel
 
         var canvas = new Bitmap(_automaton.Columns, _automaton.Rows, PixelFormat.Format32bppPArgb);
         var rgba = new byte[canvas.Width * canvas.Height * 4];
-        grd = new GridDrawing(canvas, rgba);
+        gridDrawing = new GridDrawing(canvas, rgba);
 
         _automaton.GridUpdated += Invalidate;
         MouseMove += OnMouse;
@@ -49,14 +49,14 @@ public sealed class InteractiveGrid : Panel
         UpdateBitmap();
         e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        e.Graphics.DrawImage(grd.GetCanvas(), 0, 0, Width, Height);
+        e.Graphics.DrawImage(gridDrawing.GetCanvas(), 0, 0, Width, Height);
     }
 
     private void UpdateBitmap()
     {
         Grid grid = _automaton.doubleBuffer.ReadBuffer;
 
-        grd.UpdateBitmap(grid);
+        gridDrawing.UpdateCanvas(grid);
         
         List<Coordinate> path = new();
         if (_automaton.doubleBuffer.ReadBuffer.IsInside(_automaton.PathStart) && _automaton.doubleBuffer.ReadBuffer.IsInside(_automaton.PathEnd))
@@ -68,12 +68,12 @@ public sealed class InteractiveGrid : Panel
             PreviousPath = path;
             if (path.Count > 1)
             {
-                grd.DrawPathOver(path);
+                gridDrawing.DrawPathOver(path);
             }
         }
 
-        var canvas = grd.GetCanvas();
-        var rgba = grd.GetRgba();
+        var canvas = gridDrawing.GetCanvas();
+        var rgba = gridDrawing.GetRgba();
         BitmapData data = canvas.LockBits(new Rectangle(0, 0, canvas.Width, canvas.Height),
                          ImageLockMode.WriteOnly, canvas.PixelFormat);
         Marshal.Copy(rgba, 0, data.Scan0, rgba.Length);
