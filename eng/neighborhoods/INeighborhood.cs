@@ -4,5 +4,5 @@ namespace misery.eng.neighborhoods;
 
 public interface INeighborhood
 {
-    public int Count(Grid grid, State state, Coordinate coordinate, int radius);
+        public int Count(Grid grid, State state, Coordinate coordinate, int radius);
 }

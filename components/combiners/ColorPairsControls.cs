@@ -1,66 +1,61 @@
 ﻿using misery.eng;
 
-namespace misery.components.combiners
+namespace misery.components.combiners;
+
+public class ColorPairsControls
 {
-    public class ColorPairsControls
-    {
-        private NumericUpDown statePicker;
-        private Button colorPicker;
-        private Button submitButton;
-        private ListBox pairsListBox;
-        private Color selectedColor = Color.White;
+        private readonly Button _colorPicker;
+        private readonly ListBox _pairsListBox;
+        private readonly NumericUpDown _statePicker;
+        private readonly Button _submitButton;
+        private Color _selectedColor = Color.White;
 
-        public ColorPairsControls(NumericUpDown statePicker, Button colorPicker, Button submitButton, ListBox pairsListBox)
+        public ColorPairsControls(NumericUpDown statePicker, Button colorPicker, Button submitButton,
+                ListBox pairsListBox)
         {
-            this.statePicker = statePicker;
-            this.colorPicker = colorPicker;
-            this.submitButton = submitButton;
-            this.pairsListBox = pairsListBox;
+                _statePicker = statePicker;
+                _colorPicker = colorPicker;
+                _submitButton = submitButton;
+                _pairsListBox = pairsListBox;
 
-            InitializeComponents();
-            ReloadDisplay();
+                InitializeComponents();
+                ReloadDisplay();
         }
 
         private void InitializeComponents()
         {
-            submitButton.Text = "Add";
-            submitButton.Click += OnSubmitButtonClick;
+                _submitButton.Text = @"Add";
+                _submitButton.Click += OnSubmitButtonClick;
 
-            pairsListBox.IntegralHeight = false;
+                _pairsListBox.IntegralHeight = false;
 
-            colorPicker.Text = "Select Color";
-            colorPicker.Click += OnColorPickerClick;
+                _colorPicker.Text = @"Select Color";
+                _colorPicker.Click += OnColorPickerClick;
         }
 
         private void OnColorPickerClick(object? sender, EventArgs e)
         {
-            if (sender == null) return;
+                if (sender == null) return;
 
-            using ColorDialog colorDialog = new ColorDialog();
-            if (colorDialog.ShowDialog() == DialogResult.OK)
-            {
-                selectedColor = colorDialog.Color;
-            }
+                using var colorDialog = new ColorDialog();
+                if (colorDialog.ShowDialog() == DialogResult.OK) _selectedColor = colorDialog.Color;
         }
 
         private void ReloadDisplay()
         {
-            pairsListBox.Items.Clear();
+                _pairsListBox.Items.Clear();
 
-            foreach (var pair in Settings.ColorByStateValue)
-            {
-                pairsListBox.Items.Add($"{pair.Key} {pair.Value.Name}");
-            }
+                foreach (var pair in Settings.ColorByStateValue)
+                        _pairsListBox.Items.Add($"{pair.Key} {pair.Value.Name}");
         }
 
         private void OnSubmitButtonClick(object? sender, EventArgs e)
         {
-            if (sender == null) return;
+                if (sender == null) return;
 
-            Settings.SetColorForState((int)statePicker.Value, selectedColor);
-            ReloadDisplay();
-            if (Settings.DisplayedGrid != null)
-                Settings.DisplayedGrid.Invalidate();
+                Settings.SetColorForState((int)_statePicker.Value, _selectedColor);
+                ReloadDisplay();
+                if (Settings.DisplayedGrid != null)
+                        Settings.DisplayedGrid.Invalidate();
         }
-    }
 }

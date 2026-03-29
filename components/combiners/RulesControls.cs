@@ -1,59 +1,60 @@
 ﻿using misery.eng;
 
 namespace misery.components.combiners;
+
 public class RulesControls
 {
+        private readonly Button _addRuleButton;
+        private readonly NumericUpDown _counted;
+        private readonly CheckBox _isUnconditional;
+        private readonly ListBox _listOfRules;
+        private readonly NumericUpDown _lower;
+        private readonly NumericUpDown _resulting;
+        private readonly RuleSet? _ruleSet;
+        private readonly NumericUpDown _starting;
+        private readonly NumericUpDown _upper;
 
-    RuleSet? ruleSet;
-    NumericUpDown starting, counted, resulting, lower, upper;
-    CheckBox isUnconditional;
-    Button addRuleButton;
-    ListBox listOfRules;
-
-    public RulesControls(RuleSet? ruleSet, NumericUpDown starting, NumericUpDown counted, NumericUpDown resulting, NumericUpDown lower, NumericUpDown upper, CheckBox isUnconditional, Button addRuleButton, ListBox listOfRules)
-    {
-        this.ruleSet = ruleSet;
-        this.starting = starting;
-        this.counted = counted;
-        this.resulting = resulting;
-        this.lower = lower;
-        this.upper = upper;
-        this.isUnconditional = isUnconditional;
-        this.addRuleButton = addRuleButton;
-        this.listOfRules = listOfRules;
-
-        this.addRuleButton.Click += addRule;
-        this.addRuleButton.Text = @"Add";
-    }
-
-    private void addRule(object? sender, EventArgs e)
-    {
-        Condition condition;
-
-        int startingState = (int)starting.Value;
-        int countedState = (int)counted.Value;
-        int resultingState = (int)resulting.Value;
-        int lowerNumber = (int)lower.Value;
-        int upperNumber = (int)upper.Value;
-        bool isUnconditionalValue = isUnconditional.Checked;
-
-        condition = new Condition(startingState, countedState, resultingState, lowerNumber, upperNumber, isUnconditionalValue);
-
-        if (ruleSet != null)
-            ruleSet.AddCondition(condition);
-        listOfRules.Invalidate();
-        ReloadList();
-    }
-
-    private void ReloadList()
-    {
-        listOfRules.Items.Clear();
-        if (ruleSet == null) return;
-        List<Condition> conditions = ruleSet.GetConditions();
-        foreach (Condition condition in conditions)
+        public RulesControls(RuleSet? ruleSet, NumericUpDown starting, NumericUpDown counted, NumericUpDown resulting,
+                NumericUpDown lower, NumericUpDown upper, CheckBox isUnconditional, Button addRuleButton,
+                ListBox listOfRules)
         {
-            listOfRules.Items.Add(condition);
-        }
-    }
-}
+                _ruleSet = ruleSet;
+                _starting = starting;
+                _counted = counted;
+                _resulting = resulting;
+                _lower = lower;
+                _upper = upper;
+                _isUnconditional = isUnconditional;
+                _addRuleButton = addRuleButton;
+                _listOfRules = listOfRules;
 
+                _addRuleButton.Click += AddRule;
+                _addRuleButton.Text = @"Add";
+        }
+
+        private void AddRule(object? sender, EventArgs e)
+        {
+                var startingState = (int)_starting.Value;
+                var countedState = (int)_counted.Value;
+                var resultingState = (int)_resulting.Value;
+                var lowerNumber = (int)_lower.Value;
+                var upperNumber = (int)_upper.Value;
+                var isUnconditionalValue = _isUnconditional.Checked;
+
+                var condition = new Condition(startingState, countedState, resultingState, lowerNumber, upperNumber,
+                        isUnconditionalValue);
+
+                if (_ruleSet != null)
+                        _ruleSet.AddCondition(condition);
+                _listOfRules.Invalidate();
+                ReloadList();
+        }
+
+        private void ReloadList()
+        {
+                _listOfRules.Items.Clear();
+                if (_ruleSet == null) return;
+                var conditions = _ruleSet.GetConditions();
+                foreach (var condition in conditions) _listOfRules.Items.Add(condition);
+        }
+}

@@ -4,15 +4,16 @@ namespace misery.components.pathfinding;
 
 public class SetStartButton : Button
 {
-    private readonly InteractiveGrid interactiveGrid;
+        private readonly InteractiveGrid _interactiveGrid;
 
-    public SetStartButton(InteractiveGrid interactiveGrid)
-    {
-        this.interactiveGrid = interactiveGrid;
-        Text = "Set Start";
-    }
+        public SetStartButton(InteractiveGrid interactiveGrid)
+        {
+                _interactiveGrid = interactiveGrid;
+                Text = @"Set Start";
+        }
 
-    protected override void OnClick(EventArgs e)
-    =>
-        interactiveGrid.CurrentMode = InteractiveGridMode.SetStart;
+        protected override void OnClick(EventArgs e)
+        {
+                _interactiveGrid.CurrentMode = InteractiveGridMode.SetStart;
+        }
 }

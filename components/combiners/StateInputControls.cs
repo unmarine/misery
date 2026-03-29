@@ -4,30 +4,25 @@ namespace misery.components.combiners;
 
 public class StateInputControls
 {
-    private NumericUpDown updownStateValue, updownSize;
-    
-    public StateInputControls(NumericUpDown updownStateValue, NumericUpDown updownSize)
-    {
-        this.updownStateValue = updownStateValue;
-        this.updownSize = updownSize;
+        private readonly NumericUpDown _updownSize;
+        private readonly NumericUpDown _updownStateValue;
 
-        updownStateValue.Value = 1;
-        updownSize.Value = 1;
-
-        updownStateValue.ValueChanged += (s, e) =>
+        public StateInputControls(NumericUpDown updownStateValue, NumericUpDown updownSize)
         {
-            Settings.SetState((int)updownStateValue.Value);
-        };
+                this._updownStateValue = updownStateValue;
+                this._updownSize = updownSize;
 
-        updownSize.ValueChanged += (s, e) =>
+                updownStateValue.Value = 1;
+                updownSize.Value = 1;
+
+                updownStateValue.ValueChanged += (s, e) => { Settings.SetState((int)updownStateValue.Value); };
+
+                updownSize.ValueChanged += (s, e) => { Settings.SetBrushSize((int)updownSize.Value); };
+        }
+
+        public void Actualize()
         {
-            Settings.SetBrushSize((int)updownSize.Value);
-        }; 
-    }
-
-    public void Actualize()
-    {
-        updownSize.Value = Settings.brushSize;
-        updownStateValue.Value = Settings.brushState;
-    }
+                _updownSize.Value = Settings.BrushSize;
+                _updownStateValue.Value = Settings.BrushState;
+        }
 }

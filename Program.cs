@@ -6,15 +6,15 @@ namespace misery;
 internal static class Program
 {
     /// <summary>
-    ///  The main entry point for the application.
+    ///         The main entry point for the application.
     /// </summary>
     [STAThread]
-    private static void Main()
-    {
-        ApplicationConfiguration.Initialize();
+        private static void Main()
+        {
+                ApplicationConfiguration.Initialize();
 
-        SimulationManager simulation = new SimulationManager();
+                var simulation = new SimulationManager();
 
-        Application.Run(new Overview(simulation));
-    }
+                Application.Run(new Overview(simulation));
+        }
 }

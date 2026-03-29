@@ -4,15 +4,16 @@ namespace misery.components.pathfinding;
 
 public class SetEndButton : Button
 {
-    private readonly InteractiveGrid interactiveGrid;
+        private readonly InteractiveGrid _interactiveGrid;
 
-    public SetEndButton(InteractiveGrid interactiveGrid)
-    {
-        this.interactiveGrid = interactiveGrid;
-        Text = "Set End";
-    }
+        public SetEndButton(InteractiveGrid interactiveGrid)
+        {
+                _interactiveGrid = interactiveGrid;
+                Text = @"Set End";
+        }
 
-    protected override void OnClick(EventArgs e)
-    =>
-        interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
+        protected override void OnClick(EventArgs e)
+        {
+                _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
+        }
 }
