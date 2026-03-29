@@ -69,8 +69,8 @@ public sealed class Setup : Form
                 _updownWidth.Value = 300;
                 _updownHeight.Value = 300;
 
-                var buttonLeave = new Button { Text = "Leave" };
-                buttonLeave.Click += (s, e) => { WindowManager.MoveForms(this, new Overview(_simulationManager)); };
+                var buttonLeave = new Button { Text = @"Leave" };
+                buttonLeave.Click += (_, _) => { WindowManager.MoveForms(this, new Overview(_simulationManager)); };
                 windowManager.PlaceControl(buttonLeave, 11, 8, 11, 8);
                 windowManager.PlaceLabel("Description of simulation", 0, 0, 0, 8);
 

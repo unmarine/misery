@@ -15,13 +15,13 @@ public class DijkstraSearch : Pathfinding
                 var rows = grid.Rows;
                 var cols = grid.Columns;
 
-                if (!grid.IsInside(src) || !grid.IsInside(dest)) return new List<Coordinate>();
+                if (!grid.IsInside(src) || !grid.IsInside(dest)) return [];
 
                 if (grid.ReadState(src).Value != 0 || grid.ReadState(dest).Value != 0)
-                        return new List<Coordinate>();
+                        return [];
 
                 if (src.Row == dest.Row && src.Column == dest.Column)
-                        return new List<Coordinate> { src };
+                        return [src];
 
                 var closedList = new bool[rows, cols];
                 var cellDetails = new Cell[rows, cols];
@@ -39,8 +39,7 @@ public class DijkstraSearch : Pathfinding
                 cellDetails[startRow, startCol].ParentRow = startRow;
                 cellDetails[startRow, startCol].ParentColumn = startCol;
 
-                var openList = new List<(double g, Coordinate coord)>();
-                openList.Add((0.0, src));
+                var openList = new List<(double g, Coordinate coord)> { (0.0, src) };
 
                 while (openList.Count > 0)
                 {
@@ -51,39 +50,36 @@ public class DijkstraSearch : Pathfinding
                         var column = current.coord.Column;
                         closedList[row, column] = true;
 
-                        (int dR, int dC)[] cardinalMoves = { (-1, 0), (1, 0), (0, -1), (0, 1) };
+                        (int dR, int dC)[] cardinalMoves = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
                         foreach (var move in cardinalMoves)
                         {
                                 var newRow = row + move.dR;
                                 var newColumn = column + move.dC;
 
-                                if (grid.IsInside(newRow, newColumn))
+                                if (!grid.IsInside(newRow, newColumn)) continue;
+                                
+                                if (newRow == dest.Row && newColumn == dest.Column)
                                 {
-                                        if (newRow == dest.Row && newColumn == dest.Column)
-                                        {
-                                                cellDetails[newRow, newColumn].ParentRow = row;
-                                                cellDetails[newRow, newColumn].ParentColumn = column;
-                                                return TracePath(cellDetails, dest);
-                                        }
-
-                                        if (!closedList[newRow, newColumn] &&
-                                            grid.ReadState(newRow, newColumn).Value == 0)
-                                        {
-                                                var gNew = cellDetails[row, column].G + 1.0;
-
-                                                if (gNew < cellDetails[newRow, newColumn].G)
-                                                {
-                                                        openList.Add((gNew, new Coordinate(newRow, newColumn)));
-                                                        cellDetails[newRow, newColumn].G = gNew;
-                                                        cellDetails[newRow, newColumn].ParentRow = row;
-                                                        cellDetails[newRow, newColumn].ParentColumn = column;
-                                                }
-                                        }
+                                        cellDetails[newRow, newColumn].ParentRow = row;
+                                        cellDetails[newRow, newColumn].ParentColumn = column;
+                                        return TracePath(cellDetails, dest);
                                 }
+
+                                if (closedList[newRow, newColumn] ||
+                                    grid.ReadState(newRow, newColumn).Value != 0) continue;
+                                
+                                var gNew = cellDetails[row, column].G + 1.0;
+                                
+                                if (!(gNew < cellDetails[newRow, newColumn].G)) continue;
+                                
+                                openList.Add((gNew, new Coordinate(newRow, newColumn)));
+                                cellDetails[newRow, newColumn].G = gNew;
+                                cellDetails[newRow, newColumn].ParentRow = row;
+                                cellDetails[newRow, newColumn].ParentColumn = column;
                         }
                 }
 
-                return new List<Coordinate>();
+                return [];
         }
 }

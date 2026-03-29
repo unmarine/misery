@@ -14,23 +14,22 @@ public sealed class RunPauseButton : Button
 
         protected override void OnClick(EventArgs e)
         {
-                if (_automaton.Clock != null)
-                        if (_automaton.Clock.Enabled)
-                        {
-                                Text = @"Run";
-                                _automaton.Clock.Stop();
-                        }
-                        else
-                        {
-                                Text = @"Pause";
-                                _automaton.Clock.Start();
-                        }
+                if (_automaton.Clock == null) return;
+                if (_automaton.Clock.Enabled)
+                {
+                        Text = @"Run";
+                        _automaton.Clock.Stop();
+                }
+                else
+                {
+                        Text = @"Pause";
+                        _automaton.Clock.Start();
+                }
         }
 
         public void Actualize()
         {
-                if (_automaton.Clock != null)
-                        if (!_automaton.Clock.Enabled) Text = @"Run";
-                        else Text = @"Pause";
+                if (_automaton.Clock == null) return;
+                Text = !_automaton.Clock.Enabled ? @"Run" : @"Pause";
         }
 }

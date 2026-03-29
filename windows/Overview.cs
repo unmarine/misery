@@ -37,7 +37,7 @@ public class Overview : Form
 
 
                 var create = new Button { Text = @"Add simulation" };
-                create.Click += (_, e) =>
+                create.Click += (_, _) =>
                 {
                         var setupForm = new Setup(_simulationManager);
                         WindowManager.MoveForms(this, setupForm);

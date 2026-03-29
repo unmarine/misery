@@ -2,8 +2,8 @@
 
 public struct Coordinate(int row, int column) : IEquatable<Coordinate>
 {
-        public int Column { get; set; } = column;
-        public int Row { get; set; } = row;
+        public int Column { get; } = column;
+        public int Row { get; } = row;
 
         public bool Equals(Coordinate other)
         {

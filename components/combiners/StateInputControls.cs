@@ -15,9 +15,9 @@ public class StateInputControls
                 updownStateValue.Value = 1;
                 updownSize.Value = 1;
 
-                updownStateValue.ValueChanged += (s, e) => { Settings.SetState((int)updownStateValue.Value); };
+                updownStateValue.ValueChanged += (_, _) => { Settings.SetState((int)updownStateValue.Value); };
 
-                updownSize.ValueChanged += (s, e) => { Settings.SetBrushSize((int)updownSize.Value); };
+                updownSize.ValueChanged += (_, _) => { Settings.SetBrushSize((int)updownSize.Value); };
         }
 
         public void Actualize()

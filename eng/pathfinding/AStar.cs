@@ -15,10 +15,10 @@ public class AStarSearch : Pathfinding
                 var rows = grid.Rows;
                 var columns = grid.Columns;
 
-                if (!grid.IsInside(src) || !grid.IsInside(dest)) return new List<Coordinate>();
+                if (!grid.IsInside(src) || !grid.IsInside(dest)) return [];
 
                 if (grid.ReadState(src).Value != 0 || grid.ReadState(dest).Value != 0)
-                        return new List<Coordinate>();
+                        return [];
 
                 if (src.Row == dest.Row && src.Column == dest.Column)
                         return [src];
@@ -43,8 +43,7 @@ public class AStarSearch : Pathfinding
                 cellDetails[row, column].ParentRow = row;
                 cellDetails[row, column].ParentColumn = column;
 
-                var openList = new List<(double f, Coordinate coord)>();
-                openList.Add((0.0, src));
+                var openList = new List<(double f, Coordinate coord)> { (0.0, src) };
 
                 while (openList.Count > 0)
                 {
@@ -94,7 +93,7 @@ public class AStarSearch : Pathfinding
                         }
                 }
 
-                return new List<Coordinate>();
+                return [];
         }
 
         private static double CalculateHValue(int row, int col, Coordinate dest)
