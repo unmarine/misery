@@ -42,7 +42,7 @@ public class Automaton
 
         public void Advance()
         {
-                _simulation.Advance(DoubleBuffer.ReadBuffer, DoubleBuffer.WriteBuffer, Rows, Columns);
+                _simulation.Advance(DoubleBuffer.ReadBuffer, DoubleBuffer.WriteBuffer);
                 DoubleBuffer.Swap();
 
                 var counts = new Dictionary<State, int>();

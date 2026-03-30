@@ -15,33 +15,42 @@ public class Simulation
 
         public int Generation { get; private set; }
 
-        public void Advance(Grid readFrom, Grid writeTo, int rows, int columns)
+        public void Advance(Grid readFrom, Grid writeTo)
         {
                 Generation++;
-                for (var r = 0; r < rows; r++)
-                for (var c = 0; c < columns; c++)
-                {
-                        var dest = writeTo.ReadState(r, c);
-                        dest.Value = 0;
-                        writeTo.SetState(r, c, dest);
-                }
+                
+                ResetValues(writeTo);   
+                ApplyRules(readFrom, writeTo);
+                Olden(writeTo);
+        }
 
-                ApplyRules(readFrom, writeTo, rows, columns);
-
-                for (var r = 0; r < rows; r++)
-                for (var c = 0; c < columns; c++)
+        private void ResetValues(Grid grid)
+        {
+                for (var row = 0; row < grid.Rows; row++)
+                for (var column = 0; column < grid.Columns; column++)
                 {
-                        var s = writeTo.ReadState(r, c);
-                        s.Older();
-                        writeTo.SetState(r, c, s);
+                    var dest = grid.ReadState(row, column);
+                    dest.Value = 0;
+                    grid.SetState(row, column, dest);
                 }
         }
 
-        private void ApplyRules(Grid readFrom, Grid writeTo, int rows, int columns)
+        private void Olden(Grid grid)
         {
-                Parallel.For(0, rows, row =>
+                for (var row = 0; row < grid.Rows; row++)
+                for (var column = 0; column < grid.Rows; column++)
                 {
-                        for (var column = 0; column < columns; column++)
+                    var s = grid.ReadState(row, column);
+                    s.Older();
+                    grid.SetState(row, column, s);
+                }
+        }
+
+        private void ApplyRules(Grid readFrom, Grid writeTo)
+        {
+                Parallel.For(0, writeTo.Rows, row =>
+                {
+                        for (var column = 0; column < writeTo.Columns; column++)
                         {
                                 var current = readFrom.ReadState(row, column);
                                 if (_ruleSet == null) continue;
@@ -65,8 +74,5 @@ public class Simulation
                 });
         }
 
-        public void Reset()
-        {
-                Generation = 0;
-        }
+        public void Reset() => Generation = 0;
 }

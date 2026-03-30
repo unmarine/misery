@@ -33,10 +33,6 @@ public class RuleSet(string name)
                                         cursor++;
                                 }
                         }
-                        else if (rule[cursor] == '/')
-                        {
-                                cursor++;
-                        }
                         else
                         {
                                 cursor++;
@@ -57,7 +53,6 @@ public class RuleSet(string name)
         {
                 AddCondition(new Condition(starting, counted, resulting, amount, amount));
         }
-
 
         public void RemoveCondition(Condition condition)
         {
@@ -83,18 +78,8 @@ public class RuleSet(string name)
                 return _conditionsForState.TryGetValue(state, out var conditions) ? conditions : new List<Condition>();
         }
 
-        public List<Condition> GetConditionsForState(int value)
-        {
-                return GetConditionsForState(new State(value));
-        }
+        public List<Condition> GetConditionsForState(int value) => GetConditionsForState(new State(value));
 
-        public List<Condition> GetConditions()
-        {
-                return _conditionsForState.Values.SelectMany(x => x).ToList();
-        }
-
-        public override string ToString()
-        {
-                return name;
-        }
+        public List<Condition> GetConditions() => _conditionsForState.Values.SelectMany(x => x).ToList();
+        public override string ToString() => name;
 }
