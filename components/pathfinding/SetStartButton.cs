@@ -15,5 +15,6 @@ public class SetStartButton : Button
         protected override void OnClick(EventArgs e)
         {
                 _interactiveGrid.CurrentMode = InteractiveGridMode.SetStart;
+                _interactiveGrid.Invalidate();
         }
 }

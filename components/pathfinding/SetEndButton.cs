@@ -15,5 +15,6 @@ public class SetEndButton : Button
         protected override void OnClick(EventArgs e)
         {
                 _interactiveGrid.CurrentMode = InteractiveGridMode.SetEnd;
+                _interactiveGrid.Invalidate();
         }
 }
