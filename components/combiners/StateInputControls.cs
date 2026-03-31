@@ -9,15 +9,19 @@ public class StateInputControls
 
         public StateInputControls(NumericUpDown updownStateValue, NumericUpDown updownSize)
         {
-                this._updownStateValue = updownStateValue;
-                this._updownSize = updownSize;
+                _updownStateValue = updownStateValue;
+                _updownSize = updownSize;
 
                 updownStateValue.Value = 1;
                 updownSize.Value = 1;
 
-                updownStateValue.ValueChanged += (_, _) => { Settings.SetState((int)updownStateValue.Value); };
+                updownStateValue.ValueChanged += (_, _) => { 
+                    Settings.SetState((int)updownStateValue.Value); 
+                };
 
-                updownSize.ValueChanged += (_, _) => { Settings.SetBrushSize((int)updownSize.Value); };
+                updownSize.ValueChanged += (_, _) => { 
+                    Settings.SetBrushSize((int)updownSize.Value); 
+                };
         }
 
         public void Actualize()

@@ -18,17 +18,19 @@ public class Grid
         public int Columns { get; }
 
         public State ReadState(Coordinate coordinate)
-        {
+        {   
+                if (!IsInside(coordinate)) return new State(0);
                 return _grid[coordinate.Row, coordinate.Column];
         }
 
         public State ReadState(int row, int column)
         {
-                return _grid[row, column];
+                return ReadState(new Coordinate(row, column));
         }
 
         public void SetState(int row, int column, State state)
         {
+                if (!IsInside(row, column)) return;
                 _grid[row, column] = state;
         }
 

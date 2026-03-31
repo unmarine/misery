@@ -6,7 +6,9 @@ public class RandomizeControls
 {
         public RandomizeControls(Automaton automaton, Button button, NumericUpDown lower, NumericUpDown upper)
         {
-                button.Click += (_, _) => { automaton.Randomize((int)lower.Value, (int)upper.Value); };
+                button.Click += (_, _) => { 
+                    automaton.Randomize((int)lower.Value, (int)upper.Value); 
+                };
                 button.Text = @"Randomize";
         }
 }

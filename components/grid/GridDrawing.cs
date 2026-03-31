@@ -30,7 +30,6 @@ public class GridDrawing(Bitmap canvas, byte[] rgba)
                         if (Settings.IsViewingActivity)
                         {
                                 var t = state.GetNormalizedIndex();
-
                                 r = (byte)(255 * t);
                                 g = 0;
                                 b = (byte)(255 * (1 - t));

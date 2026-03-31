@@ -9,8 +9,8 @@ public class PathfindingControls
         {
                 pathfinders.Items.Add(new AStarSearch());
                 pathfinders.Items.Add(new DijkstraSearch());
+                pathfinders.SelectedIndex = 1;
 
-        pathfinders.SelectedIndex = 1;
                 selectPathFinder.Text = @"Select Pathfinder";
 
                 selectPathFinder.Click += (_, _) =>
