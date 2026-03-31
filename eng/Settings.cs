@@ -13,7 +13,7 @@ public static class Settings
 
         public static event Action? ColorsChanged;
 
-        public static void SwitchColorView()
+        public static void ToggleHeatMapButton()
         {
                 IsViewingActivity = !IsViewingActivity;
                 ColorsChanged?.Invoke();

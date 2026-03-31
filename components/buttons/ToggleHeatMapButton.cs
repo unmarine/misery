@@ -2,10 +2,10 @@
 
 namespace misery.components.buttons;
 
-internal class SwitchColorView : Button
+internal class ToggleHeatMapButton : Button
 {
         protected override void OnClick(EventArgs e)
         {
-                Settings.SwitchColorView();
+                Settings.ToggleHeatMapButton();
         }
 }

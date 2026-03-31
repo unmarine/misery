@@ -68,8 +68,8 @@ public class Display : Form
                 var brushControls = new StateInputControls(updownBrushState, updownBrushSize);
                 brushControls.Actualize();
 
-                var sclButton = new SwitchColorView { Text = @"Check activity" };
-                windowManager.PlaceControl(sclButton, 0, 34, 1, 35);
+                var heatmapButton = new ToggleHeatMapButton { Text = @"Check activity" };
+                windowManager.PlaceControl(heatmapButton, 0, 34, 1, 35);
 
                 windowManager.PlaceLabel("Brush Size", 22, 33, 22, 34);
                 windowManager.PlaceControl(updownBrushSize, 23, 33, 23, 34);
