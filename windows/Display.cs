@@ -20,7 +20,6 @@ public class Display : Form
                 DoubleBuffered = true;
                 
                 Settings.SetDefaultColorStatePairs();
-                Settings.SetColorForState(2, Color.Yellow);
 
                 var runPauseButton = new RunPauseButton(automaton);
                 runPauseButton.Actualize();
